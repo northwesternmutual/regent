@@ -1,0 +1,65 @@
+{
+  "name": "regent",
+  "version": "1.0.1",
+  "description": "Javascript logic framework",
+  "main": "lib/regent.js",
+  "scripts": {
+    "test": "tape -r babel-register src/**/*spec.js src/*spec.js | tap-difflet -p",
+    "test-watch": "tape-watch src/**/*spec.js src/*spec.js -p 'tap-summary' -c -r babel-register",
+    "build": "webpack --env dev && webpack --env build && npm run test",
+    "lint": "eslint './src/**/*.js'",
+    "prepublish": "npm run build",
+    "test-coverage": "nyc --check-coverage --statements 100 --lines 100 --functions 100 --branches 100 --per-file npm test"
+  },
+  "pre-push": [
+    "lint",
+    "test-coverage"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/northwesternmutual/regent"
+  },
+  "keywords": [
+    "logic",
+    "engine",
+    "rules"
+  ],
+  "author": "Ivan Eisenberg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/northwesternmutual/regent/issues"
+  },
+  "homepage": "https://github.com/northwesternmutual/regent/blob/master/README.md",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
+    "nyc": "^11.3.0",
+    "pre-push": "^0.1.1",
+    "tap-difflet": "^0.7.0",
+    "tap-summary": "^4.0.0",
+    "tape": "^4.8.0",
+    "tape-watch": "^2.3.0",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "lodash.get": "^4.4.2"
+  },
+  "nyc": {
+    "exclude": [
+      "**/*styles.js",
+      "**/*spec.js",
+      "src/polyfills/*"
+    ]
+  }
+}
