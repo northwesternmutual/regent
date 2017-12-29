@@ -2,6 +2,10 @@
 
 Regent provides a lightweight framework aimed at helping you organize your application's business logic.
 
+## Installation
+
+`npm install --save regent`
+
 ## Documentation
 
 ### Queries
