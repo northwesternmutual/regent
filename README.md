@@ -2,6 +2,10 @@
 
 Regent provides a lightweight framework aimed at helping you organize your application's business logic.
 
+We have created an example project that uses regent to manage a command line text adventure game. The intention is to provide a real world context of how regent can help organize your application logic.
+
+https://github.com/eisenivan/node-cli-game
+
 ## Installation
 
 `npm install --save regent`
