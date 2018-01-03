@@ -60,7 +60,7 @@ export const rule = (custom = {}) => (data, singleRule) => evaluateRule(data, si
 
 export const or = (rules) => {
   if (!Array.isArray(rules)) {
-    throw new Error('ja.or must be called with an array');
+    throw new Error('regent.or must be called with an array');
   }
 
   return ({
@@ -71,7 +71,7 @@ export const or = (rules) => {
 
 export const and = (rules) => {
   if (!Array.isArray(rules)) {
-    throw new Error('ja.and must be called with an array');
+    throw new Error('regent.and must be called with an array');
   }
 
   return ({

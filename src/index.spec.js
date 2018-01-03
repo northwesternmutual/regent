@@ -179,24 +179,24 @@ test('init should be a function', (assert) => {
 });
 
 test('init should return an object with and, not, or, findFirst, findAll, and rule methods', (assert) => {
-  const jaRule = init();
-  assert.equal(typeof jaRule.and, 'function');
-  assert.equal(typeof jaRule.not, 'function');
-  assert.equal(typeof jaRule.or, 'function');
-  assert.equal(typeof jaRule.findFirst, 'function');
-  assert.equal(typeof jaRule.findAll, 'function');
-  assert.equal(typeof jaRule.rule, 'function');
+  const regent = init();
+  assert.equal(typeof regent.and, 'function');
+  assert.equal(typeof regent.not, 'function');
+  assert.equal(typeof regent.or, 'function');
+  assert.equal(typeof regent.findFirst, 'function');
+  assert.equal(typeof regent.findAll, 'function');
+  assert.equal(typeof regent.rule, 'function');
   assert.end();
 });
 
 test('init should accept an object of custom functions', (assert) => {
   const customFn = input => input === true;
-  const jaRule = init({ customFn });
+  const regent = init({ customFn });
   let data = {
     customField: true,
   };
 
-  let actual = jaRule.rule(data, { key: 'customField', fn: 'customFn' });
+  let actual = regent.rule(data, { key: 'customField', fn: 'customFn' });
   let expected = true;
 
   assert.equal(actual, expected);
@@ -205,7 +205,7 @@ test('init should accept an object of custom functions', (assert) => {
     customField: false,
   };
 
-  actual = jaRule.rule(data, { key: 'customField', fn: 'customFn' });
+  actual = regent.rule(data, { key: 'customField', fn: 'customFn' });
   expected = false;
 
   assert.equal(actual, expected);

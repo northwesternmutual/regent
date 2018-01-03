@@ -26,7 +26,7 @@ const logic = [
   { greeting: 'Hello sir.', rules: [humanOver30] },
 ];
 
-// you can now use jaRule to get the proper
+// you can now use regent to get the proper
 // greeting given a data object.
 const data = {
   species: 'human',

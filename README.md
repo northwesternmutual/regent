@@ -313,11 +313,11 @@ const customEvaluators = {
 You can now use this evaluator in your rules.
 
 ```javascript
-// init jaRule with customEvaluators
-const jaRule = regent.init(customEvaluators);
+// init regent with customEvaluators
+const regent = regent.init(customEvaluators);
 
 const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsValid' };
-jaRule.rule({ skyColor: 'blue' }, skyIsValidColor) // true
+regent.rule({ skyColor: 'blue' }, skyIsValidColor) // true
 ```
 
 ## Usage
@@ -345,7 +345,8 @@ The rules.js file will hold your application logic. The rules file should export
 
 **greeting-logic.js**
 
-Your logic files will be where you compose your rules from `rules.js` and the data that you want to make available. Using `ja.findFirst()` will return the first logic array item who's array of rules all return `true`.
+Your logic files will be where you compose your rules from `rules.js` and the data that you want to make available. Using `regent.findFirst()`
+will return the first logic array item who's array of rules all return `true`.
 
 ```javascript
 import * as R from './rules';
@@ -359,7 +360,7 @@ export default [
 
 **greet-user.js**
 
-You can invoke these rules by calling one of the `ja` helper
+You can invoke these rules by calling one of the `regent` helper
 
 ```javascript
 import regent from 'regent';
