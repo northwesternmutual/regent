@@ -121,6 +121,41 @@ const olsenTwin = { key: 'name', fn: 'inArray', params: ['Mary Kate', 'Ashley'] 
 const notOlsenTwin = not(olsenTwin);
 ```
 
+**explain**
+
+The `explain` helper function returns the logic of a rule as a human-readable string.
+
+`explain` outputs a single rule in the format "`key` `fn` `params`", or composed rules in the format "(`rule`) `compose` (`rule`) ..."
+
+`explain` throws an error if called without a valid Regent rule.
+
+`explain(<object>)`
+
+```javascript
+const human = { key: 'species', fn: 'equals', params: ['human'] };
+const topHat = { key: 'hat', fn: 'equals', params: ['top'] };
+const fancy = and([human, topHat]);
+explain(fancy);
+// "(species equals 'human') and (hat equals 'top')"
+```
+
+
+**why**
+
+The `why` helper function accepts a logic row, and and returns a human readable description to why that logic row was returned. This can be helpful in debugging, and as a tool to build logic documentation tools.
+
+```javascript
+const chocolate = { key: 'food', fn: 'equals', params: ['chocolate'] };
+const logicRow = { value: 'some value', rules: [chocolate] };
+
+why(logicRow) // returns
+/*
+[
+  food equals chocolate
+]
+*/
+```
+
 
 ### Evaluators
 

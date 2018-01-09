@@ -85,6 +85,35 @@ export const not = singleRule => ({
   rule: singleRule,
 });
 
+export const isRule = (testRule) => { // eslint-disable-line arrow-body-style
+  return testRule !== undefined
+    && testRule.hasOwnProperty('key') // eslint-disable-line no-prototype-builtins
+    && testRule.hasOwnProperty('fn') // eslint-disable-line no-prototype-builtins
+    && testRule.hasOwnProperty('params'); // eslint-disable-line no-prototype-builtins
+};
+
+export const isComposedRule = (composedRule) => { // eslint-disable-line arrow-body-style
+  return composedRule !== undefined
+    && composedRule.hasOwnProperty('compose') // eslint-disable-line no-prototype-builtins
+    && typeof composedRule.compose === 'string'
+    && composedRule.hasOwnProperty('rules') // eslint-disable-line no-prototype-builtins
+    && Array.isArray(composedRule.rules) !== 'undefined';
+};
+
+export const explain = (composedRule) => {
+  let result = '';
+  if (!isComposedRule(composedRule)) {
+    if (!isRule(composedRule)) {
+      throw new Error('regent.explain must be called with a regent rule');
+    }
+    const key = Array.isArray(composedRule.key) ? composedRule.key.join(', ') : composedRule.key;
+    result = `${key} ${composedRule.fn} '${composedRule.params.join('\', \'')}'`;
+  } else {
+    result = composedRule.rules.map(currentRule => `(${explain(currentRule)})`).join(` ${composedRule.compose} `);
+  }
+  return result;
+};
+
 export const init = (custom = {}) => ({
   and,
   not,
@@ -92,6 +121,7 @@ export const init = (custom = {}) => ({
   findFirst: findFirst(custom),
   findAll: findAll(custom),
   rule: rule(custom),
+  explain,
 });
 
 export default {

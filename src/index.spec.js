@@ -1,5 +1,5 @@
 import test from 'tape';
-import { findFirst, findAll, init, rule, or, and, not, parseComposed, evaluateRule } from './index';
+import { findFirst, findAll, init, rule, or, and, not, parseComposed, evaluateRule, explain, isRule, isComposedRule } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -178,13 +178,14 @@ test('init should be a function', (assert) => {
   assert.end();
 });
 
-test('init should return an object with and, not, or, findFirst, findAll, and rule methods', (assert) => {
+test('init should return an object with and, not, or, findFirst, findAll, explain, and rule methods', (assert) => {
   const regent = init();
   assert.equal(typeof regent.and, 'function');
   assert.equal(typeof regent.not, 'function');
   assert.equal(typeof regent.or, 'function');
   assert.equal(typeof regent.findFirst, 'function');
   assert.equal(typeof regent.findAll, 'function');
+  assert.equal(typeof regent.explain, 'function');
   assert.equal(typeof regent.rule, 'function');
   assert.end();
 });
@@ -688,6 +689,122 @@ test('evaluateRule should return true for a regex rule', (assert) => {
   };
   const actual = evaluateRule(data, pirate);
   const expected = true;
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('isRule should be a function', (assert) => {
+  const actual = typeof isRule;
+  const expected = 'function';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('isRule should return true when called with a well-formed rule', (assert) => {
+  const data = { key: 'foo', fn: 'bar', params: ['baz'] };
+  assert.true(isRule(data));
+  assert.end();
+});
+
+test('isRule should return false when called with a poorly-formed rule', (assert) => {
+  const data = { foo: 'bar' };
+  assert.false(isRule(data));
+  assert.end();
+});
+
+test('isComposedRule should be a function', (assert) => {
+  const actual = typeof isComposedRule;
+  const expected = 'function';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('isComposedRule should return true when called with a well-formed rule', (assert) => {
+  const data = {
+    compose: 'foo',
+    rules: [],
+  };
+  assert.true(isComposedRule(data));
+  assert.end();
+});
+
+test('isComposedRule should return false when called without a well-formed rule', (assert) => {
+  const data = { foo: 'bar' };
+  assert.false(isComposedRule(data));
+  assert.end();
+});
+
+test('explain should be a function', (assert) => {
+  const actual = typeof explain;
+  const expected = 'function';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should throw if called without an argument', (assert) => {
+  assert.throws(() => explain(), /regent.explain must be called with a regent rule/, 'Fail!');
+  assert.end();
+});
+
+test('explain should throw if called without a well-formed rule', (assert) => {
+  const data = {};
+  assert.throws(() => explain(data), /regent.explain must be called with a regent rule/, 'Fail!');
+  assert.end();
+});
+
+test('explain should stringify a single rule', (assert) => {
+  const human = { key: 'species', fn: 'equals', params: ['human'] };
+  const actual = explain(human);
+  const expected = 'species equals \'human\'';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should stringify a single rule with multiple params', (assert) => {
+  const human = { key: 'species', fn: 'isIn', params: ['human', 'dog'] };
+  const actual = explain(human);
+  const expected = 'species isIn \'human\', \'dog\'';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should stringify a composed OR rule', (assert) => {
+  const human = { key: 'species', fn: 'equals', params: ['human'] };
+  const dog = { key: 'species', fn: 'equals', params: ['dog'] };
+  const mammal = or([human, dog]);
+  const actual = explain(mammal);
+  const expected = '(species equals \'human\') or (species equals \'dog\')';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should stringify a composed AND rule', (assert) => {
+  const human = { key: 'species', fn: 'equals', params: ['human'] };
+  const topHat = { key: 'hat', fn: 'equals', params: ['top'] };
+  const fancy = and([human, topHat]);
+  const actual = explain(fancy);
+  const expected = '(species equals \'human\') and (hat equals \'top\')';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should stringify a rule of composed rules', (assert) => {
+  const human = { key: 'species', fn: 'equals', params: ['human'] };
+  const topHat = { key: 'hat', fn: 'equals', params: ['top'] };
+  const redNose = { key: 'nose', fn: 'equals', params: ['red'] };
+  const fancy = and([human, topHat]);
+  const clown = and([human, redNose]);
+  const fancyOrClown = or([fancy, clown]);
+  const actual = explain(fancyOrClown);
+  const expected = '((species equals \'human\') and (hat equals \'top\')) or ((species equals \'human\') and (nose equals \'red\'))';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should stringify a rule with multiple keys', (assert) => {
+  const fooBar = { key: ['foo', 'bar'], fn: 'customFunc', params: ['baz'] };
+  const actual = explain(fooBar);
+  const expected = 'foo, bar customFunc \'baz\'';
   assert.equal(actual, expected);
   assert.end();
 });
