@@ -87,16 +87,16 @@ export const not = singleRule => ({
 
 export const isRule = (testRule) => { // eslint-disable-line arrow-body-style
   return testRule !== undefined
-    && testRule.hasOwnProperty('key') // eslint-disable-line no-prototype-builtins
-    && testRule.hasOwnProperty('fn') // eslint-disable-line no-prototype-builtins
-    && testRule.hasOwnProperty('params'); // eslint-disable-line no-prototype-builtins
+    && Object.hasOwnProperty.call(testRule, ['key'])
+    && Object.hasOwnProperty.call(testRule, ['fn'])
+    && Object.hasOwnProperty.call(testRule, ['params']);
 };
 
 export const isComposedRule = (composedRule) => { // eslint-disable-line arrow-body-style
   return composedRule !== undefined
-    && composedRule.hasOwnProperty('compose') // eslint-disable-line no-prototype-builtins
+    && Object.hasOwnProperty.call(composedRule, ['compose'])
     && typeof composedRule.compose === 'string'
-    && composedRule.hasOwnProperty('rules') // eslint-disable-line no-prototype-builtins
+    && Object.hasOwnProperty.call(composedRule, ['rules'])
     && Array.isArray(composedRule.rules) !== 'undefined';
 };
 
