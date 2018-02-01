@@ -69,6 +69,16 @@ const data = {
 
 The `fn` property refers to the evaluator that you want the rule to use. Regent ships with many evaluator functions. Plese see the `evaluators` section for your options.
 
+You can import an object of built-in constants to help find spelling errors.
+
+```javascript
+import regent, { constants } from '../lib/regent.js';
+
+const doNotTrustThisPerson = { key: 'person.info.age', fn: constants.greaterThan, params: [30]};
+```
+
+This is not required, but is good practice.
+
 #### params
 
 The `params` property is the data that you will check the value of the key property against. In the previous example, the rule will return true if the value in `data.age` is greater than `30`.
@@ -393,7 +403,7 @@ const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsValid' };
 regent.rule({ skyColor: 'blue' }, skyIsValidColor) // true
 ```
 
-## Usage
+## Example Usage
 
 **rules.js**
 
@@ -458,3 +468,5 @@ const dogData = {
 
 const dogGreeting = findFirst(dogData, logic).greeting; // "Aarf!"
 ```
+
+Please check out our examples file for more working examples. https://github.com/northwesternmutual/regent/blob/master/examples/index.js
