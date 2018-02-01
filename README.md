@@ -12,6 +12,30 @@ https://github.com/eisenivan/node-cli-game
 
 ## Documentation
 
+### Setup
+
+Regent needs to be initialized before you can use it. the function `init` will return an object with all of Regents functionality as properties
+
+```javascript
+const {
+  and,
+  or,
+  not,
+  findFirst,
+  findAll,
+  explain,
+  rule,
+} = regent.init();
+```
+
+`init` takes an object of custom evaluators. Please see the Custom Evaluators section for more information.
+
+`crown` is an alias of `init`
+
+```javascript
+const { findFirst } = regent.crown();
+```
+
 ### Queries
 
 **findFirst**

@@ -124,6 +124,8 @@ export const init = (custom = {}) => ({
   explain,
 });
 
+export const crown = init;
+
 export default {
   init,
 };
