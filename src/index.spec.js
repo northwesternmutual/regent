@@ -1,5 +1,5 @@
 import test from 'tape';
-import { findFirst, findAll, init, rule, or, and, not, parseComposed, evaluateRule, explain, isRule, isComposedRule } from './index';
+import { findFirst, findAll, init, crown, rule, or, and, not, parseComposed, evaluateRule, explain, isRule, isComposedRule, constants } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -175,6 +175,16 @@ test('findAll should return an empty array if no rules match', (assert) => {
 
 test('init should be a function', (assert) => {
   assert.equal(typeof init, 'function');
+  assert.end();
+});
+
+test('crown should be a function', (assert) => {
+  assert.equal(typeof crown, 'function');
+  assert.end();
+});
+
+test('constants should be an object', (assert) => {
+  assert.equal(typeof constants, 'object');
   assert.end();
 });
 

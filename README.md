@@ -18,23 +18,61 @@ Regent needs to be initialized before you can use it. the function `init` will r
 
 ```javascript
 const {
+  findFirst,
+  findAll,
+  rule,
   and,
   or,
   not,
-  findFirst,
-  findAll,
   explain,
-  rule,
 } = regent.init();
 ```
 
-`init` takes an object of custom evaluators. Please see the Custom Evaluators section for more information.
+`init` optionally takes an object of custom evaluator functions. Please see the Custom Evaluators section for more information.
 
 `crown` is an alias of `init`
 
 ```javascript
 const { findFirst } = regent.crown();
 ```
+
+### The Structure of a Rule
+
+Regent is based on defining rules. A rule is an object with three properties on it.
+
+```javascript
+const doNotTrustThisPerson = { key: 'age', fn: 'greaterThan', params: [30]};
+```
+
+#### key
+The `key` property represents the path to a piece of data in your data object. In the previous example, you would expect to find the needed data on a top level property named `age`.
+
+```javascript
+const data = { age: '29' };
+```
+
+Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. Please visit https://lodash.com/docs/4.17.4#get for more information.
+
+```javascript
+const doNotTrustThisPerson = { key: 'person.info.age', fn: 'greaterThan', params: [30]};
+
+const data = {
+  person: {
+    info: {
+      age: 29,
+    },
+  },
+};
+```
+
+#### fn
+
+The `fn` property refers to the evaluator that you want the rule to use. Regent ships with many evaluator functions. Plese see the `evaluators` section for your options.
+
+#### params
+
+The `params` property is the data that you will check the value of the key property against. In the previous example, the rule will return true if the value in `data.age` is greater than `30`.
+
 
 ### Queries
 
@@ -333,20 +371,14 @@ You can provide your own custom evaluator functions. An object of evaluator func
 ```javascript
 const customEvaluators = {
   skyColorIsvalid: (input) => {
-    let result = false;
     const validColors = [
       'blue',
       'orange',
       'black',
       'red',
     ];
-    validColors.forEach(arg => {
-      if (input === arg) {
-        result = true;
-      }
-    });
 
-    return result;
+    return !!validColors.indexOf(input) !== -1;
   }
 }
 ```

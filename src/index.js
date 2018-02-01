@@ -126,6 +126,24 @@ export const init = (custom = {}) => ({
 
 export const crown = init;
 
+export const constants = {
+  arrayLengthGreaterThan: 'arrayLengthGreaterThan',
+  arraysMatch: 'arraysMatch',
+  dateAfterInclusive: 'dateAfterInclusive',
+  dateBeforeInclusive: 'dateBeforeInclusive',
+  dateBetweenInclusive: 'dateBetweenInclusive',
+  empty: 'empty',
+  equals: 'equals',
+  greaterThan: 'greaterThan',
+  isIn: 'isIn',
+  match: 'match',
+  numericRange: 'numericRange',
+  regex: 'regex',
+  subString: 'subString',
+};
+
 export default {
+  constants,
+  crown,
   init,
 };

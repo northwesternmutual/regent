@@ -1,6 +1,9 @@
 /* eslint-disable */
-
-import regent from '../lib/regent.js';
+// You need to build the project before this example will run
+//
+// npm run build
+//
+import regent, { constants } from '../lib/regent.js';
 
 // initialize (crown) your regent
 const { findFirst, findAll, rule, and, not } = regent.init();
@@ -17,7 +20,7 @@ const data = {
 };
 
 // define your rules
-const wearingSuit = { key: 'wearingSuit', fn: 'equals', params: [true] };
+const wearingSuit = { key: 'wearingSuit', fn: constants.equals, params: [true] };
 
 // check a simple rule
 const actLikeBatman = rule(data, wearingSuit) /* ? */ // true
@@ -49,3 +52,22 @@ actionToTake.push({ action: 'Deliver witty one-liner', rules: [wearingSuit, stro
 const actions = findAll(data, actionToTake)
   .map(item => item.action) /* ? */ // [ 'Fight Joker', 'Deliver witty one-liner ]
 
+
+// Custom Evaluators
+const customEvaluators = {
+  skyColorIsvalid: (input) => {
+    const validColors = [
+      'blue',
+      'orange',
+      'black',
+      'red',
+    ];
+
+    return !!validColors.indexOf(input) !== -1;
+  }
+}
+
+const customRegent = regent.crown(customEvaluators);
+
+const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsvalid' };
+customRegent.rule({ skyColor: 'blue' }, skyIsValidColor) /* ? */ //true
