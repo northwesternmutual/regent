@@ -286,7 +286,7 @@ dateBetweenInclusive('1945-12-07', ['2018-01-01', '2017-12-25']) // false
 
 **empty**
 
-Returns true if the value is not `undefined`, `null`, `'undefined'`, or `''`;
+Returns true if the value is `undefined`, `null`, `'undefined'`, or `''`;
 
 ```javascript
 empty() // true
