@@ -53,8 +53,8 @@ const actions = findAll(data, actionToTake)
   .map(item => item.action) /* ? */ // [ 'Fight Joker', 'Deliver witty one-liner ]
 
 
-// Custom Evaluators
-const customEvaluators = {
+// Custom Predicates
+const customPredicates = {
   skyColorIsvalid: (input) => {
     const validColors = [
       'blue',
@@ -67,7 +67,7 @@ const customEvaluators = {
   }
 }
 
-const customRegent = regent.crown(customEvaluators);
+const customRegent = regent.crown(customPredicates);
 
 const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsvalid' };
 customRegent.rule({ skyColor: 'blue' }, skyIsValidColor) /* ? */ //true
