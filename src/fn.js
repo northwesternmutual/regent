@@ -46,7 +46,7 @@ export default (id, custom) => (
       }
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.log(`regent error':
+      console.log(`regent error:
         fn: "${fnid}"
         input: "${JSON.stringify(input)}"
         args: "${JSON.stringify(args)}"
