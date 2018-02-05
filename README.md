@@ -16,7 +16,7 @@ https://github.com/eisenivan/node-cli-game
 
 **findFirst**
 
-Returns the first logic row who's rules all evaluate to true. findFirst returns the entire logic row, including the rules array.
+Returns the first logic row whose rules all evaluate to true. findFirst returns the entire logic row, including the rules array.
 
 
 ```javascript
@@ -363,7 +363,7 @@ The rules.js file will hold your application logic. The rules file should export
 **greeting-logic.js**
 
 Your logic files will be where you compose your rules from `rules.js` and the data that you want to make available. Using `regent.findFirst()`
-will return the first logic array item who's array of rules all return `true`.
+will return the first logic array item whose array of rules all return `true`.
 
 ```javascript
 import * as R from './rules';
