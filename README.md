@@ -403,6 +403,25 @@ const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsValid' };
 regent.rule({ skyColor: 'blue' }, skyIsValidColor) // true
 ```
 
+Custom predicate functions can take accept multiple keys. To use this feature, define the `key` property of your rule as an array of the property names your predicate expects. The `input` param of your predicate will be an object with those properties.
+
+```javascript
+const customPredicates = {
+  twoPropertiesAreTrue: (input) => {
+    const { property1, property2 } = input;
+    return property1 && property2;
+  }
+}
+
+const regent = regent.init(customPredicates);
+const myRule = { key: ['property1', 'property2'], fn: 'twoPropertiesAreTrue' };
+const data = {
+  property1: true,
+  property2: true,
+};
+regent.rule(data, myRule); // true
+```
+
 ## Example Usage
 
 **rules.js**
