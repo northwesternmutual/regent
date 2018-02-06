@@ -46,7 +46,8 @@ const config = {
   },
   plugins: plugins,
   externals: {
-    'lodash.get': 'lodash.get'
+    'lodash.get': 'lodash.get',
+    'lodash.set': 'lodash.set'
   }
 };
 
