@@ -14,7 +14,7 @@ https://github.com/eisenivan/node-cli-game
 
 ### Setup
 
-Regent needs to be initialized before you can use it. the function `init` will return an object with all of Regents functionality as properties
+Regent needs to be initialized before you can use it. the function `init` will return an object with all of Regent's functionality as properties
 
 ```javascript
 const {
