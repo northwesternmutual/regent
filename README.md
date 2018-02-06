@@ -14,7 +14,7 @@ https://github.com/eisenivan/node-cli-game
 
 ### Setup
 
-Regent needs to be initialized before you can use it. the function `init` will return an object with all of Regent's functionality as properties
+Regent needs to be initialized before you can use it. The function `init` will return an object with all of Regent's functionality as properties
 
 ```javascript
 const {
@@ -67,7 +67,7 @@ const data = {
 
 #### fn
 
-The `fn` property refers to the predicate that you want the rule to use. Regent ships with many predicate functions. Plese see the `predicates` section for your options.
+The `fn` property refers to the predicate that you want the rule to use. Regent ships with many predicate functions. Please see the `predicates` section for your options.
 
 You can import an object of built-in constants to help find spelling errors.
 
@@ -88,7 +88,7 @@ The `params` property is the data that you will check the value of the key prope
 
 **findFirst**
 
-Returns the first logic row whose rules all evaluate to true. findFirst returns the entire logic row, including the rules array.
+Returns the first logic row whose rules all evaluate to true. `findFirst` returns the entire logic row, including the rules array.
 
 
 ```javascript
@@ -376,7 +376,7 @@ subString('az', ['foo', 'bar', 'baz']) // true
 
 ### Custom Predicates
 
-You can provide your own custom predicate functions. An object of predicate functions can be passed in when you call init.
+You can provide your own custom predicate functions. An object of predicate functions can be passed in when you call `init`.
 
 ```javascript
 const customPredicates = {
@@ -403,7 +403,7 @@ const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsValid' };
 regent.rule({ skyColor: 'blue' }, skyIsValidColor) // true
 ```
 
-Custom predicate functions can take accept multiple keys. To use this feature, define the `key` property of your rule as an array of the property names your predicate expects. The `input` param of your predicate will be an object with those properties.
+Custom predicate functions can accept multiple keys. To use this feature, define the `key` property of your rule as an array of the property names your predicate expects. The `input` param of your predicate will be an object with those properties.
 
 ```javascript
 const customPredicates = {
