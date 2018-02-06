@@ -223,6 +223,25 @@ test('init should accept an object of custom functions', (assert) => {
   assert.end();
 });
 
+test('custom funcs should support multiple keys', (assert) => {
+  const customFn = (input) => {
+    const { foo, bar } = input;
+    return foo && bar;
+  };
+  const regent = init({ customFn });
+  const data = {
+    foo: true,
+    bar: true,
+  };
+  let actual = regent.rule(data, { key: ['foo', 'bar'], fn: 'customFn', params: [] });
+  assert.true(actual);
+
+  data.bar = false;
+  actual = regent.rule(data, { key: ['foo', 'bar'], fn: 'customFn', params: [] });
+  assert.false(actual);
+  assert.end();
+});
+
 test('rule should be a function', (assert) => {
   assert.equal(typeof rule, 'function');
   assert.end();
