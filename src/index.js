@@ -1,4 +1,5 @@
 import get from 'lodash.get';
+import set from 'lodash.set';
 import FN from './fn';
 
 export const evaluateRule = (obj, rule, custom = {}) => {
@@ -8,7 +9,16 @@ export const evaluateRule = (obj, rule, custom = {}) => {
     result = parseComposed(obj, rule, custom); // eslint-disable-line no-use-before-define
   } else {
     // This is a base rule, execute it
-    result = FN(rule.fn, custom)(get(obj, rule.key), rule.params);
+    const input = {};
+    switch (true) {
+      case Array.isArray(rule.key):
+        rule.key.forEach(key => set(input, key, get(obj, key)));
+        result = FN(rule.fn, custom)(input, rule.params);
+        break;
+      default:
+        result = FN(rule.fn, custom)(get(obj, rule.key), rule.params);
+        break;
+    }
   }
 
   return result;
@@ -124,6 +134,26 @@ export const init = (custom = {}) => ({
   explain,
 });
 
+export const crown = init;
+
+export const constants = {
+  arrayLengthGreaterThan: 'arrayLengthGreaterThan',
+  arraysMatch: 'arraysMatch',
+  dateAfterInclusive: 'dateAfterInclusive',
+  dateBeforeInclusive: 'dateBeforeInclusive',
+  dateBetweenInclusive: 'dateBetweenInclusive',
+  empty: 'empty',
+  equals: 'equals',
+  greaterThan: 'greaterThan',
+  isIn: 'isIn',
+  match: 'match',
+  numericRange: 'numericRange',
+  regex: 'regex',
+  subString: 'subString',
+};
+
 export default {
+  constants,
+  crown,
   init,
 };

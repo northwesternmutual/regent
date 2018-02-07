@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Javascript logic framework",
   "main": "lib/regent.js",
   "scripts": {
@@ -54,7 +54,8 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
-    "lodash.get": "^4.4.2"
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2"
   },
   "nyc": {
     "exclude": [

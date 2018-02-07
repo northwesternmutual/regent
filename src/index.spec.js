@@ -1,5 +1,5 @@
 import test from 'tape';
-import { findFirst, findAll, init, rule, or, and, not, parseComposed, evaluateRule, explain, isRule, isComposedRule } from './index';
+import { findFirst, findAll, init, crown, rule, or, and, not, parseComposed, evaluateRule, explain, isRule, isComposedRule, constants } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -178,6 +178,16 @@ test('init should be a function', (assert) => {
   assert.end();
 });
 
+test('crown should be a function', (assert) => {
+  assert.equal(typeof crown, 'function');
+  assert.end();
+});
+
+test('constants should be an object', (assert) => {
+  assert.equal(typeof constants, 'object');
+  assert.end();
+});
+
 test('init should return an object with and, not, or, findFirst, findAll, explain, and rule methods', (assert) => {
   const regent = init();
   assert.equal(typeof regent.and, 'function');
@@ -210,6 +220,25 @@ test('init should accept an object of custom functions', (assert) => {
   expected = false;
 
   assert.equal(actual, expected);
+  assert.end();
+});
+
+test('custom funcs should support multiple keys', (assert) => {
+  const customFn = (input) => {
+    const { foo, bar } = input;
+    return foo && bar;
+  };
+  const regent = init({ customFn });
+  const data = {
+    foo: true,
+    bar: true,
+  };
+  let actual = regent.rule(data, { key: ['foo', 'bar'], fn: 'customFn', params: [] });
+  assert.true(actual);
+
+  data.bar = false;
+  actual = regent.rule(data, { key: ['foo', 'bar'], fn: 'customFn', params: [] });
+  assert.false(actual);
   assert.end();
 });
 

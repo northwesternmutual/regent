@@ -12,15 +12,87 @@ https://github.com/eisenivan/node-cli-game
 
 ## Documentation
 
+### Setup
+
+Regent needs to be initialized before you can use it. The function `init` will return an object with all of Regent's functionality as properties
+
+```javascript
+const {
+  findFirst,
+  findAll,
+  rule,
+  and,
+  or,
+  not,
+  explain,
+} = regent.init();
+```
+
+`init` optionally takes an object of custom predicate functions. Please see the Custom Predicates section for more information.
+
+`crown` is an alias of `init`
+
+```javascript
+const { findFirst } = regent.crown();
+```
+
+### The Structure of a Rule
+
+Regent is based on defining rules. A rule is an object with three properties on it.
+
+```javascript
+const doNotTrustThisPerson = { key: 'age', fn: 'greaterThan', params: [30]};
+```
+
+#### key
+The `key` property represents the path to a piece of data in your data object. In the previous example, you would expect to find the needed data on a top level property named `age`.
+
+```javascript
+const data = { age: '29' };
+```
+
+Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. Please visit https://lodash.com/docs/4.17.4#get for more information.
+
+```javascript
+const doNotTrustThisPerson = { key: 'person.info.age', fn: 'greaterThan', params: [30]};
+
+const data = {
+  person: {
+    info: {
+      age: 29,
+    },
+  },
+};
+```
+
+#### fn
+
+The `fn` property refers to the predicate that you want the rule to use. Regent ships with many predicate functions. Please see the `predicates` section for your options.
+
+You can import an object of built-in constants to help find spelling errors.
+
+```javascript
+import regent, { constants } from '../lib/regent.js';
+
+const doNotTrustThisPerson = { key: 'person.info.age', fn: constants.greaterThan, params: [30]};
+```
+
+This is not required, but is good practice.
+
+#### params
+
+The `params` property is the data that you will check the value of the key property against. In the previous example, the rule will return true if the value in `data.age` is greater than `30`.
+
+
 ### Queries
 
 **findFirst**
 
-Returns the first logic row who's rules all evaluate to true. findFirst returns the entire logic row, including the rules array.
+Returns the first logic row whose rules all evaluate to true. `findFirst` returns the entire logic row, including the rules array.
 
 
 ```javascript
-// findFirst(data, logic, [customEvaluators])
+// findFirst(data, logic, [customPredicates])
 
 import regent from 'regent';
 const { findFirst } = regent.init();
@@ -44,7 +116,7 @@ findFirst(data, logic) // { type: 'mammal', rules: [{ key: 'species', fn: 'equal
 Returns an array of all logic rows that evaluate to true.
 
 ```javascript
-// findAll(data, logic, [customEvaluators])
+// findAll(data, logic, [customPredicates])
 
 import regent from 'regent';
 const { findAll } = regent.init();
@@ -68,7 +140,7 @@ findAll(data, logic) // [ { type: 'reptile', rules: [{ key: 'species', fn: 'inAr
 Returns a boolean value based on the truthiness of the provided rule and data set.
 
 ```javascript
-// rule(data, rule, [customEvaluators])
+// rule(data, rule, [customPredicates])
 
 import regent from 'regent';
 const { rule } = regent.init();
@@ -139,7 +211,7 @@ explain(fancy);
 // "(species equals 'human') and (hat equals 'top')"
 ```
 
-### Evaluators
+### Predicates
 
 **arrayLengthGreaterThan**
 
@@ -214,7 +286,7 @@ dateBetweenInclusive('1945-12-07', ['2018-01-01', '2017-12-25']) // false
 
 **empty**
 
-Returns true if the value is not `undefined`, `null`, `'undefined'`, or `''`;
+Returns true if the value is `undefined`, `null`, `'undefined'`, or `''`;
 
 ```javascript
 empty() // true
@@ -302,42 +374,55 @@ subString('hello', ['I did not say hello, I said good day']) // true
 subString('az', ['foo', 'bar', 'baz']) // true
 ```
 
-### Custom Evaluators
+### Custom Predicates
 
-You can provide your own custom evaluator functions. An object of evaluator functions can be passed in when you call init.
+You can provide your own custom predicate functions. An object of predicate functions can be passed in when you call `init`.
 
 ```javascript
-const customEvaluators = {
+const customPredicates = {
   skyColorIsvalid: (input) => {
-    let result = false;
     const validColors = [
       'blue',
       'orange',
       'black',
       'red',
     ];
-    validColors.forEach(arg => {
-      if (input === arg) {
-        result = true;
-      }
-    });
 
-    return result;
+    return !!validColors.indexOf(input) !== -1;
   }
 }
 ```
 
-You can now use this evaluator in your rules.
+You can now use this predicate in your rules.
 
 ```javascript
-// init regent with customEvaluators
-const regent = regent.init(customEvaluators);
+// init regent with customPredicates
+const regent = regent.init(customPredicates);
 
 const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsValid' };
 regent.rule({ skyColor: 'blue' }, skyIsValidColor) // true
 ```
 
-## Usage
+Custom predicate functions can accept multiple keys. To use this feature, define the `key` property of your rule as an array of the property names your predicate expects. The `input` param of your predicate will be an object with those properties.
+
+```javascript
+const customPredicates = {
+  twoPropertiesAreTrue: (input) => {
+    const { property1, property2 } = input;
+    return property1 && property2;
+  }
+}
+
+const regent = regent.init(customPredicates);
+const myRule = { key: ['property1', 'property2'], fn: 'twoPropertiesAreTrue' };
+const data = {
+  property1: true,
+  property2: true,
+};
+regent.rule(data, myRule); // true
+```
+
+## Example Usage
 
 **rules.js**
 
@@ -363,7 +448,7 @@ The rules.js file will hold your application logic. The rules file should export
 **greeting-logic.js**
 
 Your logic files will be where you compose your rules from `rules.js` and the data that you want to make available. Using `regent.findFirst()`
-will return the first logic array item who's array of rules all return `true`.
+will return the first logic array item whose array of rules all return `true`.
 
 ```javascript
 import * as R from './rules';
@@ -383,7 +468,7 @@ You can invoke these rules by calling one of the `regent` helper
 import regent from 'regent';
 import logic from './greeting-logic'
 
-// Running init allows you to inject custom evaluators,
+// Running init allows you to inject custom predicates,
 // we will get to that later
 const { findFirst } = regent.init();
 
@@ -402,3 +487,5 @@ const dogData = {
 
 const dogGreeting = findFirst(dogData, logic).greeting; // "Aarf!"
 ```
+
+Please check out our examples file for more working examples. https://github.com/northwesternmutual/regent/blob/master/examples/index.js
