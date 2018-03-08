@@ -15,9 +15,9 @@ test('findFirst should return the first array item with all true rules', (assert
     place: 'world',
   };
 
-  const greetingIsHello = { key: 'greeting', fn: 'equals', params: ['hello'] };
-  const placeIsWorld = { key: 'place', fn: 'equals', params: ['world'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const greetingIsHello = { left: '@greeting', fn: 'equals', right: 'hello' };
+  const placeIsWorld = { left: '@place', fn: 'equals', right: 'world' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
     { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
@@ -36,9 +36,9 @@ test('findFirst should return the first array item with all true rules, even if 
     place: 'world',
   };
 
-  const greetingIsHello = { key: 'greeting', fn: 'equals', params: ['hello'] };
-  const placeIsWorld = { key: 'place', fn: 'equals', params: ['world'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const greetingIsHello = { left: '@greeting', fn: 'equals', right: 'hello' };
+  const placeIsWorld = { left: '@place', fn: 'equals', right: 'world' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
     { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
@@ -58,8 +58,8 @@ test('findFirst should return undefined if no rows match', (assert) => {
     place: 'world',
   };
 
-  const greetingIsHello = { key: 'greeting', fn: 'equals', params: ['hello'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const greetingIsHello = { left: '@greeting', fn: 'equals', right: 'hello' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
     { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
@@ -82,13 +82,13 @@ test('findFirst should throw if no rules are provided', (assert) => {
   assert.end();
 });
 
-test('findFirst should return undefined if the rule key does not exist in the object', (assert) => {
+test('findFirst should return undefined if the rule left does not exist in the object', (assert) => {
   const obj = {
     foo: 'bar',
   };
 
-  const greetingIsHello = { key: 'greeting', fn: 'equals', params: ['hello'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const greetingIsHello = { left: '@greeting', fn: 'equals', right: 'hello' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
     { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
@@ -105,8 +105,8 @@ test('findFirst a !equals rule will return true, even if that object property do
     foo: 'bar',
   };
 
-  const greetingIsHello = { key: 'greeting', fn: 'equals', params: ['hello'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const greetingIsHello = { left: '@greeting', fn: 'equals', right: 'hello' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
     { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
@@ -130,10 +130,10 @@ test('findAll should return an array of matching logic rows', (assert) => {
     place: 'world',
   };
 
-  const greetingIsHello = { key: 'greeting', fn: 'equals', params: ['hello'] };
-  // const greeting_is_goodbye = { key: 'greeting', fn: 'equals', params: ['goodbye'] };
-  const placeIsWorld = { key: 'place', fn: 'equals', params: ['world'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const greetingIsHello = { left: '@greeting', fn: 'equals', right: 'hello' };
+  // const greeting_is_goodbye = { left: '@greeting', fn: 'equals', right: 'goodbye' };
+  const placeIsWorld = { left: '@place', fn: 'equals', right: 'world' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
     { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
@@ -158,8 +158,8 @@ test('findAll should return an empty array if no rules match', (assert) => {
     place: 'world',
   };
 
-  const greetingIsHello = { key: 'greeting', fn: 'equals', params: ['hello'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const greetingIsHello = { left: '@greeting', fn: 'equals', right: 'hello' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
     { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
@@ -188,7 +188,7 @@ test('constants should be an object', (assert) => {
   assert.end();
 });
 
-test('init should return an object with and, not, or, findFirst, findAll, explain, and rule methods', (assert) => {
+test('init should return an object with and, not, or, findFirst, findAll, evaluate, and rule methods', (assert) => {
   const regent = init();
   assert.equal(typeof regent.and, 'function');
   assert.equal(typeof regent.not, 'function');
@@ -196,7 +196,7 @@ test('init should return an object with and, not, or, findFirst, findAll, explai
   assert.equal(typeof regent.findFirst, 'function');
   assert.equal(typeof regent.findAll, 'function');
   assert.equal(typeof regent.explain, 'function');
-  assert.equal(typeof regent.rule, 'function');
+  assert.equal(typeof regent.evaluate, 'function');
   assert.end();
 });
 
@@ -207,7 +207,7 @@ test('init should accept an object of custom functions', (assert) => {
     customField: true,
   };
 
-  let actual = regent.rule(data, { key: 'customField', fn: 'customFn' });
+  let actual = regent.rule(data, { left: '@customField', fn: 'customFn' });
   let expected = true;
 
   assert.equal(actual, expected);
@@ -216,14 +216,14 @@ test('init should accept an object of custom functions', (assert) => {
     customField: false,
   };
 
-  actual = regent.rule(data, { key: 'customField', fn: 'customFn' });
+  actual = regent.rule(data, { left: '@customField', fn: 'customFn' });
   expected = false;
 
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('custom funcs should support multiple keys', (assert) => {
+test('custom funcs should support multiple lefts', (assert) => {
   const customFn = (input) => {
     const { foo, bar } = input;
     return foo && bar;
@@ -233,11 +233,11 @@ test('custom funcs should support multiple keys', (assert) => {
     foo: true,
     bar: true,
   };
-  let actual = regent.rule(data, { key: ['foo', 'bar'], fn: 'customFn', params: [] });
+  let actual = regent.rule(data, { left: ['foo', 'bar'], fn: 'customFn', right: [] });
   assert.true(actual);
 
   data.bar = false;
-  actual = regent.rule(data, { key: ['foo', 'bar'], fn: 'customFn', params: [] });
+  actual = regent.rule(data, { left: ['foo', 'bar'], fn: 'customFn', right: [] });
   assert.false(actual);
   assert.end();
 });
@@ -253,8 +253,8 @@ test('rule should evaluate the rule provided with the data provided', (assert) =
     place: 'not this world',
   };
 
-  const placeIsWorld = { key: 'place', fn: 'equals', params: ['world'] };
-  const placeIsNotWorld = { key: 'place', fn: '!equals', params: ['world'] };
+  const placeIsWorld = { left: '@place', fn: 'equals', right: 'world' };
+  const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   let actual = rule()(data, placeIsNotWorld);
   let expected = true;
@@ -274,7 +274,7 @@ test('findFirst should handle a string representation of an object path', (asser
     },
   };
 
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const rules = [
     { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
@@ -294,7 +294,7 @@ test('findAll should handle a string representation of an object path', (assert)
     },
   };
 
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const rules = [
     { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
@@ -312,8 +312,8 @@ test('ja.or should be a function', (assert) => {
 });
 
 test('ja.or should return a properly formatted or object', (assert) => {
-  const secondGreetingIsSayonara = { key: 'greetings.second', fn: 'equals', params: ['sayonara'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const actual = or([secondGreetingIsSayonara, secondGreetingIsGoodbye]);
   const expected = {
@@ -340,8 +340,8 @@ test('ja.and should be a function', (assert) => {
 });
 
 test('ja.and should return a properly formatted and object', (assert) => {
-  const firstGreetingIsHello = { key: 'greetings.first', fn: 'equals', params: ['hello'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const firstGreetingIsHello = { left: '@greetings.first', fn: 'equals', right: 'hello' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const actual = and([firstGreetingIsHello, secondGreetingIsGoodbye]);
   const expected = {
@@ -370,8 +370,8 @@ test('parseComposed should evaluate the rules in the rules array, and return boo
   const row = {
     compose: 'or',
     rules: [
-      { key: 'greetings.second', fn: 'equals', params: ['sayonara'] },
-      { key: 'greetings.second', fn: 'equals', params: ['goodbye'] },
+      { left: '@greetings.second', fn: 'equals', right: 'sayonara' },
+      { left: '@greetings.second', fn: 'equals', right: 'goodbye' },
     ],
   };
 
@@ -414,8 +414,8 @@ test('parseComposed should evaluate the rules in the rules array and return bool
   const row = {
     compose: 'and',
     rules: [
-      { key: 'greetings.first', fn: 'equals', params: ['hello'] },
-      { key: 'greetings.second', fn: 'equals', params: ['goodbye'] },
+      { left: '@greetings.first', fn: 'equals', right: 'hello' },
+      { left: '@greetings.second', fn: 'equals', right: 'goodbye' },
     ],
   };
 
@@ -447,8 +447,8 @@ test('parseComposed should return false if the action is not supported', (assert
   const row = {
     compose: 'not a real thing',
     rules: [
-      { key: 'greetings.first', fn: 'equals', params: ['hello'] },
-      { key: 'greetings.second', fn: 'equals', params: ['goodbye'] },
+      { left: '@greetings.first', fn: 'equals', right: 'hello' },
+      { left: '@greetings.second', fn: 'equals', right: 'goodbye' },
     ],
   };
 
@@ -477,7 +477,7 @@ test('evaluateRule should correctly evaluate a single rule', (assert) => {
       obj: {
         name: 'John',
       },
-      singleRule: { key: 'name', fn: 'equals', params: ['John'] },
+      singleRule: { left: '@name', fn: 'equals', right: ['John'] },
       expected: true,
       msg: 'Should return true because obj.name is John',
     },
@@ -485,7 +485,7 @@ test('evaluateRule should correctly evaluate a single rule', (assert) => {
       obj: {
         name: 'Mary',
       },
-      singleRule: { key: 'name', fn: 'equals', params: ['John'] },
+      singleRule: { left: '@name', fn: 'equals', right: ['John'] },
       expected: false,
       msg: 'Should return false because obj.name is not John',
     },
@@ -493,7 +493,7 @@ test('evaluateRule should correctly evaluate a single rule', (assert) => {
       obj: {
         name: 'Mary',
       },
-      singleRule: { key: 'name', fn: '!equals', params: ['John'] },
+      singleRule: { left: '@name', fn: '!equals', right: ['John'] },
       expected: true,
       msg: 'Should return true because obj.name !equal to John',
     },
@@ -516,8 +516,8 @@ test('evaluateRule should correctly evaluate a composed rule', (assert) => {
     },
   };
 
-  const secondGreetingIsSayonara = { key: 'greetings.second', fn: 'equals', params: ['sayonara'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const goodByeOrSayonara = or([
     secondGreetingIsGoodbye,
@@ -538,8 +538,8 @@ test('findFirst should accept composed rule objects', (assert) => {
     },
   };
 
-  const secondGreetingIsSayonara = { key: 'greetings.second', fn: 'equals', params: ['sayonara'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const goodByeOrSayonara = or([
     secondGreetingIsGoodbye,
@@ -564,9 +564,9 @@ test('findFirst should accept deeply composed rule objects', (assert) => {
     },
   };
 
-  const firstGreetingIsHello = { key: 'greetings.first', fn: 'equals', params: ['hello'] };
-  const secondGreetingIsSayonara = { key: 'greetings.second', fn: 'equals', params: ['sayonara'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const firstGreetingIsHello = { left: '@greetings.first', fn: 'equals', right: 'hello' };
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const goodByeOrSayonara = or([
     secondGreetingIsGoodbye,
@@ -593,9 +593,9 @@ test('findFirst should return false if deeply composed rule objects eval to fals
     },
   };
 
-  const firstGreetingIsHello = { key: 'greetings.first', fn: 'equals', params: ['hello'] };
-  const secondGreetingIsSayonara = { key: 'greetings.second', fn: 'equals', params: ['sayonara'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const firstGreetingIsHello = { left: '@greetings.first', fn: 'equals', right: 'hello' };
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const goodByeOrSayonara = or([
     secondGreetingIsGoodbye,
@@ -622,9 +622,9 @@ test('findAll should accept deeply composed rule objects', (assert) => {
     },
   };
 
-  const firstGreetingIsHello = { key: 'greetings.first', fn: 'equals', params: ['hello'] };
-  const secondGreetingIsSayonara = { key: 'greetings.second', fn: 'equals', params: ['sayonara'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const firstGreetingIsHello = { left: '@greetings.first', fn: 'equals', right: 'hello' };
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const goodByeOrSayonara = or([
     secondGreetingIsGoodbye,
@@ -651,7 +651,7 @@ test('not should be a function', (assert) => {
 });
 
 test('not should return a "composed" object with a compose value of not', (assert) => {
-  const singleRule = { key: 'person', fn: 'equals', params: [true] };
+  const singleRule = { left: '@person', fn: 'equals', right: [true] };
   const actual = not(singleRule);
   const expected = {
     compose: 'not',
@@ -665,7 +665,7 @@ test('parseComposed should handle a composed object of type not', (assert) => {
   const obj = {
     person: false,
   };
-  const singleRule = { key: 'person', fn: 'equals', params: [true] };
+  const singleRule = { left: '@person', fn: 'equals', right: [true] };
   const notPerson = not(singleRule);
   const actual = parseComposed(obj, notPerson);
   const expected = true;
@@ -677,7 +677,7 @@ test('parseComposed should handle a false composed object of type not', (assert)
   const obj = {
     person: true,
   };
-  const singleRule = { key: 'person', fn: 'equals', params: [true] };
+  const singleRule = { left: '@person', fn: 'equals', right: [true] };
   const notPerson = not(singleRule);
   const actual = parseComposed(obj, notPerson);
   const expected = false;
@@ -693,9 +693,9 @@ test('parseComposed should handle a not composed object, with a rule that is a c
     },
   };
 
-  const firstGreetingIsHello = { key: 'greetings.first', fn: 'equals', params: ['hello'] };
-  const secondGreetingIsSayonara = { key: 'greetings.second', fn: 'equals', params: ['sayonara'] };
-  const secondGreetingIsGoodbye = { key: 'greetings.second', fn: 'equals', params: ['goodbye'] };
+  const firstGreetingIsHello = { left: '@greetings.first', fn: 'equals', right: 'hello' };
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const goodByeOrSayonara = or([
     secondGreetingIsGoodbye,
@@ -711,7 +711,7 @@ test('parseComposed should handle a not composed object, with a rule that is a c
 });
 
 test('evaluateRule should return true for a regex rule', (assert) => {
-  const pirate = { key: 'saying', fn: 'regex', params: /yar/ };
+  const pirate = { left: '@saying', fn: 'regex', right: /yar/ };
   const data = {
     name: 'blackbeard',
     saying: 'I say yarrrrr!!!',
@@ -730,7 +730,7 @@ test('isRule should be a function', (assert) => {
 });
 
 test('isRule should return true when called with a well-formed rule', (assert) => {
-  const data = { key: 'foo', fn: 'bar', params: ['baz'] };
+  const data = { left: '@foo', fn: 'bar', right: ['baz'] };
   assert.true(isRule(data));
   assert.end();
 });
@@ -782,15 +782,15 @@ test('explain should throw if called without a well-formed rule', (assert) => {
 });
 
 test('explain should stringify a single rule', (assert) => {
-  const human = { key: 'species', fn: 'equals', params: ['human'] };
+  const human = { left: '@species', fn: 'equals', right: ['human'] };
   const actual = explain(human);
   const expected = 'species equals \'human\'';
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('explain should stringify a single rule with multiple params', (assert) => {
-  const human = { key: 'species', fn: 'isIn', params: ['human', 'dog'] };
+test('explain should stringify a single rule with multiple right', (assert) => {
+  const human = { left: '@species', fn: 'isIn', right: ['human', 'dog'] };
   const actual = explain(human);
   const expected = 'species isIn \'human\', \'dog\'';
   assert.equal(actual, expected);
@@ -798,8 +798,8 @@ test('explain should stringify a single rule with multiple params', (assert) => 
 });
 
 test('explain should stringify a composed OR rule', (assert) => {
-  const human = { key: 'species', fn: 'equals', params: ['human'] };
-  const dog = { key: 'species', fn: 'equals', params: ['dog'] };
+  const human = { left: '@species', fn: 'equals', right: ['human'] };
+  const dog = { left: '@species', fn: 'equals', right: ['dog'] };
   const mammal = or([human, dog]);
   const actual = explain(mammal);
   const expected = '(species equals \'human\') or (species equals \'dog\')';
@@ -808,8 +808,8 @@ test('explain should stringify a composed OR rule', (assert) => {
 });
 
 test('explain should stringify a composed AND rule', (assert) => {
-  const human = { key: 'species', fn: 'equals', params: ['human'] };
-  const topHat = { key: 'hat', fn: 'equals', params: ['top'] };
+  const human = { left: '@species', fn: 'equals', right: ['human'] };
+  const topHat = { left: '@hat', fn: 'equals', right: ['top'] };
   const fancy = and([human, topHat]);
   const actual = explain(fancy);
   const expected = '(species equals \'human\') and (hat equals \'top\')';
@@ -818,9 +818,9 @@ test('explain should stringify a composed AND rule', (assert) => {
 });
 
 test('explain should stringify a rule of composed rules', (assert) => {
-  const human = { key: 'species', fn: 'equals', params: ['human'] };
-  const topHat = { key: 'hat', fn: 'equals', params: ['top'] };
-  const redNose = { key: 'nose', fn: 'equals', params: ['red'] };
+  const human = { left: '@species', fn: 'equals', right: ['human'] };
+  const topHat = { left: '@hat', fn: 'equals', right: ['top'] };
+  const redNose = { left: '@nose', fn: 'equals', right: ['red'] };
   const fancy = and([human, topHat]);
   const clown = and([human, redNose]);
   const fancyOrClown = or([fancy, clown]);
@@ -830,8 +830,8 @@ test('explain should stringify a rule of composed rules', (assert) => {
   assert.end();
 });
 
-test('explain should stringify a rule with multiple keys', (assert) => {
-  const fooBar = { key: ['foo', 'bar'], fn: 'customFunc', params: ['baz'] };
+test('explain should stringify a rule with multiple lefts', (assert) => {
+  const fooBar = { left: ['foo', 'bar'], fn: 'customFunc', right: ['baz'] };
   const actual = explain(fooBar);
   const expected = 'foo, bar customFunc \'baz\'';
   assert.equal(actual, expected);
