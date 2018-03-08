@@ -70,4 +70,4 @@ const customPredicates = {
 const customRegent = regent.crown(customPredicates);
 
 const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsvalid' };
-customRegent.rule({ skyColor: 'blue' }, skyIsValidColor) /* ? */ //true
+customRegent.evaluate({ skyColor: 'blue' }, skyIsValidColor) /* ? */ //true

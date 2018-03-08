@@ -400,7 +400,7 @@ You can now use this predicate in your rules.
 const regent = regent.init(customPredicates);
 
 const skyIsValidColor = { key: 'skyColor', fn: 'skyColorIsValid' };
-regent.rule({ skyColor: 'blue' }, skyIsValidColor) // true
+regent.evaluate({ skyColor: 'blue' }, skyIsValidColor) // true
 ```
 
 Custom predicate functions can accept multiple keys. To use this feature, define the `key` property of your rule as an array of the property names your predicate expects. The `input` param of your predicate will be an object with those properties.
@@ -419,7 +419,7 @@ const data = {
   property1: true,
   property2: true,
 };
-regent.rule(data, myRule); // true
+regent.evaluate(data, myRule); // true
 ```
 
 ## Example Usage

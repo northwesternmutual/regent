@@ -1,5 +1,5 @@
 import test from 'tape';
-import { findFirst, findAll, init, crown, rule, or, and, not, parseComposed, evaluateRule, explain, isRule, isComposedRule, constants } from './index';
+import { findFirst, findAll, init, crown, evaluate, or, and, not, parseComposed, evaluateRule, explain, isRule, isComposedRule, constants } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -207,7 +207,7 @@ test('init should accept an object of custom functions', (assert) => {
     customField: true,
   };
 
-  let actual = regent.rule(data, { left: '@customField', fn: 'customFn' });
+  let actual = regent.evaluate(data, { left: '@customField', fn: 'customFn' });
   let expected = true;
 
   assert.equal(actual, expected);
@@ -216,34 +216,15 @@ test('init should accept an object of custom functions', (assert) => {
     customField: false,
   };
 
-  actual = regent.rule(data, { left: '@customField', fn: 'customFn' });
+  actual = regent.evaluate(data, { left: '@customField', fn: 'customFn' });
   expected = false;
 
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('custom funcs should support multiple lefts', (assert) => {
-  const customFn = (input) => {
-    const { foo, bar } = input;
-    return foo && bar;
-  };
-  const regent = init({ customFn });
-  const data = {
-    foo: true,
-    bar: true,
-  };
-  let actual = regent.rule(data, { left: ['foo', 'bar'], fn: 'customFn', right: [] });
-  assert.true(actual);
-
-  data.bar = false;
-  actual = regent.rule(data, { left: ['foo', 'bar'], fn: 'customFn', right: [] });
-  assert.false(actual);
-  assert.end();
-});
-
-test('rule should be a function', (assert) => {
-  assert.equal(typeof rule, 'function');
+test('evaluate should be a function', (assert) => {
+  assert.equal(typeof evaluate, 'function');
   assert.end();
 });
 
@@ -256,11 +237,11 @@ test('rule should evaluate the rule provided with the data provided', (assert) =
   const placeIsWorld = { left: '@place', fn: 'equals', right: 'world' };
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
-  let actual = rule()(data, placeIsNotWorld);
+  let actual = evaluate()(data, placeIsNotWorld);
   let expected = true;
   assert.equal(actual, expected, 'should return true for true');
 
-  actual = rule()(data, placeIsWorld);
+  actual = evaluate()(data, placeIsWorld);
   expected = false;
   assert.equal(actual, expected, 'should return false for false');
   assert.end();
@@ -477,7 +458,7 @@ test('evaluateRule should correctly evaluate a single rule', (assert) => {
       obj: {
         name: 'John',
       },
-      singleRule: { left: '@name', fn: 'equals', right: ['John'] },
+      singleRule: { left: '@name', fn: 'equals', right: 'John' },
       expected: true,
       msg: 'Should return true because obj.name is John',
     },
@@ -485,7 +466,7 @@ test('evaluateRule should correctly evaluate a single rule', (assert) => {
       obj: {
         name: 'Mary',
       },
-      singleRule: { left: '@name', fn: 'equals', right: ['John'] },
+      singleRule: { left: '@name', fn: 'equals', right: 'John' },
       expected: false,
       msg: 'Should return false because obj.name is not John',
     },
@@ -493,7 +474,7 @@ test('evaluateRule should correctly evaluate a single rule', (assert) => {
       obj: {
         name: 'Mary',
       },
-      singleRule: { left: '@name', fn: '!equals', right: ['John'] },
+      singleRule: { left: '@name', fn: '!equals', right: 'John' },
       expected: true,
       msg: 'Should return true because obj.name !equal to John',
     },
@@ -651,7 +632,7 @@ test('not should be a function', (assert) => {
 });
 
 test('not should return a "composed" object with a compose value of not', (assert) => {
-  const singleRule = { left: '@person', fn: 'equals', right: [true] };
+  const singleRule = { left: '@person', fn: 'equals', right: true };
   const actual = not(singleRule);
   const expected = {
     compose: 'not',
@@ -665,7 +646,7 @@ test('parseComposed should handle a composed object of type not', (assert) => {
   const obj = {
     person: false,
   };
-  const singleRule = { left: '@person', fn: 'equals', right: [true] };
+  const singleRule = { left: '@person', fn: 'equals', right: true };
   const notPerson = not(singleRule);
   const actual = parseComposed(obj, notPerson);
   const expected = true;
@@ -677,7 +658,7 @@ test('parseComposed should handle a false composed object of type not', (assert)
   const obj = {
     person: true,
   };
-  const singleRule = { left: '@person', fn: 'equals', right: [true] };
+  const singleRule = { left: '@person', fn: 'equals', right: true };
   const notPerson = not(singleRule);
   const actual = parseComposed(obj, notPerson);
   const expected = false;
@@ -782,9 +763,9 @@ test('explain should throw if called without a well-formed rule', (assert) => {
 });
 
 test('explain should stringify a single rule', (assert) => {
-  const human = { left: '@species', fn: 'equals', right: ['human'] };
+  const human = { left: '@species', fn: 'equals', right: 'human' };
   const actual = explain(human);
-  const expected = 'species equals \'human\'';
+  const expected = '(@species equals "human")';
   assert.equal(actual, expected);
   assert.end();
 });
@@ -792,48 +773,48 @@ test('explain should stringify a single rule', (assert) => {
 test('explain should stringify a single rule with multiple right', (assert) => {
   const human = { left: '@species', fn: 'isIn', right: ['human', 'dog'] };
   const actual = explain(human);
-  const expected = 'species isIn \'human\', \'dog\'';
+  const expected = '(@species isIn ["human","dog"])';
   assert.equal(actual, expected);
   assert.end();
 });
 
 test('explain should stringify a composed OR rule', (assert) => {
-  const human = { left: '@species', fn: 'equals', right: ['human'] };
-  const dog = { left: '@species', fn: 'equals', right: ['dog'] };
+  const human = { left: '@species', fn: 'equals', right: 'human' };
+  const dog = { left: '@species', fn: 'equals', right: 'dog' };
   const mammal = or([human, dog]);
   const actual = explain(mammal);
-  const expected = '(species equals \'human\') or (species equals \'dog\')';
+  const expected = '((@species equals "human") or (@species equals "dog"))';
   assert.equal(actual, expected);
   assert.end();
 });
 
 test('explain should stringify a composed AND rule', (assert) => {
-  const human = { left: '@species', fn: 'equals', right: ['human'] };
-  const topHat = { left: '@hat', fn: 'equals', right: ['top'] };
+  const human = { left: '@species', fn: 'equals', right: 'human' };
+  const topHat = { left: '@hat', fn: 'equals', right: 'top' };
   const fancy = and([human, topHat]);
   const actual = explain(fancy);
-  const expected = '(species equals \'human\') and (hat equals \'top\')';
+  const expected = '((@species equals "human") and (@hat equals "top"))';
   assert.equal(actual, expected);
   assert.end();
 });
 
 test('explain should stringify a rule of composed rules', (assert) => {
-  const human = { left: '@species', fn: 'equals', right: ['human'] };
-  const topHat = { left: '@hat', fn: 'equals', right: ['top'] };
-  const redNose = { left: '@nose', fn: 'equals', right: ['red'] };
+  const human = { left: '@species', fn: 'equals', right: 'human' };
+  const topHat = { left: '@hat', fn: 'equals', right: 'top' };
+  const redNose = { left: '@nose', fn: 'equals', right: 'red' };
   const fancy = and([human, topHat]);
   const clown = and([human, redNose]);
   const fancyOrClown = or([fancy, clown]);
   const actual = explain(fancyOrClown);
-  const expected = '((species equals \'human\') and (hat equals \'top\')) or ((species equals \'human\') and (nose equals \'red\'))';
+  const expected = '(((@species equals "human") and (@hat equals "top")) or ((@species equals "human") and (@nose equals "red")))';
   assert.equal(actual, expected);
   assert.end();
 });
 
 test('explain should stringify a rule with multiple lefts', (assert) => {
-  const fooBar = { left: ['foo', 'bar'], fn: 'customFunc', right: ['baz'] };
+  const fooBar = { left: ['foo', 'bar'], fn: 'customFunc', right: 'baz' };
   const actual = explain(fooBar);
-  const expected = 'foo, bar customFunc \'baz\'';
+  const expected = '(["foo","bar"] customFunc "baz")';
   assert.equal(actual, expected);
   assert.end();
 });

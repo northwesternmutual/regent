@@ -14,7 +14,6 @@ export const evaluateRule = (obj, rule, custom = {}) => {
     const { left, right } = makeArgs(obj, rule.left, rule.right);
     result = FN(rule.fn, custom)(left, right);
   }
-
   return result;
 };
 
@@ -107,19 +106,27 @@ export const isComposedRule = (composedRule) => { // eslint-disable-line arrow-b
 };
 
 export const explain = (rule, data) => {
-  const { left, right } = makeArgs(data, rule.left, rule.right);
-  let leftPart;
-  let rightPart;
-  // If data is provided then toString will print keys and values
-  if (isObject(data)) {
-    leftPart = left && left !== rule.left ? `${rule.left}->${JSON.stringify(left)}` : JSON.stringify(rule.left);
-    rightPart = right && right !== rule.right ? `${rule.right}->${JSON.stringify(right)}` : JSON.stringify(rule.right);  
-  } else {
-    leftPart = isLookup(rule.left) ? rule.left : JSON.stringify(rule.left);
-    rightPart = isLookup(rule.right) ? rule.right : JSON.stringify(rule.right);
+  let result = '';
+  if (!isComposedRule(rule)) {
+    if (!isRule(rule)) {
+      throw new Error('regent.explain must be called with a regent rule');
+    }
+    const { left, right } = makeArgs(data, rule.left, rule.right);
+    let leftPart;
+    let rightPart;
+    // If data is provided then toString will print keys and values
+    if (isObject(data)) {
+      leftPart = left && left !== rule.left ? `${rule.left}->${JSON.stringify(left)}` : JSON.stringify(rule.left);
+      rightPart = right && right !== rule.right ? `${rule.right}->${JSON.stringify(right)}` : JSON.stringify(rule.right);
+    } else {
+      leftPart = isLookup(rule.left) ? rule.left : JSON.stringify(rule.left);
+      rightPart = isLookup(rule.right) ? rule.right : JSON.stringify(rule.right);
+    }
+    return `(${leftPart} ${rule.fn} ${rightPart})`;
   }
 
-  return `(${leftPart} ${rule.fn} ${rightPart})`;
+  result = `(${rule.rules.map(currentRule => `${explain(currentRule)}`).join(` ${rule.compose} `)})`;
+  return result;
 };
 
 export const init = (custom = {}) => ({
