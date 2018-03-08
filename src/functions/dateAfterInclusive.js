@@ -1,14 +1,13 @@
-export default (input, args) => {
-  const constraint = args[0];
-  if (!input || !constraint) {
-    throw new Error('Expecting a date to input and a date to compare.');
+export default (left, right) => {
+  if (!left || !right) {
+    throw new Error('Expecting a date as the left argument and a date to compare.');
   }
-  const inputDate = Date.parse(input);
-  const constraintDate = Date.parse(constraint);
-  [inputDate, constraintDate].forEach((arg) => {
+  const leftDate = Date.parse(left);
+  const rightDate = Date.parse(right);
+  [leftDate, rightDate].forEach((arg) => {
     if (Number.isNaN(arg)) {
-      throw new Error('Expecting arguments to be date formatted string.');
+      throw new Error('Expecting right argument to be date formatted string.');
     }
   });
-  return (inputDate >= constraintDate);
+  return (leftDate >= rightDate);
 };

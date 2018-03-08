@@ -1,8 +1,8 @@
-export default (input, args) => {
+export default (left, right) => {
   let result = false;
-  if (typeof input !== 'undefined') {
-    result = args.some(param => (
-      input.indexOf(param) !== -1
+  if (typeof left !== 'undefined') {
+    result = left.some(param => (
+      right.indexOf(param) !== -1
     ));
   }
 

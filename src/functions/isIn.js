@@ -1,7 +1,7 @@
-export default (input, args) => {
+export default (left, right) => {
   let result = false;
 
-  if (args.indexOf(input) !== -1) {
+  if (right.indexOf(left) !== -1) {
     result = true;
   }
 

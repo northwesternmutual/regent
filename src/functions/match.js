@@ -1,9 +1,9 @@
-// True if all the items in the args array, are also in the input array.
-export default (input, args) => {
+// True if all the items in the right array, are also in the left array.
+export default (left, right) => {
   let result = false;
-  if (typeof input !== 'undefined') {
-    const match = input.filter(i => args.find(j => j === i));
-    result = match.length === args.length;
+  if (typeof left !== 'undefined') {
+    const match = left.filter(i => right.find(j => j === i));
+    result = match.length === right.length;
   }
   return result;
 };

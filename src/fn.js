@@ -33,23 +33,23 @@ const fn = {
 };
 
 export default (id, custom) => (
-  (input, args) => {
+  (left, right) => {
     let fnid = id;
     let result = false;
 
     try {
       if (id.indexOf('!') === 0) {
         fnid = id.replace('!', '');
-        result = !Object.assign({}, fn, custom)[fnid](input, args);
+        result = !Object.assign({}, fn, custom)[fnid](left, right);
       } else {
-        result = Object.assign({}, fn, custom)[fnid](input, args);
+        result = Object.assign({}, fn, custom)[fnid](left, right);
       }
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(`regent error:
         fn: "${fnid}"
-        input: "${JSON.stringify(input)}"
-        args: "${JSON.stringify(args)}"
+        left: "${JSON.stringify(left)}"
+        right: "${JSON.stringify(right)}"
         error: ${e}
       `);
     }

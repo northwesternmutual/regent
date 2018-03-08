@@ -1,22 +1,18 @@
-export default (input, args) => {
-  let sanitizedInput = input;
-  if (typeof input === 'string') {
+export default (left, right) => {
+  let sanitizedLeft = left;
+  if (typeof left === 'string') {
     // Remove $ and , and then parse
-    sanitizedInput = parseFloat(input.replace(/[$,]+/g, ''));
+    sanitizedLeft = parseFloat(left.replace(/[$,]+/g, ''));
   }
 
   let result = true;
 
   if (
-    sanitizedInput &&
-    typeof sanitizedInput === 'number' &&
-    !Number.isNaN(sanitizedInput)
+    sanitizedLeft &&
+    typeof sanitizedLeft === 'number' &&
+    !Number.isNaN(sanitizedLeft)
   ) {
-    args.forEach((arg) => {
-      if (sanitizedInput <= arg) {
-        result = false;
-      }
-    });
+    result = left > right;
   } else {
     // nothing was passed in, return false
     result = false;

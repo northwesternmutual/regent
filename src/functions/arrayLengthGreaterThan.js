@@ -1,6 +1,6 @@
-export default (input, args) => (
-  input !== undefined &&
-  input !== null &&
-  Array.isArray(input) &&
-  input.length > args[0]
+export default (left, right) => (
+  left !== undefined &&
+  left !== null &&
+  Array.isArray(left) &&
+  left.length > right[0]
 );
