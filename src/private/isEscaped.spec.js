@@ -62,7 +62,7 @@ test('isEscaped Function: Should return false when the argument does not start w
   assert.end();
 });
 
-test.only('isEscaped Function: Should return true when the argument provided does begin with @@', (assert) => {
+test('isEscaped Function: Should return true when the argument provided does begin with @@', (assert) => {
   const str = '@@hello';
   const actual = isEscaped(str);
   const expected = true;
