@@ -10,7 +10,6 @@ import isIn from './functions/isIn';
 import match from './functions/match';
 import numericRange from './functions/numericRange';
 import regex from './functions/regex';
-import subString from './functions/subString';
 
 // Aliases
 const inArray = isIn;
@@ -29,7 +28,6 @@ const fn = {
   match,
   numericRange,
   regex,
-  subString,
 };
 
 export default (id, custom) => (
