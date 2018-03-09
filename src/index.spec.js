@@ -841,9 +841,36 @@ test('explain should include the lookup and the data it resolves to if you provi
   const data = {
     species: 'human',
   };
-  const human = { left: '@species', fn: 'equals', right: 'human' };
-  const actual = explain(human, data);
-  const expected = '(@species->"human" equals "human")';
+  let human = { left: '@species', fn: 'equals', right: 'human' };
+  let actual = explain(human, data);
+  let expected = '(@species->"human" equals "human")';
+  assert.equal(actual, expected);
+
+  human = { left: '@species', fn: 'equals', right: '@species' };
+  actual = explain(human, data);
+  expected = '(@species->"human" equals @species->"human")';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should resolve for left and right arguments', (assert) => {
+  const data = {
+    species: 'human',
+    hat: 'top',
+  };
+  let human = { left: '@species', fn: 'equals', right: '@hat' };
+  let actual = explain(human);
+  let expected = '(@species equals @hat)';
+  assert.equal(actual, expected);
+
+  human = { left: 'species', fn: 'equals', right: 'hat' };
+  actual = explain(human);
+  expected = '("species" equals "hat")';
+  assert.equal(actual, expected);
+
+  human = { left: 'species', fn: 'equals', right: 'hat' };
+  actual = explain(human, data);
+  expected = '("species" equals "hat")';
   assert.equal(actual, expected);
   assert.end();
 });
