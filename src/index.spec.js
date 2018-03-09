@@ -831,7 +831,7 @@ test('explain should include the lookup and the data it resolves to if you provi
   const fancy = and([human, topHat]);
   const clown = and([human, redNose]);
   const fancyOrClown = or([fancy, clown]);
-  const actual = explain(fancyOrClown, data); //?
+  const actual = explain(fancyOrClown, data);
   const expected = '(((@species->"human" equals "human") and (@hat->"top" equals "top")) or ((@species->"human" equals "human") and (@nose->"red" equals "red")))';
   assert.equal(actual, expected);
   assert.end();
