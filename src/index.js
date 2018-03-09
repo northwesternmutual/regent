@@ -1,49 +1,7 @@
-import get from 'lodash.get';
 import isObject from 'lodash.isobject';
-import FN from './fn';
 import makeArgs from './private/makeArgs';
 import isLookup from './private/isLookup';
-
-export const evaluateRule = (obj, rule, custom = {}) => {
-  let result;
-  if (get(rule, 'compose')) {
-    // This is a composed rule so call parse composed
-    result = parseComposed(obj, rule, custom); // eslint-disable-line no-use-before-define
-  } else {
-    // This is a base rule, execute it
-    const { left, right } = makeArgs(obj, rule.left, rule.right);
-    result = FN(rule.fn, custom)(left, right);
-  }
-  return result;
-};
-
-export const parseComposed = (data, obj, custom = {}) => {
-  const action = obj.compose;
-  let result;
-  switch (action) {
-    case 'or':
-      result = obj.rules.some(rule => (
-        evaluateRule(data, rule, custom)
-      ));
-      break;
-
-    case 'and':
-      result = obj.rules.every(rule => (
-        evaluateRule(data, rule, custom)
-      ));
-      break;
-
-    case 'not':
-      result = !evaluateRule(data, obj.rule, custom);
-      break;
-
-    default:
-      result = false;
-      break;
-  }
-
-  return result;
-};
+import evaluateRule from './private/evaluateRule';
 
 export const findFirst = (custom = {}) => (data, rules) => (
   rules.find(line => line.rules.every(rule => (
