@@ -836,3 +836,14 @@ test('explain should include the lookup and the data it resolves to if you provi
   assert.equal(actual, expected);
   assert.end();
 });
+
+test('explain should include the lookup and the data it resolves to if you provide data.', (assert) => {
+  const data = {
+    species: 'human',
+  };
+  const human = { left: '@species', fn: 'equals', right: 'human' };
+  const actual = explain(human, data);
+  const expected = '(@species->"human" equals "human")';
+  assert.equal(actual, expected);
+  assert.end();
+});
