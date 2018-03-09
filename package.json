@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Javascript logic framework",
   "main": "lib/regent.js",
   "scripts": {
@@ -22,9 +22,11 @@
   "keywords": [
     "logic",
     "engine",
-    "rules"
+    "rules",
+    "self-documenting",
+    "business"
   ],
-  "author": "Ivan Eisenberg",
+  "author": "Northwestern Mutual",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/northwesternmutual/regent/issues"
