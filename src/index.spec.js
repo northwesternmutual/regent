@@ -818,3 +818,21 @@ test('explain should stringify a rule with multiple lefts', (assert) => {
   assert.equal(actual, expected);
   assert.end();
 });
+
+test('explain should include the lookup and the data it resolves to if you provide data.', (assert) => {
+  const data = {
+    species: 'human',
+    hat: 'top',
+    nose: 'red',
+  };
+  const human = { left: '@species', fn: 'equals', right: 'human' };
+  const topHat = { left: '@hat', fn: 'equals', right: 'top' };
+  const redNose = { left: '@nose', fn: 'equals', right: 'red' };
+  const fancy = and([human, topHat]);
+  const clown = and([human, redNose]);
+  const fancyOrClown = or([fancy, clown]);
+  const actual = explain(fancyOrClown, data); //?
+  const expected = '(((@species->"human" equals "human") and (@hat->"top" equals "top")) or ((@species->"human" equals "human") and (@nose->"red" equals "red")))';
+  assert.equal(actual, expected);
+  assert.end();
+});

@@ -125,7 +125,7 @@ export const explain = (rule, data) => {
     return `(${leftPart} ${rule.fn} ${rightPart})`;
   }
 
-  result = `(${rule.rules.map(currentRule => `${explain(currentRule)}`).join(` ${rule.compose} `)})`;
+  result = `(${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)})`;
   return result;
 };
 
