@@ -2,6 +2,8 @@ import isObject from 'lodash.isobject';
 import makeArgs from './private/makeArgs';
 import isLookup from './private/isLookup';
 import evaluateRule from './private/evaluateRule';
+import isRule from './private/isRule';
+import isComposedRule from './private/isComposedRule';
 
 export const findFirst = (custom = {}) => (data, rules) => (
   rules.find(line => line.rules.every(rule => (
@@ -47,21 +49,6 @@ export const not = singleRule => ({
   compose: 'not',
   rule: singleRule,
 });
-
-export const isRule = (testRule) => { // eslint-disable-line arrow-body-style
-  return testRule !== undefined
-    && Object.hasOwnProperty.call(testRule, ['left'])
-    && Object.hasOwnProperty.call(testRule, ['fn'])
-    && Object.hasOwnProperty.call(testRule, ['right']);
-};
-
-export const isComposedRule = (composedRule) => { // eslint-disable-line arrow-body-style
-  return composedRule !== undefined
-    && Object.hasOwnProperty.call(composedRule, ['compose'])
-    && typeof composedRule.compose === 'string'
-    && Object.hasOwnProperty.call(composedRule, ['rules'])
-    && Array.isArray(composedRule.rules) !== 'undefined';
-};
 
 export const explain = (rule, data) => {
   let result = '';

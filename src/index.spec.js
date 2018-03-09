@@ -1,5 +1,5 @@
 import test from 'tape';
-import { findFirst, findAll, init, crown, evaluate, or, and, not, explain, isRule, isComposedRule, constants } from './index';
+import { findFirst, findAll, init, crown, evaluate, or, and, not, explain, constants } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -470,47 +470,6 @@ test('not should return a "composed" object with a compose value of not', (asser
     rule: singleRule,
   };
   assert.deepEqual(actual, expected);
-  assert.end();
-});
-
-test('isRule should be a function', (assert) => {
-  const actual = typeof isRule;
-  const expected = 'function';
-  assert.equal(actual, expected);
-  assert.end();
-});
-
-test('isRule should return true when called with a well-formed rule', (assert) => {
-  const data = { left: '@foo', fn: 'bar', right: ['baz'] };
-  assert.true(isRule(data));
-  assert.end();
-});
-
-test('isRule should return false when called with a poorly-formed rule', (assert) => {
-  const data = { foo: 'bar' };
-  assert.false(isRule(data));
-  assert.end();
-});
-
-test('isComposedRule should be a function', (assert) => {
-  const actual = typeof isComposedRule;
-  const expected = 'function';
-  assert.equal(actual, expected);
-  assert.end();
-});
-
-test('isComposedRule should return true when called with a well-formed rule', (assert) => {
-  const data = {
-    compose: 'foo',
-    rules: [],
-  };
-  assert.true(isComposedRule(data));
-  assert.end();
-});
-
-test('isComposedRule should return false when called without a well-formed rule', (assert) => {
-  const data = { foo: 'bar' };
-  assert.false(isComposedRule(data));
   assert.end();
 });
 
