@@ -54,3 +54,16 @@ test('isLookup Function: Should return false if the argument is an escaped strin
   assert.end();
 });
 
+test('isLookup Function: Should return false if the argument is not a lookup string.', (assert) => {
+  let str = 'hello';
+  let actual = isLookup(str);
+  const expected = false;
+  assert.equal(actual, expected);
+
+  str = 'he@llo';
+  actual = isLookup(str);
+  assert.equal(actual, expected);
+
+  assert.end();
+});
+
