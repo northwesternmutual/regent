@@ -10,6 +10,6 @@ export default function isLookup(arg) {
   if (isEscaped(arg)) {
     return false;
   }
-  // If it make it to here and it mathces the folloing regex then it is a lookup.
+  // If it makes it to here and it matches the following regex then it is a lookup.
   return /(^@.*)/g.test(arg);
 }
