@@ -5,13 +5,13 @@ import evaluateRule from './private/evaluateRule';
 import isRule from './private/isRule';
 import isComposedRule from './private/isComposedRule';
 
-export const findFirst = (custom = {}) => (data, rules) => (
+export const find = (custom = {}) => (data, rules) => (
   rules.find(line => line.rules.every(rule => (
     evaluateRule(data, rule, custom)
   )))
 );
 
-export const findAll = (custom = {}) => (data, rules) => (
+export const filter = (custom = {}) => (data, rules) => (
   rules.filter(line => (
     line.rules.every(rule => (
       evaluateRule(data, rule, custom)
@@ -78,8 +78,8 @@ export const init = (custom = {}) => ({
   and,
   not,
   or,
-  findFirst: findFirst(custom),
-  findAll: findAll(custom),
+  find: find(custom),
+  filter: filter(custom),
   evaluate: evaluate(custom),
   explain,
 });

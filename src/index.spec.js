@@ -1,15 +1,15 @@
 import test from 'tape';
-import { findFirst, findAll, init, crown, evaluate, or, and, not, explain, constants } from './index';
+import { find, filter, init, crown, evaluate, or, and, not, explain, constants } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
 
-test('findFirst should be a function', (assert) => {
-  assert.equal(typeof findFirst, 'function');
+test('find should be a function', (assert) => {
+  assert.equal(typeof find, 'function');
   assert.end();
 });
 
-test('findFirst should return the first array item with all true rules', (assert) => {
+test('find should return the first array item with all true rules', (assert) => {
   const obj = {
     greeting: 'hello',
     place: 'world',
@@ -24,13 +24,13 @@ test('findFirst should return the first array item with all true rules', (assert
     { result: 'This is the world!', rules: [greetingIsHello, placeIsWorld] },
   ];
 
-  const actual = findFirst()(obj, rules).result;
+  const actual = find()(obj, rules).result;
   const expected = 'This is the world!';
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findFirst should return the first array item with all true rules, even if there are other true rows after it.', (assert) => {
+test('find should return the first array item with all true rules, even if there are other true rows after it.', (assert) => {
   const obj = {
     greeting: 'hello',
     place: 'world',
@@ -46,13 +46,13 @@ test('findFirst should return the first array item with all true rules, even if 
     { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsWorld] },
   ];
 
-  const actual = findFirst()(obj, rules).result;
+  const actual = find()(obj, rules).result;
   const expected = 'This is the world!';
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findFirst should return undefined if no rows match', (assert) => {
+test('find should return undefined if no rows match', (assert) => {
   const obj = {
     greeting: 'hello',
     place: 'world',
@@ -66,23 +66,23 @@ test('findFirst should return undefined if no rows match', (assert) => {
     { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = findFirst()(obj, rules);
+  const actual = find()(obj, rules);
   const expected = undefined;
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findFirst should throw if no rules are provided', (assert) => {
+test('find should throw if no rules are provided', (assert) => {
   const obj = {
     greeting: 'hello',
     place: 'world',
   };
 
-  assert.throws(() => findFirst()(obj));
+  assert.throws(() => find()(obj));
   assert.end();
 });
 
-test('findFirst should return undefined if the rule left does not exist in the object', (assert) => {
+test('find should return undefined if the rule left does not exist in the object', (assert) => {
   const obj = {
     foo: 'bar',
   };
@@ -94,13 +94,13 @@ test('findFirst should return undefined if the rule left does not exist in the o
     { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = findFirst()(obj, rules);
+  const actual = find()(obj, rules);
   const expected = undefined;
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findFirst a !equals rule will return true, even if that object property does not exist', (assert) => {
+test('find a !equals rule will return true, even if that object property does not exist', (assert) => {
   const obj = {
     foo: 'bar',
   };
@@ -113,18 +113,18 @@ test('findFirst a !equals rule will return true, even if that object property do
     { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = findFirst()(obj, rules).result;
+  const actual = find()(obj, rules).result;
   const expected = 'This is somewhere else!';
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findAll should be a function', (assert) => {
-  assert.equal(typeof findAll, 'function');
+test('filter should be a function', (assert) => {
+  assert.equal(typeof filter, 'function');
   assert.end();
 });
 
-test('findAll should return an array of matching logic rows', (assert) => {
+test('filter should return an array of matching logic rows', (assert) => {
   const obj = {
     greeting: 'hello',
     place: 'world',
@@ -141,18 +141,18 @@ test('findAll should return an array of matching logic rows', (assert) => {
     { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsWorld] },
   ];
 
-  const actual = findAll()(obj, rules); /* ? */
+  const actual = filter()(obj, rules); /* ? */
   const expected = [
     rules[1],
     rules[2],
   ];
-  assert.equal(typeof actual, 'object', 'findAll should return an object (array)');
-  assert.equal(actual.length, 2, 'findAll should have returned two items');
+  assert.equal(typeof actual, 'object', 'filter should return an object (array)');
+  assert.equal(actual.length, 2, 'filter should have returned two items');
   assert.deepEqual(actual, expected);
   assert.end();
 });
 
-test('findAll should return an empty array if no rules match', (assert) => {
+test('filter should return an empty array if no rules match', (assert) => {
   const obj = {
     greeting: 'hello',
     place: 'world',
@@ -167,9 +167,9 @@ test('findAll should return an empty array if no rules match', (assert) => {
     { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = findAll()(obj, rules); /* ? */
+  const actual = filter()(obj, rules); /* ? */
   const expected = [];
-  assert.deepEqual(actual, expected, 'findAll should have returned an empty array');
+  assert.deepEqual(actual, expected, 'filter should have returned an empty array');
   assert.end();
 });
 
@@ -188,13 +188,13 @@ test('constants should be an object', (assert) => {
   assert.end();
 });
 
-test('init should return an object with and, not, or, findFirst, findAll, evaluate, and rule methods', (assert) => {
+test('init should return an object with and, not, or, find, filter, evaluate, and rule methods', (assert) => {
   const regent = init();
   assert.equal(typeof regent.and, 'function');
   assert.equal(typeof regent.not, 'function');
   assert.equal(typeof regent.or, 'function');
-  assert.equal(typeof regent.findFirst, 'function');
-  assert.equal(typeof regent.findAll, 'function');
+  assert.equal(typeof regent.find, 'function');
+  assert.equal(typeof regent.filter, 'function');
   assert.equal(typeof regent.explain, 'function');
   assert.equal(typeof regent.evaluate, 'function');
   assert.end();
@@ -247,7 +247,7 @@ test('rule should evaluate the rule provided with the data provided', (assert) =
   assert.end();
 });
 
-test('findFirst should handle a string representation of an object path', (assert) => {
+test('find should handle a string representation of an object path', (assert) => {
   const obj = {
     greetings: {
       first: 'hello',
@@ -261,13 +261,13 @@ test('findFirst should handle a string representation of an object path', (asser
     { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
   ];
 
-  const actual = findFirst()(obj, rules).result;
+  const actual = find()(obj, rules).result;
   const expected = 'See you later!';
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findAll should handle a string representation of an object path', (assert) => {
+test('filter should handle a string representation of an object path', (assert) => {
   const obj = {
     greetings: {
       first: 'hello',
@@ -281,7 +281,7 @@ test('findAll should handle a string representation of an object path', (assert)
     { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
   ];
 
-  const actual = findAll()(obj, rules);
+  const actual = filter()(obj, rules);
   const expected = [{ result: 'See you later!', rules: [secondGreetingIsGoodbye] }];
   assert.deepEqual(actual, expected);
   assert.end();
@@ -342,7 +342,7 @@ test('ja.and should throw an error if not called with an array', (assert) => {
   assert.end();
 });
 
-test('findFirst should accept composed rule objects', (assert) => {
+test('find should accept composed rule objects', (assert) => {
   const obj = {
     greetings: {
       first: 'hello',
@@ -362,13 +362,13 @@ test('findFirst should accept composed rule objects', (assert) => {
     { result: 'I get it, two languages', rules: [goodByeOrSayonara] },
   ];
 
-  const actual = findFirst()(obj, rules).result;
+  const actual = find()(obj, rules).result;
   const expected = 'I get it, two languages';
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findFirst should accept deeply composed rule objects', (assert) => {
+test('find should accept deeply composed rule objects', (assert) => {
   const obj = {
     greetings: {
       first: 'hello',
@@ -391,13 +391,13 @@ test('findFirst should accept deeply composed rule objects', (assert) => {
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
 
-  const actual = findFirst()(obj, rules).result;
+  const actual = find()(obj, rules).result;
   const expected = 'Deeply nested... nice';
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findFirst should return false if deeply composed rule objects eval to false', (assert) => {
+test('find should return false if deeply composed rule objects eval to false', (assert) => {
   const obj = {
     greetings: {
       first: 'hola',
@@ -420,13 +420,13 @@ test('findFirst should return false if deeply composed rule objects eval to fals
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
 
-  const actual = findFirst()(obj, rules);
+  const actual = find()(obj, rules);
   const expected = undefined;
   assert.equal(actual, expected);
   assert.end();
 });
 
-test('findAll should accept deeply composed rule objects', (assert) => {
+test('filter should accept deeply composed rule objects', (assert) => {
   const obj = {
     greetings: {
       first: 'hello',
@@ -449,7 +449,7 @@ test('findAll should accept deeply composed rule objects', (assert) => {
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
 
-  const actual = findAll()(obj, rules);
+  const actual = filter()(obj, rules);
   const expected = [
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
