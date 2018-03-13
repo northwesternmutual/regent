@@ -7,6 +7,7 @@ import greaterThan from './functions/greater-than';
 import includes from './functions/includes';
 import match from './functions/match';
 import regex from './functions/regex';
+import typeOf from './functions/type-of';
 
 const fn = {
   dateAfterInclusive,
@@ -18,6 +19,7 @@ const fn = {
   includes,
   match,
   regex,
+  typeOf,
 };
 
 export default (id, custom) => (
