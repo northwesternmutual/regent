@@ -71,3 +71,14 @@ test('greaterThan should return false if the key is a string that parses to NaN'
   });
   assert.end();
 });
+
+test('greaterThan should compare strings based on standard lexicographical ordering, using Unicode values', (assert) => {
+  assert.equal(greaterThan('a', 'b'), false, 'case 1');
+  assert.equal(greaterThan('aaaa', 'abaa'), false, 'case 2');
+  assert.equal(greaterThan('bb', 'a'), true, 'case 3');
+  assert.equal(greaterThan('baa', 'abb'), true, 'case 4');
+  assert.equal(greaterThan('1', 2), false, 'case 5');
+  assert.equal(greaterThan('2', 1), true, 'case 6');
+  assert.equal(greaterThan('2', '4'), false, 'case 7');
+  assert.end();
+});
