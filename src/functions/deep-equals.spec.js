@@ -1,5 +1,5 @@
 import test from 'tape';
-import deepEqual from './deep-equal';
+import deepEqual from './deep-equals';
 
 test('deepEqual should be a function', (assert) => {
   assert.equal(typeof deepEqual, 'function');
