@@ -1,5 +1,6 @@
 import dateAfterInclusive from './functions/date-after-inclusive';
 import dateBeforeInclusive from './functions/date-before-inclusive';
+import deepEquals from './functions/deep-equals';
 import empty from './functions/empty';
 import equals from './functions/equals';
 import greaterThan from './functions/greater-than';
@@ -10,6 +11,7 @@ import regex from './functions/regex';
 const fn = {
   dateAfterInclusive,
   dateBeforeInclusive,
+  deepEquals,
   empty,
   equals,
   greaterThan,
