@@ -1,5 +1,5 @@
 import test from 'tape';
-import evaluateRule from './evaluateRule';
+import evaluateRule from './evaluate-rule';
 import { or } from '../index';
 
 test('evaluateRule should be a function', (assert) => {

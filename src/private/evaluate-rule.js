@@ -1,6 +1,6 @@
 import get from 'lodash.get';
-import makeArgs from './makeArgs';
-import parseComposed from './parseComposed';
+import makeArgs from './make-args';
+import parseComposed from './parse-composed';
 import FN from '../fn';
 
 export default (obj, rule, custom = {}) => {

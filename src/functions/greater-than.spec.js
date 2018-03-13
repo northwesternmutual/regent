@@ -1,5 +1,5 @@
 import test from 'tape';
-import greaterThan from './greaterThan';
+import greaterThan from './greater-than';
 
 test('greaterThan should be a function', (assert) => {
   assert.equal(typeof greaterThan, 'function');

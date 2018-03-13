@@ -1,9 +1,9 @@
 import isObject from 'lodash.isobject';
-import makeArgs from './private/makeArgs';
-import isLookup from './private/isLookup';
-import evaluateRule from './private/evaluateRule';
-import isRule from './private/isRule';
-import isComposedRule from './private/isComposedRule';
+import makeArgs from './private/make-args';
+import isLookup from './private/is-lookup';
+import evaluateRule from './private/evaluate-rule';
+import isRule from './private/is-rule';
+import isComposedRule from './private/is-composed-rule';
 
 export const find = (custom = {}) => (data, rules) => (
   rules.find(line => line.rules.every(rule => (

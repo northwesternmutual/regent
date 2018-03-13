@@ -1,5 +1,5 @@
 import isString from 'lodash.isstring';
-import isEscaped from './isEscaped';
+import isEscaped from './is-escaped';
 
 export default function isLookup(arg) {
   // If it's not a string it can't be a lookup

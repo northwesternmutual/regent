@@ -1,5 +1,5 @@
 import test from 'tape';
-import isEscaped from './isEscaped';
+import isEscaped from './is-escaped';
 
 test('isEscaped Function: Should exist.', (assert) => {
   const actual = typeof isEscaped;

@@ -1,5 +1,5 @@
 import test from 'tape';
-import dateAfterInclusive from './dateAfterInclusive';
+import dateAfterInclusive from './date-after-inclusive';
 
 test('dateAfterInclusive should return true for a date constraint given range.', (assert) => {
   const examine = '01/02/1975';

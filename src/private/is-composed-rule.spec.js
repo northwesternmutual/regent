@@ -1,5 +1,5 @@
 import test from 'tape';
-import isComposedRule from './isComposedRule';
+import isComposedRule from './is-composed-rule';
 
 test('isComposedRule should be a function', (assert) => {
   const actual = typeof isComposedRule;

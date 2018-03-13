@@ -1,5 +1,5 @@
 import test from 'tape';
-import parseComposed from './parseComposed';
+import parseComposed from './parse-composed';
 import { not, and, or } from '../index';
 
 test('parseComposed should be a function', (assert) => {

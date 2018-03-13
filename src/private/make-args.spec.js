@@ -1,5 +1,5 @@
 import test from 'tape';
-import makeArgs from './makeArgs';
+import makeArgs from './make-args';
 
 test('makeArgs Function: Should exist.', (assert) => {
   const actual = typeof makeArgs;

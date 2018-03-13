@@ -1,4 +1,4 @@
-import evaluateRule from './evaluateRule';
+import evaluateRule from './evaluate-rule';
 
 export default (data, obj, custom = {}) => {
   const action = obj.compose;

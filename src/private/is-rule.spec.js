@@ -1,5 +1,5 @@
 import test from 'tape';
-import isRule from './isRule';
+import isRule from './is-rule';
 
 test('isRule should be a function', (assert) => {
   const actual = typeof isRule;

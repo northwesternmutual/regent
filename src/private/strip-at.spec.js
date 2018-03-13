@@ -1,5 +1,5 @@
 import test from 'tape';
-import stripAt from './stripAt';
+import stripAt from './strip-at';
 
 test('stripAt Function: Should exist.', (assert) => {
   const actual = typeof stripAt;

@@ -1,5 +1,5 @@
 import test from 'tape';
-import isLookup from './isLookup';
+import isLookup from './is-lookup';
 
 test('isLookup Function: Should exist.', (assert) => {
   const actual = typeof isLookup;

@@ -1,5 +1,5 @@
 import test from 'tape';
-import isIn from './isIn';
+import isIn from './is-in';
 
 test('isIn should be a function', (assert) => {
   assert.equal(typeof isIn, 'function');
