@@ -3,7 +3,7 @@ import dateBeforeInclusive from './functions/date-before-inclusive';
 import empty from './functions/empty';
 import equals from './functions/equals';
 import greaterThan from './functions/greater-than';
-import isIn from './functions/is-in';
+import includes from './functions/includes';
 import match from './functions/match';
 import regex from './functions/regex';
 
@@ -13,7 +13,7 @@ const fn = {
   empty,
   equals,
   greaterThan,
-  isIn,
+  includes,
   match,
   regex,
 };
