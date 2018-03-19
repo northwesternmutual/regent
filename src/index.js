@@ -87,19 +87,16 @@ export const init = (custom = {}) => ({
 export const crown = init;
 
 export const constants = {
-  arrayLengthGreaterThan: 'arrayLengthGreaterThan',
-  arraysMatch: 'arraysMatch',
   dateAfterInclusive: 'dateAfterInclusive',
   dateBeforeInclusive: 'dateBeforeInclusive',
-  dateBetweenInclusive: 'dateBetweenInclusive',
+  deepEquals: 'deepEquals',
   empty: 'empty',
   equals: 'equals',
   greaterThan: 'greaterThan',
-  isIn: 'isIn',
-  match: 'match',
-  numericRange: 'numericRange',
+  includes: 'includes',
+  lessThan: 'lessThan',
   regex: 'regex',
-  subString: 'subString',
+  typeOf: 'typeOf',
 };
 
 export default {
