@@ -32,7 +32,7 @@ const isRaining = { key: 'isRaining', fn: constants.equals, params: [true] };
 
 This rule tells Regent to compare the key `isRaining`, using the `equals` predicate, to the value `true`. 
 
-### Using the rule
+### Evaluating the rule
 
 We can now use our `regent` instance to verify the rule against some weather data. 
 
@@ -41,7 +41,7 @@ const weatherData = {
   isRaining: true,
 };
 
-const doINeedAnUmbrella = regent.rule(weatherData, isRaining); // true
+const doINeedAnUmbrella = regent.evaluate(weatherData, isRaining); // true
 ```
 
 ### Composing a better rule
@@ -62,7 +62,7 @@ We can now compose our two rules into one. We'll be using the `and` composition 
 const isRainingAndCalm = regent.and(isRaining, isCalm);
 ```
 
-### Using the better rule
+### Evaluating the better rule
 
 We can use our `regent` instance again to verify our improved rule for determining if we need an umbrella.
 
@@ -72,7 +72,7 @@ const weatherData = {
   windSpeedInMph: 20,
 };
 
-const doINeedAnUmbrella = regent.rule(weatherData, isRainingAndCalm); // false
+const doINeedAnUmbrella = regent.evaluate(weatherData, isRainingAndCalm); // false
 ```
 
 
