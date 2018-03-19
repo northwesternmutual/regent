@@ -17,7 +17,7 @@ export default (data, obj, custom = {}) => {
       break;
 
     case 'not':
-      result = !evaluateRule(data, obj.rule, custom);
+      result = !evaluateRule(data, obj.rules[0], custom);
       break;
 
     default:

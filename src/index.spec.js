@@ -501,7 +501,7 @@ test('not should return a "composed" object with a compose value of not', (asser
   const actual = not(singleRule);
   const expected = {
     compose: 'not',
-    rule: singleRule,
+    rules: [singleRule],
   };
   assert.deepEqual(actual, expected);
   assert.end();
@@ -634,6 +634,24 @@ test('explain should resolve for left and right arguments', (assert) => {
   human = { left: 'species', fn: 'equals', right: 'hat' };
   actual = explain(human, data);
   expected = '("species" equals "hat")';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should work...', (assert) => {
+  const data = {
+    precipitation: ['rain'],
+    temperature: 78,
+  };
+
+  const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
+  const NOT_RAINING = not(IS_RAINING);
+  const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+  const NOT_SNOWING = not(IS_SNOWING);
+  const NO_PRECIP = and([NOT_RAINING, NOT_SNOWING]);
+
+  const actual = explain(NO_PRECIP, data);
+  const expected = '(NOT (@precipitation->["rain"] includes "rain") and NOT (@precipitation->["rain"] includes "snow"))';
   assert.equal(actual, expected);
   assert.end();
 });

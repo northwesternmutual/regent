@@ -49,7 +49,7 @@ export const and = (rules) => {
 
 export const not = singleRule => ({
   compose: 'not',
-  rule: singleRule,
+  rules: [singleRule],
 });
 
 export const explain = (rule, data) => {
@@ -72,7 +72,13 @@ export const explain = (rule, data) => {
     return `(${leftPart} ${rule.fn} ${rightPart})`;
   }
 
-  result = `(${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)})`;
+  if (rule.compose === 'not') {
+    // handle "NOT" rules
+    result = `NOT ${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)}`;
+  } else {
+    result = `(${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)})`;
+  }
+
   return result;
 };
 
