@@ -119,6 +119,23 @@ test('find a !equals rule will return true, even if that object property does no
   assert.end();
 });
 
+test('find should accept a custom predicate', (assert) => {
+  const custom = {
+    isAThree: a => a === 3,
+  };
+  const data = {
+    myParam: 3,
+  };
+
+  const MY_RULE = { left: '@myParam', fn: 'isAThree' };
+  const logic = [
+    { value: 'success', rules: [MY_RULE] },
+  ];
+  const actual = find(data, logic, custom);
+  assert.equal(actual.value, 'success');
+  assert.end();
+});
+
 test('filter should be a function', (assert) => {
   assert.equal(typeof filter, 'function');
   assert.end();
@@ -170,6 +187,23 @@ test('filter should return an empty array if no rules match', (assert) => {
   const actual = filter(obj, rules); /* ? */
   const expected = [];
   assert.deepEqual(actual, expected, 'filter should have returned an empty array');
+  assert.end();
+});
+
+test('filter should accept a custom predicate', (assert) => {
+  const custom = {
+    isAThree: a => a === 3,
+  };
+  const data = {
+    myParam: 3,
+  };
+
+  const MY_RULE = { left: '@myParam', fn: 'isAThree' };
+  const logic = [
+    { value: 'success', rules: [MY_RULE] },
+  ];
+  const actual = filter(data, logic, custom);
+  assert.equal(actual[0].value, 'success');
   assert.end();
 });
 

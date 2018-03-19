@@ -78,12 +78,13 @@ export const explain = (rule, data) => {
 
 export const init = (custom = {}) => ({
   and,
+  explain,
   not,
   or,
-  find: makeCustomFactory(find, custom),
-  filter: makeCustomFactory(filter, custom),
   evaluate: makeCustomFactory(evaluate, custom),
-  explain,
+  filter: makeCustomFactory(filter, custom),
+  find: makeCustomFactory(find, custom),
+  rule: makeCustomFactory(evaluate, custom),
 });
 
 export const crown = init;
