@@ -84,7 +84,6 @@ export const init = (custom = {}) => ({
   evaluate: makeRegentFactory(evaluate, custom),
   filter: makeRegentFactory(filter, custom),
   find: makeRegentFactory(find, custom),
-  rule: makeRegentFactory(evaluate, custom),
 });
 
 export const crown = init;
