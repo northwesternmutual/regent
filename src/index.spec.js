@@ -1,5 +1,5 @@
 import test from 'tape';
-import { find, filter, init, crown, evaluate, or, and, not, explain, constants } from './index';
+import { find, filter, init, crown, evaluate, or, and, not, explain, constants, makeCustomFactory } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -24,7 +24,7 @@ test('find should return the first array item with all true rules', (assert) => 
     { result: 'This is the world!', rules: [greetingIsHello, placeIsWorld] },
   ];
 
-  const actual = find()(obj, rules).result;
+  const actual = find(obj, rules).result;
   const expected = 'This is the world!';
   assert.equal(actual, expected);
   assert.end();
@@ -46,7 +46,7 @@ test('find should return the first array item with all true rules, even if there
     { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsWorld] },
   ];
 
-  const actual = find()(obj, rules).result;
+  const actual = find(obj, rules).result;
   const expected = 'This is the world!';
   assert.equal(actual, expected);
   assert.end();
@@ -66,7 +66,7 @@ test('find should return undefined if no rows match', (assert) => {
     { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = find()(obj, rules);
+  const actual = find(obj, rules);
   const expected = undefined;
   assert.equal(actual, expected);
   assert.end();
@@ -78,7 +78,7 @@ test('find should throw if no rules are provided', (assert) => {
     place: 'world',
   };
 
-  assert.throws(() => find()(obj));
+  assert.throws(() => find(obj));
   assert.end();
 });
 
@@ -94,7 +94,7 @@ test('find should return undefined if the rule left does not exist in the object
     { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = find()(obj, rules);
+  const actual = find(obj, rules);
   const expected = undefined;
   assert.equal(actual, expected);
   assert.end();
@@ -113,7 +113,7 @@ test('find a !equals rule will return true, even if that object property does no
     { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = find()(obj, rules).result;
+  const actual = find(obj, rules).result;
   const expected = 'This is somewhere else!';
   assert.equal(actual, expected);
   assert.end();
@@ -141,7 +141,7 @@ test('filter should return an array of matching logic rows', (assert) => {
     { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsWorld] },
   ];
 
-  const actual = filter()(obj, rules); /* ? */
+  const actual = filter(obj, rules); /* ? */
   const expected = [
     rules[1],
     rules[2],
@@ -167,7 +167,7 @@ test('filter should return an empty array if no rules match', (assert) => {
     { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsNotWorld] },
   ];
 
-  const actual = filter()(obj, rules); /* ? */
+  const actual = filter(obj, rules); /* ? */
   const expected = [];
   assert.deepEqual(actual, expected, 'filter should have returned an empty array');
   assert.end();
@@ -237,11 +237,11 @@ test('rule should evaluate the rule provided with the data provided', (assert) =
   const placeIsWorld = { left: '@place', fn: 'equals', right: 'world' };
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
-  let actual = evaluate()(data, placeIsNotWorld);
+  let actual = evaluate(data, placeIsNotWorld);
   let expected = true;
   assert.equal(actual, expected, 'should return true for true');
 
-  actual = evaluate()(data, placeIsWorld);
+  actual = evaluate(data, placeIsWorld);
   expected = false;
   assert.equal(actual, expected, 'should return false for false');
   assert.end();
@@ -261,7 +261,7 @@ test('find should handle a string representation of an object path', (assert) =>
     { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
   ];
 
-  const actual = find()(obj, rules).result;
+  const actual = find(obj, rules).result;
   const expected = 'See you later!';
   assert.equal(actual, expected);
   assert.end();
@@ -281,7 +281,7 @@ test('filter should handle a string representation of an object path', (assert) 
     { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
   ];
 
-  const actual = filter()(obj, rules);
+  const actual = filter(obj, rules);
   const expected = [{ result: 'See you later!', rules: [secondGreetingIsGoodbye] }];
   assert.deepEqual(actual, expected);
   assert.end();
@@ -362,7 +362,7 @@ test('find should accept composed rule objects', (assert) => {
     { result: 'I get it, two languages', rules: [goodByeOrSayonara] },
   ];
 
-  const actual = find()(obj, rules).result;
+  const actual = find(obj, rules).result;
   const expected = 'I get it, two languages';
   assert.equal(actual, expected);
   assert.end();
@@ -391,7 +391,7 @@ test('find should accept deeply composed rule objects', (assert) => {
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
 
-  const actual = find()(obj, rules).result;
+  const actual = find(obj, rules).result;
   const expected = 'Deeply nested... nice';
   assert.equal(actual, expected);
   assert.end();
@@ -420,7 +420,7 @@ test('find should return false if deeply composed rule objects eval to false', (
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
 
-  const actual = find()(obj, rules);
+  const actual = find(obj, rules);
   const expected = undefined;
   assert.equal(actual, expected);
   assert.end();
@@ -449,7 +449,7 @@ test('filter should accept deeply composed rule objects', (assert) => {
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
 
-  const actual = filter()(obj, rules);
+  const actual = filter(obj, rules);
   const expected = [
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
   ];
@@ -601,5 +601,56 @@ test('explain should resolve for left and right arguments', (assert) => {
   actual = explain(human, data);
   expected = '("species" equals "hat")';
   assert.equal(actual, expected);
+  assert.end();
+});
+
+test('makeCustomFactory should be a function', (assert) => {
+  assert.equal(typeof makeCustomFactory, 'function');
+  assert.end();
+});
+
+test('makeCustomFactory should take a function and a custom object and return a function with the custom object accessible', (assert) => {
+  const testFn = (data, rule, custom) => (
+    Object.assign({}, data, rule, custom)
+  );
+
+  const data = {
+    foo: 'bar',
+  };
+
+  const rule = {
+    baz: 'buzz',
+  };
+
+  const custom = {
+    hello: 'world',
+  };
+
+  const actual = makeCustomFactory(testFn, custom);
+  assert.equal(typeof actual, 'function');
+
+  const expected = Object.assign({}, data, rule, custom);
+  assert.deepEqual(actual(data, rule), expected);
+  assert.end();
+});
+
+test('makeCustomFactory should not require a custom object', (assert) => {
+  const testFn = (data, rule, custom) => (
+    Object.assign({}, data, rule, custom)
+  );
+
+  const data = {
+    foo: 'bar',
+  };
+
+  const rule = {
+    baz: 'buzz',
+  };
+
+  const actual = makeCustomFactory(testFn);
+  assert.equal(typeof actual, 'function');
+
+  const expected = Object.assign({}, data, rule);
+  assert.deepEqual(actual(data, rule), expected);
   assert.end();
 });
