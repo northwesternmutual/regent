@@ -1,5 +1,5 @@
 import test from 'tape';
-import { find, filter, init, crown, evaluate, or, and, not, explain, constants, makeCustomFactory } from './index';
+import { find, filter, init, crown, evaluate, or, and, not, explain, constants, makeRegentFactory } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -638,12 +638,12 @@ test('explain should resolve for left and right arguments', (assert) => {
   assert.end();
 });
 
-test('makeCustomFactory should be a function', (assert) => {
-  assert.equal(typeof makeCustomFactory, 'function');
+test('makeRegentFactory should be a function', (assert) => {
+  assert.equal(typeof makeRegentFactory, 'function');
   assert.end();
 });
 
-test('makeCustomFactory should take a function and a custom object and return a function with the custom object accessible', (assert) => {
+test('makeRegentFactory should take a function and a custom object and return a function with the custom object accessible', (assert) => {
   const testFn = (data, rule, custom) => (
     Object.assign({}, data, rule, custom)
   );
@@ -660,7 +660,7 @@ test('makeCustomFactory should take a function and a custom object and return a 
     hello: 'world',
   };
 
-  const actual = makeCustomFactory(testFn, custom);
+  const actual = makeRegentFactory(testFn, custom);
   assert.equal(typeof actual, 'function');
 
   const expected = Object.assign({}, data, rule, custom);
@@ -668,7 +668,7 @@ test('makeCustomFactory should take a function and a custom object and return a 
   assert.end();
 });
 
-test('makeCustomFactory should not require a custom object', (assert) => {
+test('makeRegentFactory should not require a custom object', (assert) => {
   const testFn = (data, rule, custom) => (
     Object.assign({}, data, rule, custom)
   );
@@ -681,7 +681,7 @@ test('makeCustomFactory should not require a custom object', (assert) => {
     baz: 'buzz',
   };
 
-  const actual = makeCustomFactory(testFn);
+  const actual = makeRegentFactory(testFn);
   assert.equal(typeof actual, 'function');
 
   const expected = Object.assign({}, data, rule);

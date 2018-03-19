@@ -21,7 +21,7 @@ export const filter = (data, rules, custom = {}) => (
 
 export const evaluate = (data, singleRule, custom = {}) => evaluateRule(data, singleRule, custom);
 
-export const makeCustomFactory = (fn, custom = {}) => (
+export const makeRegentFactory = (fn, custom = {}) => (
   (data, singleRule) => fn(data, singleRule, custom)
 );
 
@@ -81,10 +81,10 @@ export const init = (custom = {}) => ({
   explain,
   not,
   or,
-  evaluate: makeCustomFactory(evaluate, custom),
-  filter: makeCustomFactory(filter, custom),
-  find: makeCustomFactory(find, custom),
-  rule: makeCustomFactory(evaluate, custom),
+  evaluate: makeRegentFactory(evaluate, custom),
+  filter: makeRegentFactory(filter, custom),
+  find: makeRegentFactory(find, custom),
+  rule: makeRegentFactory(evaluate, custom),
 });
 
 export const crown = init;
