@@ -10,11 +10,11 @@ Regent provides a lightweight framework aimed at helping you organize your appli
 
 ## Implementing Your First Rule
 
-Our first rule will tell us if we need an umbrella. This is easy to identify in real life - if it is raining, we need an umbrella. 
+Our first rule will tell us if we need an umbrella. This is easy to identify in real life - if it is raining, we need an umbrella.
 
 ### Importing Regent
 
-To write our rule, we'll want to import a couple things from regent. 
+To write our rule, we'll want to import a couple things from regent.
 
 ```javascript
 import regent, { constants } from 'regent';
@@ -26,13 +26,15 @@ The default import (`regent`) gives us the ability to compose and query rules. T
 
 With our imports in hand, we can now create a rule to determine if it is raining.
 
-A rule is an object with three properties: `key`, `fn`, and `params`. The `key` property points at a field in the data to evaluate, `fn` tells the rule which predicate to use for evaluation, and `params` provides a list of values to compare to. Our `isRaining` rule would look like this:
+A rule is an object with three properties: `left`, `fn`, and `right`. The `left` property points at a field in the data to evaluate, `fn` tells the rule which predicate to use for evaluation, and `right` provides a list of values to compare to. Our `isRaining` rule would look like this:
 
 ```javascript
-const isRaining = { key: 'isRaining', fn: constants.equals, params: [true] };
+const isRaining = { left: '@isRaining', fn: constants.equals, right: [true] };
 ```
 
-This rule tells Regent to compare the key `isRaining`, using the `equals` predicate, to the value `true`. You can read more about [how rules work](#how-rules-work), or [the available predicates](#predicates).
+This rule tells Regent to compare the left `isRaining`, using the `equals` predicate, to the value `true`. You can read more about [how rules work](#how-rules-work), or [the available predicates](#predicates).
+
+__note: The `@` preceeding `isRaining` tells regent that this value is a path to the property in your data object. You can use the `@` symbol in the left or right properties. If you need a literal `@`, you can escape the character with another  `right: '@@twitterHandle'`__
 
 ### Evaluating the rule
 
@@ -53,7 +55,7 @@ Umbrellas don't work well when it is windy. Let's make our rule better - we only
 We'll start by adding a second rule - `isCalm`. We'll define "calm" as having speeds under 15mph.
 
 ```javascript
-const isCalm = { key: 'windSpeedInMph', fn: constants.lessThan, 15 };
+const isCalm = { left: '@windSpeedInMph', fn: constants.lessThan, 15 };
 ```
 
 This rule tells Regent to compare the key `windSpeedInMph`, using the `lessThan` predicate, to the value `15`.
@@ -83,20 +85,20 @@ const doINeedAnUmbrella = regent.evaluate(weatherData, isRainingAndCalm); // fal
 
 ### The structure of a rule
 
-Regent is based on defining rules. A rule is an object with three properties on it: `key`, `fn`, and `params`. Here's an example of a rule:
+Regent is based on defining rules. A rule is an object with three properties on it: `left`, `fn`, and `right`. Here's an example of a rule:
 
 ```javascript
-TODO
+const isRaining = { left: '@isRaining', fn: constants.equals, right: [true] };
 ```
 
-#### key
+#### left
 
-The `key` property represents the path to a piece of data in your data object. In the previous example, you would expect to find the needed data on a top level property named `TODO`.
+The `left` property represents the left side of our predicate. In the above example the `@` character means this value will be looked up in our data object.
 
 Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
 
 ```javascript
-const tomorrowsRecordHighIsRecent = { key: 'forecast[0].records.high.year', fn: 'greaterThan', params: [2010]};
+const tomorrowsRecordHighIsRecent = { left: '@forecast[0].records.high.year', fn: 'greaterThan', right: [2010]};
 
 const data = {
   forecast: [
@@ -119,9 +121,17 @@ const data = {
 };
 ```
 
-Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how the `key` property of a rule is evaluated. 
+Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how the `key` property of a rule is evaluated.
 
 #### fn
+
+`fn` represents our predicate. Regent ships with 11 built in predicates, and supports custom predicates.
+
+The built in predicates are:
+
+`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `includes`, `lessThan`, `match`, `regex`, `typeOf`
+
+You can learn more about predicates in the [Predicates](#predicates) section of the docs.
 
 #### params
 
