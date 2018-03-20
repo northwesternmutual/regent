@@ -30,11 +30,11 @@ With our imports in hand, we can now create a rule to determine if it is raining
 const isRaining = { key: 'isRaining', fn: constants.equals, params: [true] };
 ```
 
-This rule tells Regent to compare the key `isRaining`, using the `equals` predicate, to the value `true`. 
+This rule tells Regent to compare the key `isRaining`, using the `equals` predicate, to the value `true`. You can read more about [how rules work](#how-rules-work), or [the available predicates](#predicates).
 
 ### Evaluating the rule
 
-We can now use our `regent` instance to verify the rule against some weather data. 
+We can now use the `evaluate` function on our `regent` instance to verify the rule against some weather data. To read about more ways to query rules, see the [Queries](#queries) section.
 
 ```javascript
 const weatherData = {
@@ -61,6 +61,8 @@ We can now compose our two rules into one. We'll be using the `and` composition 
 ```javascript
 const isRainingAndCalm = regent.and(isRaining, isCalm);
 ```
+
+You can learn more about rule composition in the [Composition](#composition) section of the docs.
 
 ### Evaluating the better rule
 
