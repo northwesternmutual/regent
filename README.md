@@ -154,7 +154,59 @@ For full documentation of all our built in predicates please visit the [Predicat
 
 ### Composing rules
 
+With Regent, it is best to define your rules as granular as possible, and use our composition helpers to build them up into more complex pieces. Regent provides three helpers to help you with this pattern.
+
+#### and
+
+A rule composed with `and` will return true if every rule inside the composed rule returns true.
+
+```javascript
+const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
+const isWindy = { left: '@windSpeedInMph', fn: constants.greaterThan, 15 };
+const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+
+const awfulDayToGoOutside = and(isRaining, isWindy, isCold);
+```
+
+In this example, `awfulDayToGoOutside` will return true if `data.isRaining` is true, `data.windSpeedInMph` is greater than 15, and `data.temperature` is less than 40.
+
+#### or
+
+A rule composed with `or` will return true if any of the rules returns true.
+
+#### not
+
+`not` isn't really a composed rule, but rather an inverted one. A rule created with the `not` helper will return true, if the passed in rule returns false, and vice versa.
+
+```javascript
+const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+const isWarm = not(isCold);
+```
+
+In this example, `isWarm` will return true if `isCold` returns false.
+
+It is also worth nothing what these helpers return. A composed rule can be written without the use of the Regent helper methods. Let's look at that `not` rule from the last example.
+
+```javascript
+const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
+const isWindy = { left: '@windSpeedInMph', fn: constants.greaterThan, 15 };
+const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+
+const awfulDayToGoOutside = {
+  compose: 'and',
+  rules: [
+    isRaining,
+    isWindy,
+    isCold
+  ]
+};
+```
+
+When you use `and`, `or`, or `not` they are just helping you prepare this composed object.
+
 ### Querying rules
+
+
 
 ## A more thorough example
 (similar to https://github.nml.com/nm/regent-private/blob/release/2.0/examples/index.js)
