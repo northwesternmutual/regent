@@ -5,13 +5,13 @@ import evaluateRule from './private/evaluate-rule';
 import isRule from './private/is-rule';
 import isComposedRule from './private/is-composed-rule';
 
-export const find = (custom = {}) => (data, rules) => (
+export const find = (data, rules, custom = {}) => (
   rules.find(line => line.rules.every(rule => (
     evaluateRule(data, rule, custom)
   )))
 );
 
-export const filter = (custom = {}) => (data, rules) => (
+export const filter = (data, rules, custom = {}) => (
   rules.filter(line => (
     line.rules.every(rule => (
       evaluateRule(data, rule, custom)
@@ -19,8 +19,10 @@ export const filter = (custom = {}) => (data, rules) => (
   ))
 );
 
-export const evaluate = (custom = {}) => (
-  (data, singleRule) => evaluateRule(data, singleRule, custom)
+export const evaluate = (data, singleRule, custom = {}) => evaluateRule(data, singleRule, custom);
+
+export const makeRegentFactory = (fn, custom = {}) => (
+  (data, singleRule) => fn(data, singleRule, custom)
 );
 
 export const or = (rules) => {
@@ -47,7 +49,7 @@ export const and = (rules) => {
 
 export const not = singleRule => ({
   compose: 'not',
-  rule: singleRule,
+  rules: [singleRule],
 });
 
 export const explain = (rule, data) => {
@@ -70,36 +72,39 @@ export const explain = (rule, data) => {
     return `(${leftPart} ${rule.fn} ${rightPart})`;
   }
 
-  result = `(${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)})`;
+  if (rule.compose === 'not') {
+    // handle "NOT" rules
+    result = `NOT ${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)}`;
+  } else {
+    result = `(${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)})`;
+  }
+
   return result;
 };
 
 export const init = (custom = {}) => ({
   and,
+  explain,
   not,
   or,
-  find: find(custom),
-  filter: filter(custom),
-  evaluate: evaluate(custom),
-  explain,
+  evaluate: makeRegentFactory(evaluate, custom),
+  filter: makeRegentFactory(filter, custom),
+  find: makeRegentFactory(find, custom),
 });
 
 export const crown = init;
 
 export const constants = {
-  arrayLengthGreaterThan: 'arrayLengthGreaterThan',
-  arraysMatch: 'arraysMatch',
   dateAfterInclusive: 'dateAfterInclusive',
   dateBeforeInclusive: 'dateBeforeInclusive',
-  dateBetweenInclusive: 'dateBetweenInclusive',
+  deepEquals: 'deepEquals',
   empty: 'empty',
   equals: 'equals',
   greaterThan: 'greaterThan',
-  isIn: 'isIn',
-  match: 'match',
-  numericRange: 'numericRange',
+  includes: 'includes',
+  lessThan: 'lessThan',
   regex: 'regex',
-  subString: 'subString',
+  typeOf: 'typeOf',
 };
 
 export default {
