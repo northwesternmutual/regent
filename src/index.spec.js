@@ -330,7 +330,7 @@ test('ja.or should return a properly formatted or object', (assert) => {
   const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
-  const actual = or([secondGreetingIsSayonara, secondGreetingIsGoodbye]);
+  const actual = or(secondGreetingIsSayonara, secondGreetingIsGoodbye);
   const expected = {
     compose: 'or',
     rules: [
@@ -343,12 +343,6 @@ test('ja.or should return a properly formatted or object', (assert) => {
   assert.end();
 });
 
-test('ja.or should through an error if it is not called with an array', (assert) => {
-  assert.throws(() => or({ something: 'else', not: 'array' }));
-  assert.throws(() => or('string', 'another string'));
-  assert.end();
-});
-
 test('ja.and should be a function', (assert) => {
   assert.equal(typeof and, 'function');
   assert.end();
@@ -358,7 +352,7 @@ test('ja.and should return a properly formatted and object', (assert) => {
   const firstGreetingIsHello = { left: '@greetings.first', fn: 'equals', right: 'hello' };
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
-  const actual = and([firstGreetingIsHello, secondGreetingIsGoodbye]);
+  const actual = and(firstGreetingIsHello, secondGreetingIsGoodbye);
   const expected = {
     compose: 'and',
     rules: [
@@ -367,12 +361,6 @@ test('ja.and should return a properly formatted and object', (assert) => {
     ],
   };
   assert.deepEqual(actual, expected);
-  assert.end();
-});
-
-test('ja.and should throw an error if not called with an array', (assert) => {
-  assert.throws(() => and({ something: 'else', not: 'array' }));
-  assert.throws(() => and('string', 'another string'));
   assert.end();
 });
 
@@ -387,10 +375,10 @@ test('find should accept composed rule objects', (assert) => {
   const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
-  const goodByeOrSayonara = or([
+  const goodByeOrSayonara = or(
     secondGreetingIsGoodbye,
     secondGreetingIsSayonara,
-  ]);
+  );
 
   const rules = [
     { result: 'I get it, two languages', rules: [goodByeOrSayonara] },
@@ -414,12 +402,12 @@ test('find should accept deeply composed rule objects', (assert) => {
   const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
-  const goodByeOrSayonara = or([
+  const goodByeOrSayonara = or(
     secondGreetingIsGoodbye,
     secondGreetingIsSayonara,
-  ]);
+  );
 
-  const helloAndGoodByeOrSayonara = and([firstGreetingIsHello, goodByeOrSayonara]);
+  const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
@@ -443,12 +431,12 @@ test('find should return false if deeply composed rule objects eval to false', (
   const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
-  const goodByeOrSayonara = or([
+  const goodByeOrSayonara = or(
     secondGreetingIsGoodbye,
     secondGreetingIsSayonara,
-  ]);
+  );
 
-  const helloAndGoodByeOrSayonara = and([firstGreetingIsHello, goodByeOrSayonara]);
+  const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
@@ -472,12 +460,12 @@ test('filter should accept deeply composed rule objects', (assert) => {
   const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
-  const goodByeOrSayonara = or([
+  const goodByeOrSayonara = or(
     secondGreetingIsGoodbye,
     secondGreetingIsSayonara,
-  ]);
+  );
 
-  const helloAndGoodByeOrSayonara = and([firstGreetingIsHello, goodByeOrSayonara]);
+  const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
     { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
@@ -544,7 +532,7 @@ test('explain should stringify a single rule with multiple right', (assert) => {
 test('explain should stringify a composed OR rule', (assert) => {
   const human = { left: '@species', fn: 'equals', right: 'human' };
   const dog = { left: '@species', fn: 'equals', right: 'dog' };
-  const mammal = or([human, dog]);
+  const mammal = or(human, dog);
   const actual = explain(mammal);
   const expected = '((@species equals "human") or (@species equals "dog"))';
   assert.equal(actual, expected);
@@ -554,7 +542,7 @@ test('explain should stringify a composed OR rule', (assert) => {
 test('explain should stringify a composed AND rule', (assert) => {
   const human = { left: '@species', fn: 'equals', right: 'human' };
   const topHat = { left: '@hat', fn: 'equals', right: 'top' };
-  const fancy = and([human, topHat]);
+  const fancy = and(human, topHat);
   const actual = explain(fancy);
   const expected = '((@species equals "human") and (@hat equals "top"))';
   assert.equal(actual, expected);
@@ -565,9 +553,9 @@ test('explain should stringify a rule of composed rules', (assert) => {
   const human = { left: '@species', fn: 'equals', right: 'human' };
   const topHat = { left: '@hat', fn: 'equals', right: 'top' };
   const redNose = { left: '@nose', fn: 'equals', right: 'red' };
-  const fancy = and([human, topHat]);
-  const clown = and([human, redNose]);
-  const fancyOrClown = or([fancy, clown]);
+  const fancy = and(human, topHat);
+  const clown = and(human, redNose);
+  const fancyOrClown = or(fancy, clown);
   const actual = explain(fancyOrClown);
   const expected = '(((@species equals "human") and (@hat equals "top")) or ((@species equals "human") and (@nose equals "red")))';
   assert.equal(actual, expected);
@@ -591,9 +579,9 @@ test('explain should include the lookup and the data it resolves to if you provi
   const human = { left: '@species', fn: 'equals', right: 'human' };
   const topHat = { left: '@hat', fn: 'equals', right: 'top' };
   const redNose = { left: '@nose', fn: 'equals', right: 'red' };
-  const fancy = and([human, topHat]);
-  const clown = and([human, redNose]);
-  const fancyOrClown = or([fancy, clown]);
+  const fancy = and(human, topHat);
+  const clown = and(human, redNose);
+  const fancyOrClown = or(fancy, clown);
   const actual = explain(fancyOrClown, data);
   const expected = '(((@species->"human" equals "human") and (@hat->"top" equals "top")) or ((@species->"human" equals "human") and (@nose->"red" equals "red")))';
   assert.equal(actual, expected);
@@ -638,7 +626,7 @@ test('explain should resolve for left and right arguments', (assert) => {
   assert.end();
 });
 
-test('explain should work...', (assert) => {
+test('explain should work for NOT composed rules', (assert) => {
   const data = {
     precipitation: ['rain'],
     temperature: 78,
@@ -648,7 +636,7 @@ test('explain should work...', (assert) => {
   const NOT_RAINING = not(IS_RAINING);
   const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
   const NOT_SNOWING = not(IS_SNOWING);
-  const NO_PRECIP = and([NOT_RAINING, NOT_SNOWING]);
+  const NO_PRECIP = and(NOT_RAINING, NOT_SNOWING);
 
   const actual = explain(NO_PRECIP, data);
   const expected = '(NOT (@precipitation->["rain"] includes "rain") and NOT (@precipitation->["rain"] includes "snow"))';

@@ -25,7 +25,7 @@ export const makeRegentFactory = (fn, custom = {}) => (
   (data, singleRule) => fn(data, singleRule, custom)
 );
 
-export const or = (rules) => {
+export const or = (...rules) => {
   if (!Array.isArray(rules)) {
     throw new Error('regent.or must be called with an array');
   }
@@ -36,7 +36,7 @@ export const or = (rules) => {
   });
 };
 
-export const and = (rules) => {
+export const and = (...rules) => {
   if (!Array.isArray(rules)) {
     throw new Error('regent.and must be called with an array');
   }
