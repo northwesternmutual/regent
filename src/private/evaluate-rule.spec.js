@@ -55,10 +55,10 @@ test('evaluateRule should correctly evaluate a composed rule', (assert) => {
   const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
-  const goodByeOrSayonara = or([
+  const goodByeOrSayonara = or(
     secondGreetingIsGoodbye,
     secondGreetingIsSayonara,
-  ]);
+  );
 
   const actual = evaluateRule(obj, goodByeOrSayonara);
   const expected = true;
