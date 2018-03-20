@@ -29,7 +29,7 @@ With our imports in hand, we can now create a rule to determine if it is raining
 A rule is an object with three properties: `left`, `fn`, and `right`. The `left` property points at a field in the data to evaluate, `fn` tells the rule which predicate to use for evaluation, and `right` provides a list of values to compare to. Our `isRaining` rule would look like this:
 
 ```javascript
-const isRaining = { left: '@isRaining', fn: constants.equals, right: [true] };
+const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
 ```
 
 This rule tells Regent to compare the left `isRaining`, using the `equals` predicate, to the value `true`. You can read more about [how rules work](#how-rules-work), or [the available predicates](#predicates).
@@ -88,7 +88,7 @@ const doINeedAnUmbrella = regent.evaluate(weatherData, isRainingAndCalm); // fal
 Regent is based on defining rules. A rule is an object with three properties on it: `left`, `fn`, and `right`. Here's an example of a rule:
 
 ```javascript
-const isRaining = { left: '@isRaining', fn: constants.equals, right: [true] };
+const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
 ```
 
 #### left
@@ -98,7 +98,7 @@ The `left` property represents the left side of our predicate. In the above exam
 Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
 
 ```javascript
-const tomorrowsRecordHighIsRecent = { left: '@forecast[0].records.high.year', fn: 'greaterThan', right: [2010]};
+const tomorrowsRecordHighIsRecent = { left: '@forecast[0].records.high.year', fn: 'greaterThan', right: 2010};
 
 const data = {
   forecast: [
@@ -121,21 +121,37 @@ const data = {
 };
 ```
 
-Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how the `key` property of a rule is evaluated.
+Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how lookup properties are evaluated.
 
 #### fn
 
-`fn` represents our predicate. Regent ships with 11 built in predicates, and supports custom predicates.
+`fn` represents our predicate. Regent ships with 10 built in predicates, and supports custom predicates. In our above example we are using `equals`, which checks strict equality between the `left` and `right` value.
 
-The built in predicates are:
+Regent's built in predicates are:
 
-`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `includes`, `lessThan`, `match`, `regex`, `typeOf`
+`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `includes`, `lessThan`, `regex`, `typeOf`
 
 You can learn more about predicates in the [Predicates](#predicates) section of the docs.
 
-#### params
+#### right
+
+The `right` property represents the left side of our predicate. The right property can also use the `@` symbol to reference a value in the data object.
 
 ### What predicates do
+
+Predicates define how we are comparing the left and right values. Here are a few quick examples.
+
+##### equals
+`left === right`
+
+##### lessThan
+`left < right`
+
+##### typeOf
+`typeof left === right`
+
+For full documentation of all our built in predicates please visit the [Predicates](#predicates) section of the docs.
+
 ### Composing rules
 
 ### Querying rules
@@ -171,7 +187,6 @@ You can learn more about predicates in the [Predicates](#predicates) section of 
 ### greaterThan
 ### includes
 ### lessThan
-### match
 ### regex
 ### typeOf
 
