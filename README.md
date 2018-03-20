@@ -26,6 +26,8 @@ The default import (`regent`) gives us the ability to compose and query rules. T
 
 With our imports in hand, we can now create a rule to determine if it is raining.
 
+A rule is an object with three properties: `key`, `fn`, and `params`. The `key` property points at a field in the data to evaluate, `fn` tells the rule which predicate to use for evaluation, and `params` provides a list of values to compare to. Our `isRaining` rule would look like this:
+
 ```javascript
 const isRaining = { key: 'isRaining', fn: constants.equals, params: [true] };
 ```
@@ -77,14 +79,55 @@ const weatherData = {
 const doINeedAnUmbrella = regent.evaluate(weatherData, isRainingAndCalm); // false
 ```
 
-
-....
-
-
 ## How rules work
+
 ### The structure of a rule
+
+Regent is based on defining rules. A rule is an object with three properties on it: `key`, `fn`, and `params`. Here's an example of a rule:
+
+```javascript
+TODO
+```
+
+#### key
+
+The `key` property represents the path to a piece of data in your data object. In the previous example, you would expect to find the needed data on a top level property named `TODO`.
+
+Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
+
+```javascript
+const tomorrowsRecordHighIsRecent = { key: 'forecast[0].records.high.year', fn: 'greaterThan', params: [2010]};
+
+const data = {
+  forecast: [
+    {
+      day: 'Monday',
+      high: 65,
+      low: 32,
+      records: {
+        low: {
+          temperature: 10,
+          year: 1905
+        },
+        high: {
+          temperature: 89,
+          year: 2017
+        }
+      }
+    }
+  ]
+};
+```
+
+Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how the `key` property of a rule is evaluated. 
+
+#### fn
+
+#### params
+
 ### What predicates do
 ### Composing rules
+
 ### Querying rules
 
 ## A more thorough example
