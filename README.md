@@ -34,7 +34,7 @@ const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
 
 This rule tells Regent to compare the left `isRaining`, using the `equals` predicate, to the value `true`. You can read more about [how rules work](#how-rules-work), or [the available predicates](#predicates).
 
-__note: The `@` preceeding `isRaining` tells regent that this value is a path to the property in your data object. You can use the `@` symbol in the left or right properties. If you need a literal `@`, you can escape the character with another  `right: '@@twitterHandle'`__
+__note: The `@` preceding `isRaining` tells regent that this value is a path to the property in your data object. You can use the `@` symbol in the left or right properties. If you need a literal `@`, you can escape the character with another:  `right: '@@twitterHandle'`__
 
 ### Evaluating the rule
 
@@ -58,7 +58,7 @@ We'll start by adding a second rule - `isCalm`. We'll define "calm" as having sp
 const isCalm = { left: '@windSpeedInMph', fn: constants.lessThan, 15 };
 ```
 
-This rule tells Regent to compare the key `windSpeedInMph`, using the `lessThan` predicate, to the value `15`.
+This rule tells Regent to compare the property `windSpeedInMph`, using the `lessThan` predicate, to the value `15`.
 
 We can now compose our two rules into one. We'll be using the `and` composition function.
 
@@ -93,7 +93,7 @@ const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
 
 #### left
 
-The `left` property represents the left side of our predicate. In the above example the `@` character means this value will be looked up in our data object.
+The `left` property represents the left side of our predicate. In the above example the `@` character means this value will be looked up in our data object. The `left` property usually contains an `@`, but there is no reason it couldn't also be a constant.
 
 Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
 
@@ -125,7 +125,7 @@ Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more info
 
 #### fn
 
-`fn` represents our predicate. Regent ships with 10 built in predicates, and supports custom predicates. In our above example we are using `equals`, which checks strict equality between the `left` and `right` value.
+`fn` represents our predicate. Regent ships with 10 built-in predicates, and supports custom predicates. In our above example we are using `equals`, which checks strict equality between the `left` and `right` value.
 
 Regent's built in predicates are:
 
@@ -135,7 +135,7 @@ You can learn more about predicates in the [Predicates](#predicates) section of 
 
 #### right
 
-The `right` property represents the left side of our predicate. The right property can also use the `@` symbol to reference a value in the data object.
+The `right` property represents the right side of our predicate. The right property is usually a constant, but it can also use the `@` symbol to reference a value in the data object.
 
 ### What predicates do
 
@@ -174,9 +174,18 @@ In this example, `awfulDayToGoOutside` will return true if `data.isRaining` is t
 
 A rule composed with `or` will return true if any of the rules returns true.
 
+```javascript
+const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
+const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+
+const iNeedAJacket = or(isRaining, isCold);
+```
+
+In this example, `iNeedAJacket` will return true if `data.isRaining` is true, or `data.temperature` is less than 40.
+
 #### not
 
-`not` isn't really a composed rule, but rather an inverted one. A rule created with the `not` helper will return true, if the passed in rule returns false, and vice versa.
+`not` isn't really a composed rule, but rather an inverted one. A rule created with the `not` helper will return true if the passed in rule returns false, and vice versa.
 
 ```javascript
 const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
@@ -185,7 +194,9 @@ const isWarm = not(isCold);
 
 In this example, `isWarm` will return true if `isCold` returns false.
 
-It is also worth nothing what these helpers return. A composed rule can be written without the use of the Regent helper methods. Let's look at that `not` rule from the last example.
+#### Manual composition
+
+A composed rule can be written without the use of the `and`, `or`, and `not` helper methods. Let's look at that `not` rule from the last example.
 
 ```javascript
 const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
