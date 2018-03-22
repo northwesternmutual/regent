@@ -274,22 +274,76 @@ console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 ## Initialization
 ### init/crown
 
-## Rules
-### key
-### fn
-### params
-
 ## Predicates
+
 ### dateAfterInclusive
 ### dateBeforeInclusive
 ### deepEquals
 ### empty
 ### equals
 ### greaterThan
+
+Uses the [greater than operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is greater than `right`.
+
+```javascript
+const data = {
+  currentTemp: 68,
+  highTemp: 72
+}
+
+{ left: '@highTemp', fn: 'greaterThan', right: '@currentTemp` } // true
+
 ### includes
+
+Uses [lodash.includes](https://lodash.com/docs/4.17.5#includes) to check if `right` is in `left`.
+
+```javascript
+{ left: [1, 2, 3], fn: 'includes', right: 1 } // true
+{ left: { 'a': 1, 'b': 2 }, fn: 'includes', right: 1 } // true
+{ left: 'abcd', fn: 'includes', right: 'bc' } // true
+```
+
 ### lessThan
+
+Uses the [less than operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is less than `right`.
+
+```javascript
+const data = {
+  currentTemp: 68,
+  highTemp: 72
+}
+
+{ left: '@currentTemp', fn: 'lessThan', right: '@highTemp` } // true
+
+```
+
 ### regex
+
+Tests `left` against the regex in `right`. Uses [RegExp.prototype.test()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test).
+
+```javascript
+const data = {
+  firstName: 'Bernard',
+  phone: '(123) 456-7890'
+}
+
+{ left: '@firstName', fn: 'regex', right: /[a-zA-Z]+/} // true
+{ left: '@phone', fn: 'regex', right: /[a-zA-Z]+/ } // false
+```
+
 ### typeOf
+
+Checks the `typeof` `left` against the value of `right`. Uses the [typeof operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof).
+
+```javascript
+const data = {
+  firstName: 'Bernard',
+  favoriteMovies: [ 'Happy Gilmore', 'Cold Mountain' ]
+}
+
+{ left: '@firstName', fn: 'typeof', right: 'string' } // true
+{ left: '@favoriteMoves', fn: 'typeof', right: 'string' } // false
+```
 
 ## Composition
 ### and
