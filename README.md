@@ -280,7 +280,36 @@ console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 ### dateBeforeInclusive
 ### deepEquals
 ### empty
+
+Returns true if `left` is one of `undefined`, `null`, `'undefined'`, or `''`. Empty only needs a `left` value.
+
+```javascript
+const data = {
+  sunshine: null,
+  spring: '',
+  endOfWinter: 'undefined',
+}
+
+{ left: '@sunshine', fn: 'empty' } // true
+{ left: '@spring', fn: 'empty' } // true
+{ left: '@endOfWinter', fn: 'empty' } // true
+{ left: '@beachWeather', fn: 'empty' } // true
+
+```
+
 ### equals
+
+Uses the [equals operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is equal to `right`.
+
+```javascript
+const data = {
+  currentTemp: 68,
+  highTemp: 68
+}
+
+{ left: '@currentTemp', fn: 'equals', right: '@highTemp` } // true
+```
+
 ### greaterThan
 
 Uses the [greater than operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is greater than `right`.
@@ -292,6 +321,7 @@ const data = {
 }
 
 { left: '@highTemp', fn: 'greaterThan', right: '@currentTemp` } // true
+```
 
 ### includes
 
@@ -314,7 +344,6 @@ const data = {
 }
 
 { left: '@currentTemp', fn: 'lessThan', right: '@highTemp` } // true
-
 ```
 
 ### regex
