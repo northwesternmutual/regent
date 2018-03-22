@@ -1,6 +1,6 @@
 export default (left, right) => {
   if (!left || !right) {
-    throw new Error('Expecting a date for the left argumrnt and a date to compare.');
+    throw new Error('Expecting a date for the left argument and a date to compare.');
   }
   const leftDate = Date.parse(left);
   const rightDate = Date.parse(right);

@@ -277,8 +277,45 @@ console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 ## Predicates
 
 ### dateAfterInclusive
+
+Uses (Date.parse)[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse] to parse and compare date values in `left` and `right`. This predicate will return true if `left` is greater than or equal too `right` (inclusive).
+
+```javascript
+const data = {
+  currentDate: '01/02/1999',
+  hurricaneDate: '02/02/1999'
+}
+
+{ left: '@hurricaneDate', fn: 'dateAfterInclusive', right: '@currentDate' } // true
+```
+
 ### dateBeforeInclusive
+
+Uses (Date.parse)[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse] to parse and compare date values in `left` and `right`. This predicate will return true if `left` is less than or equal too `right` (inclusive).
+
+```javascript
+const data = {
+  currentDate: '01/02/1999',
+  hurricaneDate: '02/02/1999'
+}
+
+{ left: '@currentDate', fn: 'dateBeforeInclusive', right: '@hurricaneDate' } // true
+```
+
 ### deepEquals
+
+Uses [lodash.isEqual](https://lodash.com/docs/4.17.5#isEqual) to perform a deep comparison between two values to determine if they are equivalent.
+
+```javascript
+const data = {
+  weatherPreferences: { temp: 72 }
+}
+
+{ left: '@weatherPreferences', fn: 'deepEquals', right: { temp: 72 } } // true
+{ left: '@weatherPreferences.temp', fn: 'deepEquals', right: 72 } // true
+
+```
+
 ### empty
 
 Returns true if `left` is one of `undefined`, `null`, `'undefined'`, or `''`. Empty only needs a `left` value.
