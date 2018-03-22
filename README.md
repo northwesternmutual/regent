@@ -215,9 +215,85 @@ const awfulDayToGoOutside = {
 
 When you use `and`, `or`, or `not` they are just helping you prepare this composed object.
 
-### Querying rules
+## Querying rules
 
+Regent provides tools that allow you to parse your rules into boolean values
 
+#### evaluate
+
+`evaluate` takes a data object and a rule and returns a boolean value.
+
+```javascript
+const data = {
+  temperature: 78,
+}
+
+const beachTemperature = { left: '@temperature', fn: 'greaterThan', right: 75 };
+evaluate(data, beachTemperature) // true
+```
+
+In the above example we are evaluating the rule `beachTemperature` against a data object.
+
+### Querying logic tables
+
+Regent provides two ways to query logic tables. Logic tables are simply an array of objects. Each object in the array must have a property named `rules` which is an array of rules.
+
+```javascript
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
+  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
+  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
+  { value: ['umbrella'], rules: [IS_RAINING] },
+];
+```
+
+#### find
+
+`find` will iterate over the logic array and return the first item who's rules are all true. `find` will return the entire object. You can think of it like `Array.find()`.
+
+`find(data, logicArray, [customPredicates])`
+
+```javascript
+const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 68 };
+
+const data {
+  temperature: 32
+};
+
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
+  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
+  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
+  { value: ['umbrella'], rules: [IS_RAINING] },
+];
+
+const clothingItems = find(data, clothingLogic);
+// => { value: ['sandals', 't-shirt'], rules: [IS_WARM] }
+```
+
+#### filter
+
+`filter` has the same signature as `find`, but returns an array of all the rows who's rules all return true. You can think of it like `Array.filter()`.
+
+```javascript
+const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 68 };
+const IS_RAINING = { left: '@percipitation', fn: 'includes', right: 'rain' };
+
+const data {
+  temperature: 32,
+  percipitation: ['rain']
+};
+
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
+  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
+  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
+  { value: ['umbrella'], rules: [IS_RAINING] },
+];
+
+const clothingItems = find(data, clothingLogic);
+// => [{ value: ['sandals', 't-shirt'], rules: [IS_WARM] }, { value: ['umbrella'], rules: [IS_RAINING] }]
+```
 
 ## A more thorough example
 
@@ -263,6 +339,9 @@ console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 # Advanced
 
 ## Custom Predicates
+
+
+
 ### Crowning the regent
 ### Writing a predicate
 
@@ -272,7 +351,8 @@ console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 
 # API Reference
 ## Initialization
-### init/crown
+
+##
 
 ## Predicates
 
