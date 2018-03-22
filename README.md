@@ -340,9 +340,48 @@ console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 
 ## Custom Predicates
 
+Regent can be used with custom predicates in the event that the built in predicates to handle specific logical expressions that built in predicates can not. A custom predicate is simply a function that accepts up to two arguments, `left` and `right`, and returns a boolean value.
 
+```javascript
+const nameIsMike = left => left === 'Mike';
+```
+
+The arguments are populated by the `left` and `right` properties of the rule definition.
+
+```javascript
+const data = {
+  firstName: 'Mike'
+};
+
+const nameIsMike = { left: '@firstName', fn: 'nameIsMike' };
+```
+
+In the above example, `@firstname` will be looked up in `data` and passed into our custom predicate. This rule would return true with the provided data.
 
 ### Crowning the regent
+
+Before we use our custom predicate we need to tell regent that it exists. There are two ways to do that. The first is to use `regent.init` (aliased to `regent.crown`). `init` takes an optional object of custom predicates and returns the entire api of regent with the custom predicates applied. To actually make the above example work we need to init regent with the custom predicate `nameIsMike`.
+
+```javascript
+const nameIsMike = left => left === 'Mike';
+
+const customPredicates = {
+  nameIsMike
+};
+
+const { evaluate } = regent.init(customPredicates);
+
+const nameIsMike = { left: '@firstName', fn: 'nameIsMike' };
+
+const data = {
+  firstName: 'Mike'
+};
+
+evaluate(data, nameIsMike); // true
+```
+
+_NOTE: You can skip the init step and just pass your object of custom predicates into evaluate, find, or filter as an optional third parameter._
+
 ### Writing a predicate
 
 ## Troubleshooting
