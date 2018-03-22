@@ -249,7 +249,7 @@ const clothingLogic = [
 
 #### find
 
-`find` will iterate over the logic array and return the first item who's rules are all true. `find` will return the entire object. You can think of it like `Array.find()`.
+`find` will iterate over the logic array and return the first item who's rules are return true. `find` will return the entire object. You can think of it like `Array.find()`.
 
 `find(data, logicArray, [customPredicates])`
 
@@ -429,7 +429,13 @@ explain(PRECIPITATION, data)
 # API Reference
 ## Initialization
 
-##
+### init
+`init` accepts an optional object of custom predicates, and returns the full regent api, with the knowledge of the custom predicates.
+
+`init([customPredicates])`
+
+### crown
+An alias of init, sticking with the regent theme.
 
 ## Predicates
 
@@ -570,18 +576,91 @@ const data = {
 
 ## Composition
 ### and
+
+`and` accepts any number of rules as arguments and returns a composed rule that returns true if all the subrules are true.
+
+`and(rule1, rule2, [rule3], [rule4...])`
+
 ### not
+
+`not` accepts a single rule as an argument and returns a rule that returns the inverse value.
+
 ### or
 
+`or` accepts any number of rules as arguments and returns a composed rule that returns true if any of the subrules are true.
+
+`or(rule1, rule2, [rule3], [rule4...])`
+
 ## Queries
+
 ### evaluate
+
+`evaluate` accepts a data object and a rule and returns a boolean value. It also optionally accepts an object of customPredicates.
+
+`evaluate(data, rule, [customPredicates])`
+
 ### explain
+
+`explain` accepts a regent rule and returns a human readable description of the logic (and composed logic) that makes up the rule. It optionally accepts an object (data) which it will use to show the actual values of lookup properties in the description.
+
+`explain(rule, [data])`
+
 ### find
+
+`find` accepts an object of data and an array of objects that contain a `rules` property. It evaluates each rule in the rules array and returns the first array item that has all its rules return true.
+
+`find(data, logicArray)`
+
+```javascript
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
+const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rules: [IS_SNOWING] },
+  { value: ['umbrella'], rules: [IS_RAINING] },
+];
+
+const data = {
+  precipitation: ['rain']
+};
+
+const myClothing = find(data, clothingLogic); // => { value: ['umbrella'], rules: [IS_RAINING] }
+```
+
 ### filter
 
+`filter` has the same api as [find](#find), but it returns an array of all logic array items with all their rules passing.
+
+```javascript
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
+const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const IS_COLD = { left: '@temperature', fn: 'lessThan', right: 60 };
+const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 78 };
+const PRECIPITATION = and(IS_RAINING, IS_SNOWING);
+const NO_PRECIPITATION = not(PRECIPITATION);
+
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
+  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
+  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
+  { value: ['umbrella'], rules: [IS_RAINING] },
+];
+
+const data = {
+  temperature: 65,
+  precipitation: ['rain']
+};
+
+const myClothing = filter(data, clothingLogic); // =>
+/*
+​​​​​[
+  { value: [ 'sunglasses' ], rules: [ [Object] ] },​​​​​
+​​​​​  { value: [ 'umbrella' ], rules: [ [Object] ] }
+]​​​​​
+*/
+```
+
 # Examples
-## Node-cli-game
 
-# Why?
-
+For more examples please see our [examples folder](https://github.com/northwesternmutual/regent/tree/master/examples).
 
