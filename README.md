@@ -277,11 +277,11 @@ const clothingItems = find(data, clothingLogic);
 
 ```javascript
 const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 68 };
-const IS_RAINING = { left: '@percipitation', fn: 'includes', right: 'rain' };
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
 
 const data {
   temperature: 32,
-  percipitation: ['rain']
+  precipitation: ['rain']
 };
 
 const clothingLogic = [
@@ -384,9 +384,47 @@ _NOTE: You can skip the init step and just pass your object of custom predicates
 
 ### Writing a predicate
 
+Our first example was a bit simple. Let's take a look at a more practical custom predicate.
+
+```javascript
+const temperatureIsRising = (dailyTemperatureArray) => (
+  // return true if the first temperature in the array is less
+  dailyTemperatureArray[0] < dailyTemperatureArray[dailyTemperatureArray.length - 1]
+)
+```
+
+This predicate will expect an array in `left` (nothing in `right`) and check that the first value is less than the last.
+
+Other notable use cases of a custom predicate could include custom date formatting, or data manipulation that needs to be done before a logical expression can be expressed.
+
 ## Troubleshooting
 ### explain
-### any other tips?
+
+`explain` was built to help a developer visualize their logic. Because we are defining small rules and composing them together, a rule abstracts away the actual logic check. Running the rule through explain returns the logic in a human readable form. Check out this example.
+
+```javascript
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const PRECIPITATION = and(IS_RAINING, IS_SNOWING);
+
+explain(PRECIPITATION)
+// => ​​​​​((@precipitation includes "snow") and (@precipitation includes "snow"))​​​​​
+```
+
+`explain` also accepts an optional data object as a second argument. When provided explain will show the actual values of the lookup keys in the explanation.
+
+```javascript
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const PRECIPITATION = and(IS_RAINING, IS_SNOWING);
+
+const data = {
+  precipitation: ['sleet', 'hail']
+};
+
+explain(PRECIPITATION, data)
+// => ​​​​​((@precipitation->["sleet","hail"] includes "snow") and (@precipitation->["sleet","hail"] includes "snow"))
+```
 
 # API Reference
 ## Initialization
