@@ -2,6 +2,19 @@
 
 Regent provides a lightweight framework aimed at helping you organize your application's business logic.
 
+## Table of Contents
+
+* [Quick Start](#quick-start)
+* [How Rules Work](#how-rules-work)
+* [Querying Rules](#querying-rules)
+* [Custom Predicates](#custom-predicates)
+* [Troubleshooting](#troubleshooting)
+* [Initialization](#initialization)
+* [Predicates](#predicates)
+* [Composition](#composition)
+* [Queries](#queries)
+* [Examples](#examples)
+
 # Quick Start
 
 ## Installing
@@ -215,7 +228,7 @@ const awfulDayToGoOutside = {
 
 The functions `and`, `or`, or `not` exist only to help you clean up your code by abstracting away this composed rule syntax. They all return an object literal.
 
-## Querying rules
+## Querying Rules
 
 Regent provides tools that allow you to parse your rules into boolean values
 
@@ -381,7 +394,7 @@ Other notable use cases of a custom predicate could include custom date formatti
 
 ### Making Regent aware of custom predicates
 
-In order to use custom predicates we need to tell regent that they exist. There are two ways to do that. 
+In order to use custom predicates we need to tell regent that they exist. There are two ways to do that.
 
 #### Registering custom predicates with `regent.init`
 
@@ -411,7 +424,7 @@ The advantage to using `init` to register your predicates with Regent is that yo
 
 #### Passing custom predicates into queries
 
-The second way to make Regent aware of your custom predicates is to simply pass them into `evaluate`, `find`, or `filter` as an optional third parameter. 
+The second way to make Regent aware of your custom predicates is to simply pass them into `evaluate`, `find`, or `filter` as an optional third parameter.
 
 ```javascript
 const nameIsMike = left => left === 'Mike';
@@ -666,7 +679,7 @@ const data = {
 
 ### find
 
-`find` accepts an object of data and an array of objects that contain a `rules` property. It also optionally accepts an object of customPredicates. It evaluates each rule in the rules array and returns the first array item that has all its rules return true. 
+`find` accepts an object of data and an array of objects that contain a `rules` property. It also optionally accepts an object of customPredicates. It evaluates each rule in the rules array and returns the first array item that has all its rules return true.
 
 `find(data, logicArray, [customPredicates])`
 
