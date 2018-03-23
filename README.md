@@ -93,9 +93,9 @@ const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
 
 #### left
 
-The `left` property represents the left side of our predicate. In the above example the `@` character means this value will be looked up in our data object. The `left` property usually contains an `@`, but there is no reason it couldn't also be a constant.
+The `left` property represents the left side of our predicate. In the above example the `@` character means this value will be looked up in our data object.
 
-Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
+When you specify a lookup value with an `@` Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
 
 ```javascript
 const tomorrowsRecordHighIsRecent = { left: '@forecast[0].records.high.year', fn: 'greaterThan', right: 2010};
@@ -121,11 +121,11 @@ const data = {
 };
 ```
 
-Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how lookup properties are evaluated.
+Both `left` and `right` support lookup values. Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how lookup properties are evaluated.
 
 #### fn
 
-`fn` represents our predicate. Regent ships with 10 built-in predicates, and supports custom predicates. In our above example we are using `equals`, which checks strict equality between the `left` and `right` value.
+`fn` represents our predicate. Regent ships with 10 built-in predicates, and also supports custom predicates. In our above example we are using `equals`, which checks strict equality between the `left` and `right` value.
 
 Regent's built in predicates are:
 
@@ -135,9 +135,9 @@ You can learn more about predicates in the [Predicates](#predicates) section of 
 
 #### right
 
-The `right` property represents the right side of our predicate. The right property is usually a constant, but it can also use the `@` symbol to reference a value in the data object.
+The `right` property represents the right side of our predicate.
 
-### What predicates do
+### What do predicates do?
 
 Predicates define how we are comparing the left and right values. Here are a few quick examples.
 
@@ -154,7 +154,7 @@ For full documentation of all our built in predicates please visit the [Predicat
 
 ### Composing rules
 
-With Regent, it is best to define your rules as granular as possible, and use our composition helpers to build them up into more complex pieces. Regent provides three helpers to help you with this pattern.
+With Regent, it is best to define your rules as granular as possible, and use our composition helpers to build them up into more complex pieces. Regent provides three helper functions to help you with this pattern.
 
 #### and
 
@@ -176,12 +176,12 @@ A rule composed with `or` will return true if any of the rules returns true.
 
 ```javascript
 const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
-const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+const isCold = { left: '@temperature', fn: constants.lessThan, 55 };
 
 const iNeedAJacket = or(isRaining, isCold);
 ```
 
-In this example, `iNeedAJacket` will return true if `data.isRaining` is true, or `data.temperature` is less than 40.
+In this example, `iNeedAJacket` will return true if `data.isRaining` is true, `data.temperature` is less than 40, or both.
 
 #### not
 
@@ -196,7 +196,7 @@ In this example, `isWarm` will return true if `isCold` returns false.
 
 #### Manual composition
 
-A composed rule can be written without the use of the `and`, `or`, and `not` helper methods. Let's look at that `not` rule from the last example.
+A composed rule can be written without the use of the `and`, `or`, and `not` helper methods. Let's look at our `awfulDayToGoOutside` rule from an earlier example.
 
 ```javascript
 const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
@@ -213,7 +213,7 @@ const awfulDayToGoOutside = {
 };
 ```
 
-When you use `and`, `or`, or `not` they are just helping you prepare this composed object.
+The functions `and`, `or`, or `not` exist only to help you clean up your code by abstracting away this composed rule syntax. They all return an object literal.
 
 ## Querying rules
 
@@ -249,7 +249,7 @@ const clothingLogic = [
 
 #### find
 
-`find` will iterate over the logic array and return the first item who's rules are return true. `find` will return the entire object. You can think of it like `Array.find()`.
+`find` will iterate over the logic array and return the first item who's rules all return true. `find` will return the entire object. You can think of it like `Array.find()`.
 
 `find(data, logicArray, [customPredicates])`
 
@@ -257,7 +257,7 @@ const clothingLogic = [
 const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 68 };
 
 const data {
-  temperature: 32
+  temperature: 82
 };
 
 const clothingLogic = [
@@ -271,6 +271,8 @@ const clothingItems = find(data, clothingLogic);
 // => { value: ['sandals', 't-shirt'], rules: [IS_WARM] }
 ```
 
+In the above example the second array item will be returned, because `IS_WARM` returns true. `find` will not continue looking through the following rows.
+
 #### filter
 
 `filter` has the same signature as `find`, but returns an array of all the rows who's rules all return true. You can think of it like `Array.filter()`.
@@ -280,7 +282,7 @@ const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 68 };
 const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
 
 const data {
-  temperature: 32,
+  temperature: 82,
   precipitation: ['rain']
 };
 
@@ -294,6 +296,8 @@ const clothingLogic = [
 const clothingItems = find(data, clothingLogic);
 // => [{ value: ['sandals', 't-shirt'], rules: [IS_WARM] }, { value: ['umbrella'], rules: [IS_RAINING] }]
 ```
+
+In the above example `filter` will return an array of all rows who's rules are all true. If there are no matches, `filter` will return an empty array.
 
 ## A more thorough example
 
