@@ -17,10 +17,10 @@ Our first rule will tell us if we need an umbrella. This is easy to identify in 
 To write our rule, we'll want to import a couple things from regent.
 
 ```javascript
-import regent, { constants } from 'regent';
+import regent from 'regent';
 ```
 
-The default import (`regent`) gives us the ability to compose and query rules. The `constants` named import gives us access to a handful of rule predicate names.
+The default import (`regent`) gives us the ability to compose and query rules.
 
 ### Writing a rule
 
@@ -29,7 +29,7 @@ With our imports in hand, we can now create a rule to determine if it is raining
 A rule is an object with three properties: `left`, `fn`, and `right`. Think of `left` and `right` as two sides of an equation, with `fn` being the logical operator. The `fn` property tells the rule which predicate to use for evaluation. Our `isRaining` rule would look like this:
 
 ```javascript
-const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
+const isRaining = { left: '@isRaining', fn: 'equals', right: true };
 ```
 
 This rule tells Regent to compare the left `isRaining`, using the `equals` predicate, to the value `true`. You can read more about [how rules work](#how-rules-work), or [the available predicates](#predicates).
@@ -55,7 +55,7 @@ Umbrellas don't work well when it is windy. Let's make our rule better - we only
 We'll start by adding a second rule - `isCalm`. We'll define "calm" as having speeds under 15mph.
 
 ```javascript
-const isCalm = { left: '@windSpeedInMph', fn: constants.lessThan, 15 };
+const isCalm = { left: '@windSpeedInMph', fn: 'lessThan', 15 };
 ```
 
 This rule tells Regent to compare the property `windSpeedInMph`, using the `lessThan` predicate, to the value `15`.
@@ -88,7 +88,7 @@ const doINeedAnUmbrella = regent.evaluate(weatherData, isRainingAndCalm); // fal
 Regent is based on defining rules. A rule is an object with three properties on it: `left`, `fn`, and `right`. Here's an example of a rule:
 
 ```javascript
-const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
+const isRaining = { left: '@isRaining', fn: 'equals', right: true };
 ```
 
 #### left
@@ -161,9 +161,9 @@ With Regent, it is best to define your rules as granular as possible, and use ou
 A rule composed with `and` will return true if every rule inside the composed rule returns true.
 
 ```javascript
-const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
-const isWindy = { left: '@windSpeedInMph', fn: constants.greaterThan, 15 };
-const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+const isRaining = { left: '@isRaining', fn: 'equals', right: true };
+const isWindy = { left: '@windSpeedInMph', fn: 'greaterThan', 15 };
+const isCold = { left: '@temperature', fn: 'lessThan', 40 };
 
 const awfulDayToGoOutside = and(isRaining, isWindy, isCold);
 ```
@@ -175,8 +175,8 @@ In this example, `awfulDayToGoOutside` will return true if `data.isRaining` is t
 A rule composed with `or` will return true if any of the rules returns true.
 
 ```javascript
-const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
-const isCold = { left: '@temperature', fn: constants.lessThan, 55 };
+const isRaining = { left: '@isRaining', fn: 'equals', right: true };
+const isCold = { left: '@temperature', fn: 'lessThan', 55 };
 
 const iNeedAJacket = or(isRaining, isCold);
 ```
@@ -188,7 +188,7 @@ In this example, `iNeedAJacket` will return true if `data.isRaining` is true, `d
 `not` isn't really a composed rule, but rather an inverted one. A rule created with the `not` helper will return true if the passed in rule returns false, and vice versa.
 
 ```javascript
-const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+const isCold = { left: '@temperature', fn: 'lessThan', 40 };
 const isWarm = not(isCold);
 ```
 
@@ -199,9 +199,9 @@ In this example, `isWarm` will return true if `isCold` returns false.
 A composed rule can be written without the use of the `and`, `or`, and `not` helper methods. Let's look at our `awfulDayToGoOutside` rule from an earlier example.
 
 ```javascript
-const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
-const isWindy = { left: '@windSpeedInMph', fn: constants.greaterThan, 15 };
-const isCold = { left: '@temperature', fn: constants.lessThan, 40 };
+const isRaining = { left: '@isRaining', fn: 'equals', right: true };
+const isWindy = { left: '@windSpeedInMph', fn: 'greaterThan', 15 };
+const isCold = { left: '@temperature', fn: 'lessThan', 40 };
 
 const awfulDayToGoOutside = {
   compose: 'and',
@@ -485,6 +485,18 @@ const ageIsANumber = { left: '@age', fn: 'isANumber' };
 An alias of init, sticking with the regent theme.
 
 ## Predicates
+
+### constants
+
+Regent exports an object named `constants` that contains the names of all built-in predicates. This object can be used to help avoid misspelled predicates in rules.
+
+```javascript
+import regent, { constants } from 'regent';
+
+const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
+
+// ...
+```
 
 ### dateAfterInclusive
 
