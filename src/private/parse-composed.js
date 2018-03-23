@@ -1,23 +1,23 @@
 import evaluateRule from './evaluate-rule';
 
-export default (data, obj, custom = {}) => {
+export default (obj, data, custom = {}) => {
   const action = obj.compose;
   let result;
   switch (action) {
     case 'or':
       result = obj.rules.some(rule => (
-        evaluateRule(data, rule, custom)
+        evaluateRule(rule, data, custom)
       ));
       break;
 
     case 'and':
       result = obj.rules.every(rule => (
-        evaluateRule(data, rule, custom)
+        evaluateRule(rule, data, custom)
       ));
       break;
 
     case 'not':
-      result = !evaluateRule(data, obj.rules[0], custom);
+      result = !evaluateRule(obj.rules[0], data, custom);
       break;
 
     default:

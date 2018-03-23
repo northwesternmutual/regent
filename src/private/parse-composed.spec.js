@@ -23,7 +23,7 @@ test('parseComposed should evaluate the rules in the rules array, and return boo
     },
   };
 
-  let actual = parseComposed(data, row);
+  let actual = parseComposed(row, data);
   let expected = true;
   assert.equal(actual, expected, 'should return true because second rule is true');
 
@@ -34,7 +34,7 @@ test('parseComposed should evaluate the rules in the rules array, and return boo
     },
   };
 
-  actual = parseComposed(data, row);
+  actual = parseComposed(row, data);
   expected = true;
   assert.equal(actual, expected, 'should return true because first rule is true');
 
@@ -45,7 +45,7 @@ test('parseComposed should evaluate the rules in the rules array, and return boo
     },
   };
 
-  actual = parseComposed(data, row);
+  actual = parseComposed(row, data);
   expected = false;
   assert.equal(actual, expected, 'should return false because neither rule is true');
   assert.end();
@@ -67,7 +67,7 @@ test('parseComposed should evaluate the rules in the rules array and return bool
     },
   };
 
-  let actual = parseComposed(data, row, 'should return true because every rule is true');
+  let actual = parseComposed(row, data, 'should return true because every rule is true');
   let expected = true;
   assert.equal(actual, expected);
 
@@ -78,7 +78,7 @@ test('parseComposed should evaluate the rules in the rules array and return bool
     },
   };
 
-  actual = parseComposed(data, row, 'should return false because not every rule is true');
+  actual = parseComposed(row, data, 'should return false because not every rule is true');
   expected = false;
   assert.equal(actual, expected);
   assert.end();
@@ -100,7 +100,7 @@ test('parseComposed should return false if the action is not supported', (assert
     },
   };
 
-  const actual = parseComposed(data, row, 'should return false because the compose type is not supported');
+  const actual = parseComposed(row, data, 'should return false because the compose type is not supported');
   const expected = false;
   assert.equal(actual, expected);
 
@@ -113,7 +113,7 @@ test('parseComposed should handle a composed object of type not', (assert) => {
   };
   const singleRule = { left: '@person', fn: 'equals', right: true };
   const notPerson = not(singleRule);
-  const actual = parseComposed(obj, notPerson);
+  const actual = parseComposed(notPerson, obj);
   const expected = true;
   assert.equal(actual, expected);
   assert.end();
@@ -125,7 +125,7 @@ test('parseComposed should handle a false composed object of type not', (assert)
   };
   const singleRule = { left: '@person', fn: 'equals', right: true };
   const notPerson = not(singleRule);
-  const actual = parseComposed(obj, notPerson);
+  const actual = parseComposed(notPerson, obj);
   const expected = false;
   assert.equal(actual, expected);
   assert.end();
@@ -150,7 +150,7 @@ test('parseComposed should handle a not composed object, with a rule that is a c
 
   const notHelloAndGoodByeOrSayonara = not(and([firstGreetingIsHello, goodByeOrSayonara]));
 
-  const actual = parseComposed(obj, notHelloAndGoodByeOrSayonara);
+  const actual = parseComposed(notHelloAndGoodByeOrSayonara, obj);
   const expected = true;
   assert.equal(actual, expected);
   assert.end();
