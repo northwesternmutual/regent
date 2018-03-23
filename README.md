@@ -26,7 +26,7 @@ The default import (`regent`) gives us the ability to compose and query rules. T
 
 With our imports in hand, we can now create a rule to determine if it is raining.
 
-A rule is an object with three properties: `left`, `fn`, and `right`. The `left` property points at a field in the data to evaluate, `fn` tells the rule which predicate to use for evaluation, and `right` provides a list of values to compare to. Our `isRaining` rule would look like this:
+A rule is an object with three properties: `left`, `fn`, and `right`. Think of `left` and `right` as two sides of an equation, with `fn` being the logical operator. The `fn` property tells the rule which predicate to use for evaluation. Our `isRaining` rule would look like this:
 
 ```javascript
 const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
@@ -38,7 +38,7 @@ __note: The `@` preceding `isRaining` tells regent that this value is a path to 
 
 ### Evaluating the rule
 
-We can now use the `evaluate` function on our `regent` instance to verify the rule against some weather data. To read about more ways to query rules, see the [Queries](#queries) section.
+We can now use Regent's `evaluate` function to verify the rule against some weather data. To read about more ways to query rules, see the [Queries](#queries) section.
 
 ```javascript
 const weatherData = {
