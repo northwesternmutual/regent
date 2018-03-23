@@ -44,12 +44,12 @@ const batmanDecision = [
   { action: 'Keep on keeping on, no worries', rules: [BAT_SIGNAL_IS_OFF] },
 ];
 
-const { action } = find(data, batmanDecision);
+const { action } = find(batmanDecision, data);
 console.log(action); // GET TO THE BAT CAVE!
 
 data.batmanGear.mask = false;
 
-console.log(evaluate(data, NOT_READY_TO_GO));
+console.log(evaluate(NOT_READY_TO_GO, data));
 console.log(explain(NOT_READY_TO_GO, data));
 // => ​​​​​((@batmanGear.armor->true equals false) or (@batmanGear.belt->true equals false) or ("@batmanGear.mask" equals false))
 
@@ -61,7 +61,9 @@ const batmanClothingLogic = [
 
 data.batmanGear.armor = false;
 
-const clothingLogic = filter(data, batmanClothingLogic);
+const clothingLogic = filter(batmanClothingLogic, data);
 console.log(clothingLogic);
-// => ​​​​​[ { action: 'Put on armor', rules: [ [Object] ] },​​​​​
-​​​​// => ​​​​​​  { action: 'Put on mask', rules: [ [Object] ] } ]​​​​​
+/*
+​​​​​[ { action: 'Put on armor', rules: [ [Object] ] },
+​​​​​  { action: 'Put on mask', rules: [ [Object] ] } ]
+*/
