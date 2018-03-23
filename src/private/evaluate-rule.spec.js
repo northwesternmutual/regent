@@ -38,7 +38,7 @@ test('evaluateRule should correctly evaluate a single rule', (assert) => {
     const {
       obj, singleRule, expected, msg,
     } = row;
-    const actual = evaluateRule(obj, singleRule); /* ? */
+    const actual = evaluateRule(singleRule, obj); /* ? */
     assert.equal(actual, expected, msg);
   });
   assert.end();
@@ -60,7 +60,7 @@ test('evaluateRule should correctly evaluate a composed rule', (assert) => {
     secondGreetingIsSayonara,
   );
 
-  const actual = evaluateRule(obj, goodByeOrSayonara);
+  const actual = evaluateRule(goodByeOrSayonara, obj);
   const expected = true;
   assert.equal(actual, expected);
   assert.end();
@@ -72,7 +72,7 @@ test('evaluateRule should return true for a regex rule', (assert) => {
     name: 'blackbeard',
     saying: 'I say yarrrrr!!!',
   };
-  const actual = evaluateRule(data, pirate);
+  const actual = evaluateRule(pirate, data);
   const expected = true;
   assert.equal(actual, expected);
   assert.end();

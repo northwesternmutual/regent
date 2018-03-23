@@ -18,7 +18,7 @@ const NO_PRECIPITATION = and(NOT_RAINING, NOT_SNOWING);
 const SHOULD_WEAR_COAT = or(IS_RAINING, IS_SNOWING, IS_COLD);
 
 
-evaluate(data, SHOULD_WEAR_COAT); /* ? */ // true
+evaluate(SHOULD_WEAR_COAT, data); /* ? */ // true
 explain(SHOULD_WEAR_COAT, data); /* ? */
 
 const clothingLogic = [
@@ -28,7 +28,7 @@ const clothingLogic = [
   { value: ['umbrella'], rules: [IS_RAINING] },
 ];
 
-const myClothing = filter(data, clothingLogic);
+const myClothing = filter(clothingLogic, data);
 const clothing = myClothing.reduce((acc, row) => (
   acc.concat(row.value)
 ), []);

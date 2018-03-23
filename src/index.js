@@ -5,24 +5,24 @@ import evaluateRule from './private/evaluate-rule';
 import isRule from './private/is-rule';
 import isComposedRule from './private/is-composed-rule';
 
-export const find = (data, rules, custom = {}) => (
+export const find = (rules, data, custom = {}) => (
   rules.find(line => line.rules.every(rule => (
-    evaluateRule(data, rule, custom)
+    evaluateRule(rule, data, custom)
   )))
 );
 
-export const filter = (data, rules, custom = {}) => (
+export const filter = (rules, data, custom = {}) => (
   rules.filter(line => (
     line.rules.every(rule => (
-      evaluateRule(data, rule, custom)
+      evaluateRule(rule, data, custom)
     ))
   ))
 );
 
-export const evaluate = (data, singleRule, custom = {}) => evaluateRule(data, singleRule, custom);
+export const evaluate = (singleRule, data, custom = {}) => evaluateRule(singleRule, data, custom);
 
 export const makeRegentFactory = (fn, custom = {}) => (
-  (data, singleRule) => fn(data, singleRule, custom)
+  (rules, data) => fn(rules, data, custom)
 );
 
 export const or = (...rules) => ({

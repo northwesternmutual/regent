@@ -19,7 +19,7 @@ test('Implement Regent without init()', (assert) => {
 
   const SHOULD_WEAR_COAT = or(IS_RAINING, IS_SNOWING, IS_COLD);
 
-  assert.true(evaluate(data, SHOULD_WEAR_COAT), 'Should Wear Coat should return true');
+  assert.true(evaluate(SHOULD_WEAR_COAT, data), 'Should Wear Coat should return true');
   const explanation = explain(SHOULD_WEAR_COAT, data);
   assert.equal(explanation, '((@precipitation->["rain"] includes "rain") or (@precipitation->["rain"] includes "snow") or (@temperature->78 lessThan 75))', 'Regent explain is not working properly');
 
@@ -30,14 +30,14 @@ test('Implement Regent without init()', (assert) => {
     { value: ['umbrella'], rules: [IS_RAINING] },
   ];
 
-  const myClothing = filter(data, clothingLogic);
+  const myClothing = filter(clothingLogic, data);
   const clothing = myClothing.reduce((acc, row) => (
     acc.concat(row.value)
   ), []);
 
   assert.deepEqual(clothing, ['sandals', 't-shirt', 'umbrella'], 'Clothing should contain warm weather stuff, and an umbrella for rain');
 
-  const firstResult = find(data, clothingLogic).value;
+  const firstResult = find(clothingLogic, data).value;
   assert.deepEqual(firstResult, ['sandals', 't-shirt'], 'Find should return the first matching row');
 
   assert.end();
