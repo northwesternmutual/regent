@@ -219,7 +219,7 @@ The functions `and`, `or`, or `not` exist only to help you clean up your code by
 
 Regent provides tools that allow you to parse your rules into boolean values
 
-#### evaluate
+#### Querying with `evaluate`
 
 `evaluate` takes a data object and a rule and returns a boolean value.
 
@@ -247,9 +247,9 @@ const clothingLogic = [
 ];
 ```
 
-#### find
+#### Querying with `find`
 
-`find` will iterate over the logic array and return the first item who's rules all return true. `find` will return the entire object. You can think of it like `Array.find()`.
+`find` will iterate over the logic array and return the first item whose rules all return true. `find` will return the entire object. You can think of it like `Array.find()`.
 
 `find(data, logicArray, [customPredicates])`
 
@@ -273,9 +273,9 @@ const clothingItems = find(data, clothingLogic);
 
 In the above example the second array item will be returned, because `IS_WARM` returns true. `find` will not continue looking through the following rows.
 
-#### filter
+#### Querying with `filter`
 
-`filter` has the same signature as `find`, but returns an array of all the rows who's rules all return true. You can think of it like `Array.filter()`.
+`filter` has the same signature as `find`, but returns an array of all the rows whose rules all return true. You can think of it like `Array.filter()`.
 
 ```javascript
 const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 68 };
@@ -297,7 +297,7 @@ const clothingItems = find(data, clothingLogic);
 // => [{ value: ['sandals', 't-shirt'], rules: [IS_WARM] }, { value: ['umbrella'], rules: [IS_RAINING] }]
 ```
 
-In the above example `filter` will return an array of all rows who's rules are all true. If there are no matches, `filter` will return an empty array.
+In the above example `filter` will return an array of all rows whose rules are all true. If there are no matches, `filter` will return an empty array.
 
 ## A more thorough example
 
@@ -344,7 +344,9 @@ console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 
 ## Custom Predicates
 
-Regent can be used with custom predicates in the event that the built in predicates to handle specific logical expressions that built in predicates can not. A custom predicate is simply a function that accepts up to two arguments, `left` and `right`, and returns a boolean value.
+Regent can be used with custom predicates to handle specific logical expressions that built-in predicates can not. A custom predicate is simply a function that accepts up to two arguments, `left` and `right`, and returns a boolean value.
+
+### A simple custom predicate
 
 ```javascript
 const nameIsMike = left => left === 'Mike';
@@ -357,36 +359,12 @@ const data = {
   firstName: 'Mike'
 };
 
-const nameIsMike = { left: '@firstName', fn: 'nameIsMike' };
+const NAME_IS_MIKE = { left: '@firstName', fn: 'nameIsMike' };
 ```
 
 In the above example, `@firstname` will be looked up in `data` and passed into our custom predicate. This rule would return true with the provided data.
 
-### Crowning the regent
-
-Before we use our custom predicate we need to tell regent that it exists. There are two ways to do that. The first is to use `regent.init` (aliased to `regent.crown`). `init` takes an optional object of custom predicates and returns the entire api of regent with the custom predicates applied. To actually make the above example work we need to init regent with the custom predicate `nameIsMike`.
-
-```javascript
-const nameIsMike = left => left === 'Mike';
-
-const customPredicates = {
-  nameIsMike
-};
-
-const { evaluate } = regent.init(customPredicates);
-
-const nameIsMike = { left: '@firstName', fn: 'nameIsMike' };
-
-const data = {
-  firstName: 'Mike'
-};
-
-evaluate(data, nameIsMike); // true
-```
-
-_NOTE: You can skip the init step and just pass your object of custom predicates into evaluate, find, or filter as an optional third parameter._
-
-### Writing a predicate
+### Uses for custom predicates
 
 Our first example was a bit simple. Let's take a look at a more practical custom predicate.
 
@@ -400,6 +378,60 @@ const temperatureIsRising = (dailyTemperatureArray) => (
 This predicate will expect an array in `left` (nothing in `right`) and check that the first value is less than the last.
 
 Other notable use cases of a custom predicate could include custom date formatting, or data manipulation that needs to be done before a logical expression can be expressed.
+
+### Making Regent aware of custom predicates
+
+In order to use custom predicates we need to tell regent that they exist. There are two ways to do that. 
+
+#### Registering custom predicates with `regent.init`
+
+The first is to use `regent.init` (aliased to `regent.crown`). `init` takes an optional object of custom predicates and returns the entire api of regent with the custom predicates applied. See the [`init` docs](#init) for more details.
+
+To make the above example work we need to `init` regent with the custom predicate `nameIsMike`.
+
+```javascript
+const nameIsMike = left => left === 'Mike';
+
+const customPredicates = {
+  nameIsMike
+};
+
+const NAME_IS_MIKE = { left: '@firstName', fn: 'nameIsMike' };
+
+const data = {
+  firstName: 'Mike'
+};
+
+const { evaluate } = regent.init(customPredicates);
+
+evaluate(data, nameIsMike); // true
+```
+
+The advantage to using `init` to register your predicates with Regent is that you can evaluate multiple rules with the returned object. This is helpful when you have a large amount of rules to query.
+
+#### Passing custom predicates into queries
+
+The second way to make Regent aware of your custom predicates is to simply pass them into `evaluate`, `find`, or `filter` as an optional third parameter. 
+
+```javascript
+const nameIsMike = left => left === 'Mike';
+
+const customPredicates = {
+  nameIsMike
+};
+
+const NAME_IS_MIKE = { left: '@firstName', fn: 'nameIsMike' };
+
+const data = {
+  firstName: 'Mike'
+};
+
+evaluate(data, nameIsMike, customPredicates); // true
+```
+
+The advantage to passing predicates into `evaluate`, `find`, or `filter` is that you don't need to keep the initialized object around. This is handy for querying isolated rules.
+
+You can read the [`evaluate` docs](#evaluate), [`find` docs](#find), or [`filter` docs](#filter) for more information.
 
 ## Troubleshooting
 ### explain
@@ -434,7 +466,7 @@ explain(PRECIPITATION, data)
 ## Initialization
 
 ### init
-`init` accepts an optional object of custom predicates, and returns the full regent api, with the knowledge of the custom predicates. The custom predicate object's properties will become the reference string to the custom predicate, the value of each property should be a function that accepts up to two arguments, and returns a boolean value.
+`init` accepts an optional object of custom predicates, and returns the full regent api, with the knowledge of the custom predicates. The custom predicate property keys will become the reference strings to each custom predicate. The value of each property should be a function that accepts up to two arguments, and returns a boolean value.
 
 `init([customPredicates])`
 
@@ -443,7 +475,7 @@ const customPredicates = {
   isANumber: val => typeof val === 'number'
 };
 
-const Regent = regent.crown(customPredicates);
+const Regent = regent.init(customPredicates);
 
 // We now can write a rule using `isANumber` as the fn value
 const ageIsANumber = { left: '@age', fn: 'isANumber' };
@@ -622,9 +654,9 @@ const data = {
 
 ### find
 
-`find` accepts an object of data and an array of objects that contain a `rules` property. It evaluates each rule in the rules array and returns the first array item that has all its rules return true.
+`find` accepts an object of data and an array of objects that contain a `rules` property. It also optionally accepts an object of customPredicates. It evaluates each rule in the rules array and returns the first array item that has all its rules return true. 
 
-`find(data, logicArray)`
+`find(data, logicArray, [customPredicates])`
 
 ```javascript
 const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
@@ -645,6 +677,8 @@ const myClothing = find(data, clothingLogic); // => { value: ['umbrella'], rules
 ### filter
 
 `filter` has the same api as [find](#find), but it returns an array of all logic array items with all their rules passing.
+
+`filter(data, logicArray, [customPredicates])`
 
 ```javascript
 const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
