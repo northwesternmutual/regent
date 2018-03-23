@@ -434,9 +434,20 @@ explain(PRECIPITATION, data)
 ## Initialization
 
 ### init
-`init` accepts an optional object of custom predicates, and returns the full regent api, with the knowledge of the custom predicates.
+`init` accepts an optional object of custom predicates, and returns the full regent api, with the knowledge of the custom predicates. The custom predicate object's properties will become the reference string to the custom predicate, the value of each property should be a function that accepts up to two arguments, and returns a boolean value.
 
 `init([customPredicates])`
+
+```javascript
+const customPredicates = {
+  isANumber: val => typeof val === 'number'
+};
+
+const Regent = regent.crown(customPredicates);
+
+// We now can write a rule using `isANumber` as the fn value
+const ageIsANumber = { left: '@age', fn: 'isANumber' };
+```
 
 ### crown
 An alias of init, sticking with the regent theme.
