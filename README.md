@@ -337,8 +337,6 @@ const NO_PRECIPITATION = and(NOT_RAINING, NOT_SNOWING);
 const SHOULD_WEAR_COAT = or(IS_RAINING, IS_SNOWING, IS_COLD);
 
 evaluate(SHOULD_WEAR_COAT, data); // true
-explain(SHOULD_WEAR_COAT, data); // =>
-// ​​​​​((@precipitation->["rain"] includes "rain") or (@precipitation->["rain"] includes "snow") or (@temperature->78 lessThan 75))​​​​​
 
 const clothingLogic = [
   { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
@@ -349,7 +347,8 @@ const clothingLogic = [
 
 const myClothing = filter(clothingLogic, data);
 const clothing = myClothing.reduce((acc, row) => (
-  acc.concat(row.value)
+  ...acc,
+  ...row.value,
 ), []);
 
 console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
@@ -581,7 +580,7 @@ const data = {
   highTemp: 68
 }
 
-{ left: '@currentTemp', fn: 'equals', right: '@highTemp` } // true
+{ left: '@currentTemp', fn: 'equals', right: '@highTemp' } // true
 ```
 
 ### greaterThan
@@ -594,7 +593,7 @@ const data = {
   highTemp: 72
 }
 
-{ left: '@highTemp', fn: 'greaterThan', right: '@currentTemp` } // true
+{ left: '@highTemp', fn: 'greaterThan', right: '@currentTemp' } // true
 ```
 
 ### includes
@@ -617,7 +616,7 @@ const data = {
   highTemp: 72
 }
 
-{ left: '@currentTemp', fn: 'lessThan', right: '@highTemp` } // true
+{ left: '@currentTemp', fn: 'lessThan', right: '@highTemp' } // true
 ```
 
 ### regex
