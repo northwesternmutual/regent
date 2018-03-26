@@ -234,7 +234,9 @@ Regent provides tools that allow you to parse your rules into boolean values
 
 #### Querying with `evaluate`
 
-`evaluate` takes a data object and a rule and returns a boolean value.
+`evaluate` takes a rule and a data object and returns a boolean value.
+
+`evaluate(regentRule, data, [customPredicates])`
 
 ```javascript
 const data = {
@@ -242,7 +244,7 @@ const data = {
 }
 
 const beachTemperature = { left: '@temperature', fn: 'greaterThan', right: 75 };
-evaluate(data, beachTemperature) // true
+evaluate(beachTemperature, data) // true
 ```
 
 In the above example we are evaluating the rule `beachTemperature` against a data object.
@@ -264,7 +266,7 @@ const clothingLogic = [
 
 `find` will iterate over the logic array and return the first item whose rules all return true. `find` will return the entire object. You can think of it like `Array.find()`.
 
-`find(data, logicArray, [customPredicates])`
+`find(logicArray, data, [customPredicates])`
 
 ```javascript
 const IS_WARM = { left: '@temperature', fn: 'greaterThan', right: 68 };
@@ -280,7 +282,7 @@ const clothingLogic = [
   { value: ['umbrella'], rules: [IS_RAINING] },
 ];
 
-const clothingItems = find(data, clothingLogic);
+const clothingItems = find(clothingLogic, data);
 // => { value: ['sandals', 't-shirt'], rules: [IS_WARM] }
 ```
 
@@ -306,7 +308,7 @@ const clothingLogic = [
   { value: ['umbrella'], rules: [IS_RAINING] },
 ];
 
-const clothingItems = find(data, clothingLogic);
+const clothingItems = filter(clothingLogic, data);
 // => [{ value: ['sandals', 't-shirt'], rules: [IS_WARM] }, { value: ['umbrella'], rules: [IS_RAINING] }]
 ```
 
@@ -334,7 +336,7 @@ const NO_PRECIPITATION = and(NOT_RAINING, NOT_SNOWING);
 
 const SHOULD_WEAR_COAT = or(IS_RAINING, IS_SNOWING, IS_COLD);
 
-evaluate(data, SHOULD_WEAR_COAT); // true
+evaluate(SHOULD_WEAR_COAT, data); // true
 explain(SHOULD_WEAR_COAT, data); // =>
 // ​​​​​((@precipitation->["rain"] includes "rain") or (@precipitation->["rain"] includes "snow") or (@temperature->78 lessThan 75))​​​​​
 
@@ -345,7 +347,7 @@ const clothingLogic = [
   { value: ['umbrella'], rules: [IS_RAINING] },
 ];
 
-const myClothing = filter(data, clothingLogic);
+const myClothing = filter(clothingLogic, data);
 const clothing = myClothing.reduce((acc, row) => (
   acc.concat(row.value)
 ), []);
@@ -417,7 +419,7 @@ const data = {
 
 const { evaluate } = regent.init(customPredicates);
 
-evaluate(data, nameIsMike); // true
+evaluate(nameIsMike, data); // true
 ```
 
 The advantage to using `init` to register your predicates with Regent is that you can evaluate multiple rules with the returned object. This is helpful when you have a large amount of rules to query.
@@ -669,7 +671,7 @@ const data = {
 
 `evaluate` accepts a data object and a rule and returns a boolean value. It also optionally accepts an object of customPredicates.
 
-`evaluate(data, rule, [customPredicates])`
+`evaluate(rule, data, [customPredicates])`
 
 ### explain
 
@@ -681,7 +683,7 @@ const data = {
 
 `find` accepts an object of data and an array of objects that contain a `rules` property. It also optionally accepts an object of customPredicates. It evaluates each rule in the rules array and returns the first array item that has all its rules return true.
 
-`find(data, logicArray, [customPredicates])`
+`find(logicArray, data, [customPredicates])`
 
 ```javascript
 const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
@@ -696,14 +698,14 @@ const data = {
   precipitation: ['rain']
 };
 
-const myClothing = find(data, clothingLogic); // => { value: ['umbrella'], rules: [IS_RAINING] }
+const myClothing = find(clothingLogic, data); // => { value: ['umbrella'], rules: [IS_RAINING] }
 ```
 
 ### filter
 
 `filter` has the same api as [find](#find), but it returns an array of all logic array items with all their rules passing.
 
-`filter(data, logicArray, [customPredicates])`
+`filter(logicArray, data, [customPredicates])`
 
 ```javascript
 const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
@@ -725,7 +727,7 @@ const data = {
   precipitation: ['rain']
 };
 
-const myClothing = filter(data, clothingLogic); // =>
+const myClothing = filter(clothingLogic, data); // =>
 /*
 ​​​​​[
   { value: [ 'sunglasses' ], rules: [ [Object] ] },​​​​​
