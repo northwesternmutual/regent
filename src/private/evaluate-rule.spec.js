@@ -1,6 +1,6 @@
 import test from 'tape';
 import evaluateRule from './evaluate-rule';
-import { or } from '../index';
+import { or, not } from '../index';
 
 test('evaluateRule should be a function', (assert) => {
   assert.equal(typeof evaluateRule, 'function');
@@ -75,5 +75,17 @@ test('evaluateRule should return true for a regex rule', (assert) => {
   const actual = evaluateRule(pirate, data);
   const expected = true;
   assert.equal(actual, expected);
+  assert.end();
+});
+
+test('evaluateRule should correctly evaluate a NOT rule', (assert) => {
+  const pirate = { left: '@saying', fn: 'regex', right: /yar/ };
+  const notPirate = not(pirate);
+  const data = {
+    name: 'acountant',
+    saying: 'I say taxes',
+  };
+  assert.true(evaluateRule(notPirate, data), 'should not be a pirate');
+  assert.false(evaluateRule(pirate, data), 'should be a pirate');
   assert.end();
 });
