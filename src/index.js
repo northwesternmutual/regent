@@ -1,4 +1,5 @@
 import isObject from 'lodash.isobject';
+import get from 'lodash.get';
 import makeArgs from './private/make-args';
 import isLookup from './private/is-lookup';
 import evaluateRule from './private/evaluate-rule';
@@ -36,8 +37,7 @@ export const and = (...rules) => ({
 });
 
 export const not = singleRule => ({
-  compose: 'not',
-  rules: [singleRule],
+  not: singleRule,
 });
 
 export const explain = (rule, data) => {
@@ -60,9 +60,9 @@ export const explain = (rule, data) => {
     return `(${leftPart} ${rule.fn} ${rightPart})`;
   }
 
-  if (rule.compose === 'not') {
+  if (get(rule, 'not')) {
     // handle "NOT" rules
-    result = `NOT ${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)}`;
+    result = `NOT ${explain(get(rule, 'not'), data)}`;
   } else {
     result = `(${rule.rules.map(currentRule => `${explain(currentRule, data)}`).join(` ${rule.compose} `)})`;
   }

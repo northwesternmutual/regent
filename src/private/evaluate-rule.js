@@ -1,11 +1,11 @@
-import get from 'lodash.get';
 import makeArgs from './make-args';
+import isComposedRule from './is-composed-rule';
 import parseComposed from './parse-composed';
 import FN from '../fn';
 
 export default (rule, obj, custom = {}) => {
   let result;
-  if (get(rule, 'compose')) {
+  if (isComposedRule(rule)) {
     // This is a composed rule so call parse composed
     result = parseComposed(rule, obj, custom); // eslint-disable-line no-use-before-define
   } else {

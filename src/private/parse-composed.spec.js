@@ -155,3 +155,33 @@ test('parseComposed should handle a not composed object, with a rule that is a c
   assert.equal(actual, expected);
   assert.end();
 });
+
+test('parseComposed should handle new not rule syntax', (assert) => {
+  const obj = {
+    greetings: {
+      first: 'hola',
+    },
+  };
+
+  const firstGreetingIsHello = { left: '@greetings.first', fn: 'equals', right: 'hello' };
+  const firstGreetingIsNotHello = {
+    not: firstGreetingIsHello,
+  };
+  const actual = parseComposed(firstGreetingIsNotHello, obj);
+  const expected = true;
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('parseComposed should correctly handle new NOT syntax using the helper', (assert) => {
+  const data = {
+    precipitation: ['rain'],
+    temperature: 78,
+  };
+
+  const IS_COLD = { left: '@temperature', fn: 'lessThan', right: 75 };
+  const IS_WARM = not(IS_COLD);
+
+  assert.true(parseComposed(IS_WARM, data));
+  assert.end();
+});
