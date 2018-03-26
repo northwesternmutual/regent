@@ -22,10 +22,10 @@ evaluate(SHOULD_WEAR_COAT, data); /* ? */ // true
 explain(SHOULD_WEAR_COAT, data); /* ? */
 
 const clothingLogic = [
-  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
-  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
-  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
-  { value: ['umbrella'], rules: [IS_RAINING] },
+  { value: ['hat', 'scarf', 'boots'], rule: IS_COLD },
+  { value: ['sandals', 't-shirt'], rule: IS_WARM },
+  { value: ['sunglasses'], rule: NO_PRECIPITATION },
+  { value: ['umbrella'], rule: IS_RAINING },
 ];
 
 const myClothing = filter(clothingLogic, data);

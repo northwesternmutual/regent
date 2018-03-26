@@ -20,8 +20,8 @@ test('find should return the first array item with all true rules', (assert) => 
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
-    { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
-    { result: 'This is the world!', rules: [greetingIsHello, placeIsWorld] },
+    { result: 'This is somewhere else!', rule: placeIsNotWorld },
+    { result: 'This is the world!', rule: and(greetingIsHello, placeIsWorld) },
   ];
 
   const actual = find(rules, obj).result;
@@ -41,9 +41,9 @@ test('find should return the first array item with all true rules, even if there
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
-    { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
-    { result: 'This is the world!', rules: [greetingIsHello, placeIsWorld] },
-    { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsWorld] },
+    { result: 'This is somewhere else!', rule: placeIsNotWorld },
+    { result: 'This is the world!', rule: and(greetingIsHello, placeIsWorld) },
+    { result: 'This is also the world, but I should not be returned', rule: and(greetingIsHello, placeIsWorld) },
   ];
 
   const actual = find(rules, obj).result;
@@ -62,8 +62,8 @@ test('find should return undefined if no rows match', (assert) => {
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
-    { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
-    { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
+    { result: 'This is somewhere else!', rule: placeIsNotWorld },
+    { result: 'This is the world!', rule: and(greetingIsHello, placeIsNotWorld) },
   ];
 
   const actual = find(rules, obj);
@@ -91,7 +91,7 @@ test('find should return undefined if the rule left does not exist in the object
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
-    { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
+    { result: 'This is the world!', rule: and(greetingIsHello, placeIsNotWorld) },
   ];
 
   const actual = find(rules, obj);
@@ -109,8 +109,8 @@ test('find a !equals rule will return true, even if that object property does no
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
-    { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
-    { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
+    { result: 'This is somewhere else!', rule: placeIsNotWorld },
+    { result: 'This is the world!', rule: and(greetingIsHello, placeIsNotWorld) },
   ];
 
   const actual = find(rules, obj).result;
@@ -129,7 +129,7 @@ test('find should accept a custom predicate', (assert) => {
 
   const MY_RULE = { left: '@myParam', fn: 'isAThree' };
   const logic = [
-    { value: 'success', rules: [MY_RULE] },
+    { value: 'success', rule: MY_RULE },
   ];
   const actual = find(logic, data, custom);
   assert.equal(actual.value, 'success');
@@ -153,9 +153,9 @@ test('filter should return an array of matching logic rows', (assert) => {
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
-    { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
-    { result: 'This is the world!', rules: [greetingIsHello, placeIsWorld] },
-    { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsWorld] },
+    { result: 'This is somewhere else!', rule: placeIsNotWorld },
+    { result: 'This is the world!', rule: and(greetingIsHello, placeIsWorld) },
+    { result: 'This is also the world, but I should not be returned', rule: and(greetingIsHello, placeIsWorld) },
   ];
 
   const actual = filter(rules, obj); /* ? */
@@ -179,9 +179,9 @@ test('filter should return an empty array if no rules match', (assert) => {
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
 
   const rules = [
-    { result: 'This is somewhere else!', rules: [placeIsNotWorld] },
-    { result: 'This is the world!', rules: [greetingIsHello, placeIsNotWorld] },
-    { result: 'This is also the world, but I should not be returned', rules: [greetingIsHello, placeIsNotWorld] },
+    { result: 'This is somewhere else!', rule: placeIsNotWorld },
+    { result: 'This is the world!', rule: and(greetingIsHello, placeIsNotWorld) },
+    { result: 'This is also the world, but I should not be returned', rule: and(greetingIsHello, placeIsNotWorld) },
   ];
 
   const actual = filter(rules, obj); /* ? */
@@ -200,7 +200,7 @@ test('filter should accept a custom predicate', (assert) => {
 
   const MY_RULE = { left: '@myParam', fn: 'isAThree' };
   const logic = [
-    { value: 'success', rules: [MY_RULE] },
+    { value: 'success', rule: MY_RULE },
   ];
   const actual = filter(logic, data, custom);
   assert.equal(actual[0].value, 'success');
@@ -292,7 +292,7 @@ test('find should handle a string representation of an object path', (assert) =>
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const rules = [
-    { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
+    { result: 'See you later!', rule: secondGreetingIsGoodbye },
   ];
 
   const actual = find(rules, obj).result;
@@ -312,11 +312,11 @@ test('filter should handle a string representation of an object path', (assert) 
   const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
 
   const rules = [
-    { result: 'See you later!', rules: [secondGreetingIsGoodbye] },
+    { result: 'See you later!', rule: secondGreetingIsGoodbye },
   ];
 
   const actual = filter(rules, obj);
-  const expected = [{ result: 'See you later!', rules: [secondGreetingIsGoodbye] }];
+  const expected = [{ result: 'See you later!', rule: secondGreetingIsGoodbye }];
   assert.deepEqual(actual, expected);
   assert.end();
 });
@@ -381,7 +381,7 @@ test('find should accept composed rule objects', (assert) => {
   );
 
   const rules = [
-    { result: 'I get it, two languages', rules: [goodByeOrSayonara] },
+    { result: 'I get it, two languages', rule: goodByeOrSayonara },
   ];
 
   const actual = find(rules, obj).result;
@@ -410,7 +410,7 @@ test('find should accept deeply composed rule objects', (assert) => {
   const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
-    { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
+    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
   ];
 
   const actual = find(rules, obj).result;
@@ -439,7 +439,7 @@ test('find should return false if deeply composed rule objects eval to false', (
   const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
-    { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
+    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
   ];
 
   const actual = find(rules, obj);
@@ -468,12 +468,12 @@ test('filter should accept deeply composed rule objects', (assert) => {
   const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
-    { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
+    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
   ];
 
   const actual = filter(rules, obj);
   const expected = [
-    { result: 'Deeply nested... nice', rules: [helloAndGoodByeOrSayonara] },
+    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
   ];
   assert.deepEqual(actual, expected);
   assert.end();

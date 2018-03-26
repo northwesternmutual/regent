@@ -38,10 +38,10 @@ const NEAR_BAT_CAVE = { left: ['near the bat cave', 'in the bat cave'], fn: 'inc
 const NOT_NEAR_BAT_CAVE = not(NEAR_BAT_CAVE);
 
 const batmanDecision = [
-  { action: 'Time to go!', rules: [WEARING_SUIT_AND_SIGNAL_ON] },
-  { action: 'GET TO THE BAT CAVE!', rules: [NOT_NEAR_BAT_CAVE, BAT_SIGNAL_IS_ON] },
-  { action: 'Put on your utility belt', rules: [NOT_WEARING_BELT] },
-  { action: 'Keep on keeping on, no worries', rules: [BAT_SIGNAL_IS_OFF] },
+  { action: 'Time to go!', rule: WEARING_SUIT_AND_SIGNAL_ON },
+  { action: 'GET TO THE BAT CAVE!', rule: and(NOT_NEAR_BAT_CAVE, BAT_SIGNAL_IS_ON) },
+  { action: 'Put on your utility belt', rule: NOT_WEARING_BELT },
+  { action: 'Keep on keeping on, no worries', rule: BAT_SIGNAL_IS_OFF },
 ];
 
 const { action } = find(batmanDecision, data);
@@ -54,9 +54,9 @@ console.log(explain(NOT_READY_TO_GO, data));
 // => ​​​​​((@batmanGear.armor->true equals false) or (@batmanGear.belt->true equals false) or ("@batmanGear.mask" equals false))
 
 const batmanClothingLogic = [
-  { action: 'Put on belt', rules: [NOT_WEARING_BELT] },
-  { action: 'Put on armor', rules: [NOT_WEARING_ARMOR] },
-  { action: 'Put on mask', rules: [NOT_WEARING_MASK] },
+  { action: 'Put on belt', rule: NOT_WEARING_BELT },
+  { action: 'Put on armor', rule: NOT_WEARING_ARMOR },
+  { action: 'Put on mask', rule: NOT_WEARING_MASK },
 ];
 
 data.batmanGear.armor = false;
@@ -64,6 +64,6 @@ data.batmanGear.armor = false;
 const clothingLogic = filter(batmanClothingLogic, data);
 console.log(clothingLogic);
 /*
-​​​​​[ { action: 'Put on armor', rules: [ [Object] ] },
-​​​​​  { action: 'Put on mask', rules: [ [Object] ] } ]
+​​​​​[ { action: 'Put on armor', rule: [Object] },
+​​​​​  { action: 'Put on mask', rule: [Object] } ]
 */

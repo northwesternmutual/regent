@@ -24,10 +24,10 @@ test('Implement Regent without init()', (assert) => {
   assert.equal(explanation, '((@precipitation->["rain"] includes "rain") or (@precipitation->["rain"] includes "snow") or (@temperature->78 lessThan 75))', 'Regent explain is not working properly');
 
   const clothingLogic = [
-    { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
-    { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
-    { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
-    { value: ['umbrella'], rules: [IS_RAINING] },
+    { value: ['hat', 'scarf', 'boots'], rule: IS_COLD },
+    { value: ['sandals', 't-shirt'], rule: IS_WARM },
+    { value: ['sunglasses'], rule: NO_PRECIPITATION },
+    { value: ['umbrella'], rule: IS_RAINING },
   ];
 
   const myClothing = filter(clothingLogic, data);
