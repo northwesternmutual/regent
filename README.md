@@ -65,7 +65,7 @@ const doINeedAnUmbrella = regent.evaluate(isRaining, weatherData); // true
 
 Umbrellas don't work well when it is windy. Let's make our rule better - we only need an umbrella if it is raining, and there is not much wind.
 
-We'll start by adding a second rule - `isCalm`. We'll define "calm" as having speeds under 15mph.
+We'll start by adding a second rule - `isCalm`. We'll define "calm" as having wind speeds under 15mph.
 
 ```javascript
 const isCalm = { left: '@windSpeedInMph', fn: 'lessThan', 15 };
