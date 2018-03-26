@@ -441,7 +441,7 @@ const data = {
   firstName: 'Mike'
 };
 
-evaluate(data, nameIsMike, customPredicates); // true
+evaluate(nameIsMike, data, customPredicates); // true
 ```
 
 The advantage to passing predicates into `evaluate`, `find`, or `filter` is that you don't need to keep the initialized object around. This is handy for querying isolated rules.
