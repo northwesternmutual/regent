@@ -27,7 +27,7 @@ Our first rule will tell us if we need an umbrella. This is easy to identify in 
 
 ### Importing Regent
 
-To write our rule, we'll want to import a couple things from regent.
+To write our rule, we'll want to import regent.
 
 ```javascript
 import regent from 'regent';
@@ -37,9 +37,9 @@ The default import (`regent`) gives us the ability to compose and query rules.
 
 ### Writing a rule
 
-With our imports in hand, we can now create a rule to determine if it is raining.
+Let's create a rule to determine if it is raining.
 
-A rule is an object with three properties: `left`, `fn`, and `right`. Think of `left` and `right` as two sides of an equation, with `fn` being the logical operator. The `fn` property tells the rule which predicate to use for evaluation. Our `isRaining` rule would look like this:
+A rule is an object with three properties: `left`, `fn`, and `right`. Think of `left` and `right` as two sides of an equation, with `fn` being the operator. The `fn` property tells regent which predicate to use for evaluation. Our `isRaining` rule will look like this:
 
 ```javascript
 const isRaining = { left: '@isRaining', fn: 'equals', right: true };
@@ -47,7 +47,7 @@ const isRaining = { left: '@isRaining', fn: 'equals', right: true };
 
 This rule tells Regent to compare the left `isRaining`, using the `equals` predicate, to the value `true`. You can read more about [how rules work](#how-rules-work), or [the available predicates](#predicates).
 
-__note: The `@` preceding `isRaining` tells regent that this value is a path to the property in your data object. You can use the `@` symbol in the left or right properties. If you need a literal `@`, you can escape the character with another:  `right: '@@twitterHandle'`__
+_NOTE: The `@` preceding `isRaining` tells regent that this value is a path to the property in your data object. You can use the `@` symbol in the left or right properties. If you need a literal `@`, you can escape the character with another:  `right: '@@twitterHandle'`_
 
 ### Evaluating the rule
 
@@ -58,7 +58,7 @@ const weatherData = {
   isRaining: true,
 };
 
-const doINeedAnUmbrella = regent.evaluate(weatherData, isRaining); // true
+const doINeedAnUmbrella = regent.evaluate(isRaining, weatherData); // true
 ```
 
 ### Composing a better rule
