@@ -1,1 +1,1 @@
-export default (input, params) => params.test(input);
+export default (left, right) => right.test(left);
