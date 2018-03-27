@@ -83,7 +83,7 @@ You can learn more about rule composition in the [Composition](#composition) sec
 
 ### Evaluating the better rule
 
-We can use our `regent` instance again to verify our improved rule for determining if we need an umbrella.
+We can use our `regent.evaluate` function to test our improved rule for determining if we need an umbrella.
 
 ```javascript
 const weatherData = {
@@ -134,11 +134,11 @@ const data = {
 };
 ```
 
-Both `left` and `right` support lookup values. Please visit [the Lodash docs](https://lodash.com/docs/4.17.4#get) for more information on how lookup properties are evaluated.
+Both `left` and `right` support lookup values. Please visit [the Lodash.get docs](https://lodash.com/docs/4.17.4#get) for more information on how lookup properties are evaluated.
 
 #### fn
 
-`fn` represents our predicate. Regent ships with 10 built-in predicates, and also supports custom predicates. In our above example we are using `equals`, which checks strict equality between the `left` and `right` value.
+`fn` represents our predicate. Regent ships with 10 built-in predicates, and also supports [custom predicates](#custom-predicates). In our above example we are using `equals`, which checks strict equality between the `left` and `right` value.
 
 Regent's built in predicates are:
 
@@ -181,6 +181,15 @@ const isCold = { left: '@temperature', fn: 'lessThan', 40 };
 const awfulDayToGoOutside = and(isRaining, isWindy, isCold);
 ```
 
+The `and` helper outputs this object.
+
+```javascript
+{
+  compose: 'and',
+  rules: [isRaining, isWindy, isCold]
+}
+```
+
 In this example, `awfulDayToGoOutside` will return true if `data.isRaining` is true, `data.windSpeedInMph` is greater than 15, and `data.temperature` is less than 40.
 
 #### or
@@ -194,6 +203,15 @@ const isCold = { left: '@temperature', fn: 'lessThan', 55 };
 const iNeedAJacket = or(isRaining, isCold);
 ```
 
+The `or` helper outputs this object.
+
+```javascript
+{
+  compose: 'or',
+  rules: [isRaining, isCold]
+}
+```
+
 In this example, `iNeedAJacket` will return true if `data.isRaining` is true, `data.temperature` is less than 40, or both.
 
 #### not
@@ -205,11 +223,19 @@ const isCold = { left: '@temperature', fn: 'lessThan', 40 };
 const isWarm = not(isCold);
 ```
 
+The `not` helper outputs this object.
+
+```javascript
+{
+  not: isCold
+}
+```
+
 In this example, `isWarm` will return true if `isCold` returns false.
 
 #### Manual composition
 
-A composed rule can be written without the use of the `and`, `or`, and `not` helper methods. Let's look at our `awfulDayToGoOutside` rule from an earlier example.
+You do not need to use helper functions to compose rules. A composed rule can be written without the use of the `and`, `or`, and `not` helper methods. Let's look at our `awfulDayToGoOutside` rule from an earlier example.
 
 ```javascript
 const isRaining = { left: '@isRaining', fn: 'equals', right: true };
@@ -224,6 +250,14 @@ const awfulDayToGoOutside = {
     isCold
   ]
 };
+```
+
+A `not` rule has a different structure.
+
+```javascript
+const isCalm = {
+  not: isWindy
+}
 ```
 
 The functions `and`, `or`, or `not` exist only to help you clean up your code by abstracting away this composed rule syntax. They all return an object literal.
@@ -251,7 +285,7 @@ In the above example we are evaluating the rule `beachTemperature` against a dat
 
 ### Querying logic tables
 
-Regent provides two ways to query logic tables. Logic tables are simply an array of objects. Each object in the array must have a property named `rules` which is an array of rules.
+Regent provides two ways to query logic tables. Logic tables are simply an array of objects. Each object in the array must have a property named `rule` which is a regent rule to test.
 
 ```javascript
 const clothingLogic = [
@@ -264,7 +298,7 @@ const clothingLogic = [
 
 #### Querying with `find`
 
-`find` will iterate over the logic array and return the first item whose rules all return true. `find` will return the entire object. You can think of it like `Array.find()`.
+`find` will iterate over the logic array and return the first item whose rule returns true. You can think of it like `Array.find()`. `find` will return the entire object.
 
 `find(logicArray, data, [customPredicates])`
 
@@ -286,7 +320,7 @@ const clothingItems = find(clothingLogic, data);
 // => { value: ['sandals', 't-shirt'], rule: IS_WARM }
 ```
 
-In the above example the second array item will be returned, because `IS_WARM` returns true. `find` will not continue looking through the following rows.
+In the above example the second array item will be returned, because `IS_WARM` returns true. `find` will *not* continue looking through the following rows.
 
 #### Querying with `filter`
 
@@ -312,7 +346,7 @@ const clothingItems = filter(clothingLogic, data);
 // => [{ value: ['sandals', 't-shirt'], rule: IS_WARM }, { value: ['umbrella'], rule: IS_RAINING }]
 ```
 
-In the above example `filter` will return an array of all rows whose rules are all true. If there are no matches, `filter` will return an empty array.
+In the above example `filter` will return an array of all rows that have a rule that evaluates to true. If there are no matches, `filter` will return an empty array.
 
 ## A more thorough example
 
@@ -359,36 +393,42 @@ Regent can be used with custom predicates to handle specific logical expressions
 
 ### A simple custom predicate
 
-```javascript
-const nameIsMike = left => left === 'Mike';
-```
+We will import a function from lodash that takes two arguments and returns a boolean value.
 
-The arguments are populated by the `left` and `right` properties of the rule definition.
+[lodash.isMatch()](https://lodash.com/docs/4.17.5#isMatch) performs a partial deep comparison between object and source to determine if object contains equivalent property values. For our purposes it will check to see if the object passed in the `left` property includes the object passed in the `right` property.
 
 ```javascript
-const data = {
-  firstName: 'Mike'
+import isMatch form 'lodash.ismatch';
+
+const zdata = {
+  typesOrPrecipitation: {
+    liquid: {
+      rain: 'rain'
+    },
+    solid: {
+      sleet: 'sleet',
+      hail: 'hail',
+      snow: 'snow'
+    }
+  },
+
+  currentPrecipitaion: {
+    snow: 'snow'
+  }
 };
 
-const NAME_IS_MIKE = { left: '@firstName', fn: 'nameIsMike' };
+const PRECIPITATION_IS_SOLID = {
+  left: '@typesOrPrecipitation.solid',
+  fn: 'isMatch',
+  right: '@currentPrecipitaion'
+};
+
+// We need to tell evaluate about isMatch, so we pass
+// in an object as the third param. More on that below.
+evaluate(PRECIPITATION_IS_SOLID, zdata, { isMatch }) // true
 ```
 
-In the above example, `@firstname` will be looked up in `data` and passed into our custom predicate. This rule would return true with the provided data.
-
-### Uses for custom predicates
-
-Our first example was a bit simple. Let's take a look at a more practical custom predicate.
-
-```javascript
-const temperatureIsRising = (dailyTemperatureArray) => (
-  // return true if the first temperature in the array is less
-  dailyTemperatureArray[0] < dailyTemperatureArray[dailyTemperatureArray.length - 1]
-)
-```
-
-This predicate will expect an array in `left` (nothing in `right`) and check that the first value is less than the last.
-
-Other notable use cases of a custom predicate could include custom date formatting, or data manipulation that needs to be done before a logical expression can be expressed.
+Regent will pass `left` in as the first argument, and `right` in as the second. `isMatch` will return true so our rule will return true.
 
 ### Making Regent aware of custom predicates
 
@@ -396,7 +436,7 @@ In order to use custom predicates we need to tell regent that they exist. There 
 
 #### Registering custom predicates with `regent.init`
 
-The first is to use `regent.init` (aliased to `regent.crown`). `init` takes an optional object of custom predicates and returns the entire api of regent with the custom predicates applied. See the [`init` docs](#init) for more details.
+The first is to use `regent.init` (aliased to `regent.crown`). `init` takes an optional object of custom predicates and returns the entire api of regent with the custom predicates applied. See the [init docs](#init) for more details.
 
 To make the above example work we need to `init` regent with the custom predicate `nameIsMike`.
 
@@ -443,6 +483,21 @@ evaluate(nameIsMike, data, customPredicates); // true
 The advantage to passing predicates into `evaluate`, `find`, or `filter` is that you don't need to keep the initialized object around. This is handy for querying isolated rules.
 
 You can read the [`evaluate` docs](#evaluate), [`find` docs](#find), or [`filter` docs](#filter) for more information.
+
+### Another custom predicate example
+
+Let's take a look at a custom predicate that does some custom data parsing.
+
+```javascript
+const temperatureIsRising = (dailyTemperatureArray) => (
+  // return true if the first temperature in the array is less
+  dailyTemperatureArray[0] < dailyTemperatureArray[dailyTemperatureArray.length - 1]
+)
+```
+
+This predicate will expect an array in `left` (nothing in `right`) and check that the first value is less than the last.
+
+Other notable use cases of a custom predicate could include custom date formatting, or data manipulation that needs to be done before a logical expression can be expressed.
 
 ## Troubleshooting
 ### explain
