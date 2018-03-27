@@ -438,27 +438,29 @@ In order to use custom predicates we need to tell regent that they exist. There 
 
 The first is to use `regent.init` (aliased to `regent.crown`). `init` takes an optional object of custom predicates and returns the entire api of regent with the custom predicates applied. See the [init docs](#init) for more details.
 
-To make the above example work we need to `init` regent with the custom predicate `nameIsMike`.
+To make the above example work we need to `init` regent with the custom predicate `isMatch`.
 
 ```javascript
-const nameIsMike = left => left === 'Mike';
+import isMatch form 'lodash.ismatch';
 
 const customPredicates = {
-  nameIsMike
-};
-
-const NAME_IS_MIKE = { left: '@firstName', fn: 'nameIsMike' };
-
-const data = {
-  firstName: 'Mike'
+  isMatch
 };
 
 const { evaluate } = regent.init(customPredicates);
-
-evaluate(nameIsMike, data); // true
 ```
 
-The advantage to using `init` to register your predicates with Regent is that you can evaluate multiple rules with the returned object. This is helpful when you have a large amount of rules to query.
+The advantage to using `init` to register your predicates with Regent is that you can evaluate multiple rules with the returned object. This is helpful when you have a large amount of rules to query. You can even import, init with custom predicates, and export regent in a module. This allows you to import regent from your module and you will always have access to the same custom evaluators. Here is an example.
+
+```javascript
+import regent from 'regent';
+
+const customPredicates = {
+  // define custom predicates here
+};
+
+export default regent.init(customPredicates)
+```
 
 #### Passing custom predicates into queries
 
