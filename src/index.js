@@ -6,7 +6,7 @@ import isRule from './private/is-rule';
 import isComposedRule from './private/is-composed-rule';
 
 export const find = (rules, data, custom = {}) => (
-  rules.find(line => evaluateRule(line.rules, data, custom))
+  rules.find(line => evaluateRule(line.rule, data, custom))
 );
 
 export const filter = (rules, data, custom = {}) => (

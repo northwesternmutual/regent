@@ -410,7 +410,7 @@ test('find should accept deeply composed rule objects', (assert) => {
   const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
-    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
+    { result: 'Deeply nested... nice', rule: helloAndGoodByeOrSayonara },
   ];
 
   const actual = find(rules, obj).result;
@@ -439,7 +439,7 @@ test('find should return false if deeply composed rule objects eval to false', (
   const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
-    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
+    { result: 'Deeply nested... nice', rule: helloAndGoodByeOrSayonara },
   ];
 
   const actual = find(rules, obj);
@@ -468,12 +468,12 @@ test('filter should accept deeply composed rule objects', (assert) => {
   const helloAndGoodByeOrSayonara = and(firstGreetingIsHello, goodByeOrSayonara);
 
   const rules = [
-    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
+    { result: 'Deeply nested... nice', rule: helloAndGoodByeOrSayonara },
   ];
 
   const actual = filter(rules, obj);
   const expected = [
-    { result: 'Deeply nested... nice', rules: helloAndGoodByeOrSayonara },
+    { result: 'Deeply nested... nice', rule: helloAndGoodByeOrSayonara },
   ];
   assert.deepEqual(actual, expected);
   assert.end();
