@@ -22,3 +22,21 @@ test('isComposedRule should return false when called without a well-formed rule'
   assert.false(isComposedRule(data));
   assert.end();
 });
+
+test('isComposedRule should recognize a NOT rules', (assert) => {
+  const rule = {
+    not: { left: 'something', fn: 'equals', right: 'something' },
+  };
+
+  assert.true(isComposedRule(rule));
+  assert.end();
+});
+
+test('isComposedRule should return false if the "not" property is not a regent rule', (assert) => {
+  const rule = {
+    not: 'string value',
+  };
+
+  assert.false(isComposedRule(rule));
+  assert.end();
+});

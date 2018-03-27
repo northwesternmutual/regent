@@ -488,8 +488,7 @@ test('not should return a "composed" object with a compose value of not', (asser
   const singleRule = { left: '@person', fn: 'equals', right: true };
   const actual = not(singleRule);
   const expected = {
-    compose: 'not',
-    rules: [singleRule],
+    not: singleRule,
   };
   assert.deepEqual(actual, expected);
   assert.end();
