@@ -255,10 +255,10 @@ Regent provides two ways to query logic tables. Logic tables are simply an array
 
 ```javascript
 const clothingLogic = [
-  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
-  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
-  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
-  { value: ['umbrella'], rules: [IS_RAINING] },
+  { value: ['hat', 'scarf', 'boots'], rule: IS_COLD },
+  { value: ['sandals', 't-shirt'], rule: IS_WARM },
+  { value: ['sunglasses'], rule: NO_PRECIPITATION },
+  { value: ['umbrella'], rule: IS_RAINING },
 ];
 ```
 
@@ -276,14 +276,14 @@ const data {
 };
 
 const clothingLogic = [
-  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
-  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
-  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
-  { value: ['umbrella'], rules: [IS_RAINING] },
+  { value: ['hat', 'scarf', 'boots'], rule: IS_COLD },
+  { value: ['sandals', 't-shirt'], rule: IS_WARM },
+  { value: ['sunglasses'], rule: NO_PRECIPITATION },
+  { value: ['umbrella'], rule: IS_RAINING },
 ];
 
 const clothingItems = find(clothingLogic, data);
-// => { value: ['sandals', 't-shirt'], rules: [IS_WARM] }
+// => { value: ['sandals', 't-shirt'], rule: IS_WARM }
 ```
 
 In the above example the second array item will be returned, because `IS_WARM` returns true. `find` will not continue looking through the following rows.
@@ -302,14 +302,14 @@ const data {
 };
 
 const clothingLogic = [
-  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
-  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
-  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
-  { value: ['umbrella'], rules: [IS_RAINING] },
+  { value: ['hat', 'scarf', 'boots'], rule: IS_COLD },
+  { value: ['sandals', 't-shirt'], rule: IS_WARM },
+  { value: ['sunglasses'], rule: NO_PRECIPITATION },
+  { value: ['umbrella'], rule: IS_RAINING },
 ];
 
 const clothingItems = filter(clothingLogic, data);
-// => [{ value: ['sandals', 't-shirt'], rules: [IS_WARM] }, { value: ['umbrella'], rules: [IS_RAINING] }]
+// => [{ value: ['sandals', 't-shirt'], rule: IS_WARM }, { value: ['umbrella'], rule: IS_RAINING }]
 ```
 
 In the above example `filter` will return an array of all rows whose rules are all true. If there are no matches, `filter` will return an empty array.
@@ -317,9 +317,7 @@ In the above example `filter` will return an array of all rows whose rules are a
 ## A more thorough example
 
 ```javascript
-import { evaluate, and, or, explain, not, filter } from '../lib/regent.min';
-
-// An example of using Regent without custom predicates
+import { evaluate, and, or, not, filter } from '../src/index';
 
 const data = {
   precipitation: ['rain'],
@@ -333,23 +331,22 @@ const NOT_SNOWING = not(IS_SNOWING);
 const IS_COLD = { left: '@temperature', fn: 'lessThan', right: 75 };
 const IS_WARM = not(IS_COLD);
 const NO_PRECIPITATION = and(NOT_RAINING, NOT_SNOWING);
-
 const SHOULD_WEAR_COAT = or(IS_RAINING, IS_SNOWING, IS_COLD);
 
 evaluate(SHOULD_WEAR_COAT, data); // true
 
 const clothingLogic = [
-  { value: ['hat', 'scarf', 'boots'], rules: [IS_COLD] },
-  { value: ['sandals', 't-shirt'], rules: [IS_WARM] },
-  { value: ['sunglasses'], rules: [NO_PRECIPITATION] },
-  { value: ['umbrella'], rules: [IS_RAINING] },
+  { value: ['hat', 'scarf', 'boots'], rule: IS_COLD },
+  { value: ['sandals', 't-shirt'], rule: IS_WARM },
+  { value: ['sunglasses'], rule: NO_PRECIPITATION },
+  { value: ['umbrella'], rule: IS_RAINING },
 ];
 
 const myClothing = filter(clothingLogic, data);
-const clothing = myClothing.reduce((acc, row) => (
+const clothing = myClothing.reduce((acc, row) => ([
   ...acc,
   ...row.value,
-), []);
+]), []);
 
 console.log(clothing); // ['sandals', 't-shirt', 'umbrella']
 ```

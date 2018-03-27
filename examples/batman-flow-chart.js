@@ -1,5 +1,7 @@
 import regent from '../lib/regent.min';
 
+/* eslint no-console: 0 */
+
 const isWearingBatSuit = items => items.every(item => item === true);
 
 const customPredicates = {
@@ -51,7 +53,6 @@ data.batmanGear.mask = false;
 
 console.log(evaluate(NOT_READY_TO_GO, data));
 console.log(explain(NOT_READY_TO_GO, data));
-// => ​​​​​((@batmanGear.armor->true equals false) or (@batmanGear.belt->true equals false) or ("@batmanGear.mask" equals false))
 
 const batmanClothingLogic = [
   { action: 'Put on belt', rule: NOT_WEARING_BELT },
@@ -63,7 +64,3 @@ data.batmanGear.armor = false;
 
 const clothingLogic = filter(batmanClothingLogic, data);
 console.log(clothingLogic);
-/*
-​​​​​[ { action: 'Put on armor', rule: [Object] },
-​​​​​  { action: 'Put on mask', rule: [Object] } ]
-*/
