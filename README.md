@@ -91,7 +91,7 @@ const weatherData = {
   windSpeedInMph: 20,
 };
 
-const doINeedAnUmbrella = regent.evaluate(weatherData, isRainingAndCalm); // false
+const doINeedAnUmbrella = regent.evaluate(isRainingAndCalm, weatherData); // false
 ```
 
 ## How rules work
