@@ -568,7 +568,7 @@ const isRaining = { left: '@isRaining', fn: constants.equals, right: true };
 
 ### dateAfterInclusive
 
-Uses (Date.parse)[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse] to parse and compare date values in `left` and `right`. This predicate will return true if `left` is greater than or equal too `right` (inclusive).
+Uses [Date.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse) to parse and compare date values in `left` and `right`. This predicate will return true if `left` is greater than or equal too `right` (inclusive).
 
 ```javascript
 const data = {
@@ -581,7 +581,7 @@ const data = {
 
 ### dateBeforeInclusive
 
-Uses (Date.parse)[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse] to parse and compare date values in `left` and `right`. This predicate will return true if `left` is less than or equal too `right` (inclusive).
+Uses [Date.parse](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse) to parse and compare date values in `left` and `right`. This predicate will return true if `left` is less than or equal too `right` (inclusive).
 
 ```javascript
 const data = {
