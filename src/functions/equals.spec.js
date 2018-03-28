@@ -6,42 +6,20 @@ test('equals should be a function', (assert) => {
   assert.end();
 });
 
-test('equals should return true if the input is in all of the arguments', (assert) => {
-  let input = 'hello';
-  let args = [
-    'hello',
-  ];
-  let acutal = equals(input, args);
-  let expected = true;
+test('equals should return true if the left is in all of the arguments', (assert) => {
+  const left = 'hello';
+  const right = 'hello';
+  const acutal = equals(left, right);
+  const expected = true;
   assert.equal(acutal, expected, 'should return true because "hello" matches "hello"');
-
-  input = 'hello';
-  args = [
-    'hello',
-    'hello',
-  ];
-  acutal = equals(input, args);
-  expected = true;
-  assert.equal(acutal, expected, 'should return true because hello matches all array elements');
   assert.end();
 });
 
-test('equals should return false if input does not match all of the arguments', (assert) => {
-  let input = 'hello';
-  let args = [
-    'world',
-  ];
-  let acutal = equals(input, args);
-  let expected = false;
+test('equals should return false if left does not match all of the arguments', (assert) => {
+  const left = 'hello';
+  const right = 'world';
+  const acutal = equals(left, right);
+  const expected = false;
   assert.equal(acutal, expected, 'should return false because hello does not equal world');
-
-  input = 'hello';
-  args = [
-    'world',
-    'hello',
-  ];
-  acutal = equals(input, args);
-  expected = false;
-  assert.equal(acutal, expected, 'should return false because hello does not match all the arguments');
   assert.end();
 });

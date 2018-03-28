@@ -7,18 +7,18 @@ test('FN should be a function', (assert) => {
 });
 
 test('FN test api: calling equals', (assert) => {
-  const input = 'hello';
-  const args = ['hello'];
-  const actual = FN('equals')(input, args);
+  const left = 'hello';
+  const right = 'hello';
+  const actual = FN('equals')(left, right);
   const expected = true;
   assert.equal(actual, expected);
   assert.end();
 });
 
 test('FN test api: calling !equals', (assert) => {
-  const input = 'hello';
-  const args = ['hello'];
-  const actual = FN('!equals')(input, args);
+  const left = 'hello';
+  const right = 'hello';
+  const actual = FN('!equals')(left, right);
   const expected = false;
   assert.equal(actual, expected);
   assert.end();
@@ -26,20 +26,20 @@ test('FN test api: calling !equals', (assert) => {
 
 test('FN should accept a custom eval function', (assert) => {
   const custom = {
-    equalsSquirm: input => input === 'squirm',
+    equalsSquirm: left => left === 'squirm',
   };
-  let input = 'squirm';
-  let actual = FN('equalsSquirm', custom)(input);
+  let left = 'squirm';
+  let actual = FN('equalsSquirm', custom)(left);
   let expected = true;
   assert.equal(actual, expected);
 
-  input = 'notsquirm';
-  actual = FN('equalsSquirm', custom)(input);
+  left = 'notsquirm';
+  actual = FN('equalsSquirm', custom)(left);
   expected = false;
   assert.equal(actual, expected, 'custom FN should return false if it is false');
 
-  input = 'squirm';
-  actual = FN('!equalsSquirm', custom)(input); /* ? */
+  left = 'squirm';
+  actual = FN('!equalsSquirm', custom)(left); /* ? */
   expected = false;
   assert.equal(actual, expected, 'custom FN should accept the ! param to invert the response');
   assert.end();

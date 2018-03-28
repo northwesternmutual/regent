@@ -1,28 +1,28 @@
 import test from 'tape';
-import dateAfterInclusive from './dateAfterInclusive';
+import dateAfterInclusive from './date-after-inclusive';
 
-test('dateAfterInclusive should return true for a date constraint given range.', (assert) => {
+test('dateAfterInclusive should return true if left is greater than the right.', (assert) => {
   const examine = '01/02/1975';
   const constraint = '01/01/1975';
   const expected = true;
   const actual = dateAfterInclusive(examine, [constraint]);
-  assert.equal(actual, expected, `${examine} should be considered constraint ${constraint}`);
+  assert.equal(actual, expected);
   assert.end();
 });
-test('dateAfterInclusive should return true for a date constraint given inclusive range.', (assert) => {
+test('dateAfterInclusive should return true for equal dates', (assert) => {
   const examine = '01/02/1975';
   const constraint = '01/02/1975';
   const expected = true;
   const actual = dateAfterInclusive(examine, [constraint]);
-  assert.equal(actual, expected, `${examine} should be considered constraint ${constraint}.`);
+  assert.equal(actual, expected);
   assert.end();
 });
-test('dateAfterInclusive should return false for a date outside a given range.', (assert) => {
+test('dateAfterInclusive should return false for a date greater than the left date.', (assert) => {
   const examine = '01/02/1975';
   const constraint = '01/03/1975';
   const expected = false;
   const actual = dateAfterInclusive(examine, [constraint]);
-  assert.equal(actual, expected, `${examine} should not be considered constraint ${constraint}.`);
+  assert.equal(actual, expected);
   assert.end();
 });
 test('dateAfterInclusive should throw an error for invalid arguments.', (assert) => {

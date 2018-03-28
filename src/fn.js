@@ -1,55 +1,45 @@
-import arrayLengthGreaterThan from './functions/arrayLengthGreaterThan';
-import arraysMatch from './functions/arraysMatch';
-import dateAfterInclusive from './functions/dateAfterInclusive';
-import dateBeforeInclusive from './functions/dateBeforeInclusive';
-import dateBetweenInclusive from './functions/dateBetweenInclusive';
+import dateAfterInclusive from './functions/date-after-inclusive';
+import dateBeforeInclusive from './functions/date-before-inclusive';
+import deepEquals from './functions/deep-equals';
 import empty from './functions/empty';
 import equals from './functions/equals';
-import greaterThan from './functions/greaterThan';
-import isIn from './functions/isIn';
-import match from './functions/match';
-import numericRange from './functions/numericRange';
+import greaterThan from './functions/greater-than';
+import includes from './functions/includes';
+import lessThan from './functions/less-than';
 import regex from './functions/regex';
-import subString from './functions/subString';
-
-// Aliases
-const inArray = isIn;
+import typeOf from './functions/type-of';
 
 const fn = {
-  arrayLengthGreaterThan,
-  arraysMatch,
   dateAfterInclusive,
   dateBeforeInclusive,
-  dateBetweenInclusive,
+  deepEquals,
   empty,
   equals,
   greaterThan,
-  inArray,
-  isIn,
-  match,
-  numericRange,
+  includes,
+  lessThan,
   regex,
-  subString,
+  typeOf,
 };
 
 export default (id, custom) => (
-  (input, args) => {
-    let fnid = id;
+  (left, right) => {
+    let f = id;
     let result = false;
 
     try {
       if (id.indexOf('!') === 0) {
-        fnid = id.replace('!', '');
-        result = !Object.assign({}, fn, custom)[fnid](input, args);
+        f = id.replace('!', '');
+        result = !Object.assign({}, fn, custom)[f](left, right);
       } else {
-        result = Object.assign({}, fn, custom)[fnid](input, args);
+        result = Object.assign({}, fn, custom)[f](left, right);
       }
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(`regent error:
-        fn: "${fnid}"
-        input: "${JSON.stringify(input)}"
-        args: "${JSON.stringify(args)}"
+        fn: "${f}"
+        left: "${JSON.stringify(left)}"
+        right: "${JSON.stringify(right)}"
         error: ${e}
       `);
     }

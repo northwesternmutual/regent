@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Javascript logic framework",
   "main": "lib/regent.js",
   "scripts": {
@@ -22,9 +22,11 @@
   "keywords": [
     "logic",
     "engine",
-    "rules"
+    "rules",
+    "self-documenting",
+    "business"
   ],
-  "author": "Ivan Eisenberg",
+  "author": "Northwestern Mutual",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/northwesternmutual/regent/issues"
@@ -36,8 +38,7 @@
     "babel-eslint": "^8.1.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -55,6 +56,10 @@
   },
   "dependencies": {
     "lodash.get": "^4.4.2",
+    "lodash.includes": "^4.3.0",
+    "lodash.isequal": "^4.5.0",
+    "lodash.isobject": "^3.0.2",
+    "lodash.isstring": "^4.0.1",
     "lodash.set": "^4.3.2"
   },
   "nyc": {
