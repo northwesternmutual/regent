@@ -626,7 +626,7 @@ const data = {
 
 ### equals
 
-Uses the [equals operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is equal to `right`.
+Uses the [strict equals operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is equal to `right`.
 
 ```javascript
 const data = {
