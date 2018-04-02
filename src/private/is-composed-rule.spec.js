@@ -32,11 +32,11 @@ test('isComposedRule should recognize a NOT rules', (assert) => {
   assert.end();
 });
 
-test('isComposedRule should return false if the "not" property is not a regent rule', (assert) => {
+test('isComposedRule should return true even if the "not" property is not a regent rule', (assert) => {
   const rule = {
     not: 'string value',
   };
 
-  assert.false(isComposedRule(rule));
+  assert.true(isComposedRule(rule));
   assert.end();
 });

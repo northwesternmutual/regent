@@ -1,6 +1,6 @@
 import test from 'tape';
 import evaluateRule from './evaluate-rule';
-import { or, not } from '../index';
+import { or, not, and } from '../index';
 
 test('evaluateRule should be a function', (assert) => {
   assert.equal(typeof evaluateRule, 'function');
@@ -87,5 +87,45 @@ test('evaluateRule should correctly evaluate a NOT rule', (assert) => {
   };
   assert.true(evaluateRule(notPirate, data), 'should not be a pirate');
   assert.false(evaluateRule(pirate, data), 'should be a pirate');
+  assert.end();
+});
+
+
+test('evaluateRule should handle deeply nested rules', (assert) => {
+  const foo = { left: '@foo', fn: 'equals', right: 'foo' };
+  const bar = { left: '@bar', fn: 'equals', right: 'bar' };
+  const baz = { left: '@baz', fn: 'equals', right: 'baz' };
+  const fooOrBar = or(foo, bar);
+  const fooOrBarOrBaz = or(fooOrBar, baz);
+  const fooAndBaz = and(foo, baz);
+
+  const data = {
+    foo: 'foo',
+    bar: 'asdf',
+    baz: 'asdf',
+  };
+
+  let actual = evaluateRule(fooOrBarOrBaz, data);
+  let expected = true;
+  assert.equal(actual, expected);
+
+  actual = evaluateRule(or(fooAndBaz, bar));
+  expected = false;
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('evaluateRule should work with a composed not rule', (assert) => {
+  const foo = { left: '@foo', fn: 'equals', right: 'foo' };
+  const bar = { left: '@bar', fn: 'equals', right: 'bar' };
+  const fooOrBar = or(foo, bar);
+  const notFooOrBar = not(fooOrBar);
+  const data = {
+    foo: 'not foo',
+    bar: 'not bar',
+  };
+  const actual = evaluateRule(notFooOrBar, data);
+  const expected = true;
+  assert.equal(actual, expected);
   assert.end();
 });
