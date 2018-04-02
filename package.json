@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Javascript logic framework",
   "main": "lib/regent.js",
   "scripts": {
