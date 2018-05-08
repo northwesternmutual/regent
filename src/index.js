@@ -25,6 +25,11 @@ export const or = (...rules) => ({
   rules,
 });
 
+export const xor = (...rules) => ({
+  compose: 'xor',
+  rules,
+});
+
 export const and = (...rules) => ({
   compose: 'and',
   rules,
@@ -69,6 +74,7 @@ export const init = (custom = {}) => ({
   explain,
   not,
   or,
+  xor,
   evaluate: makeRegentFactory(evaluate, custom),
   filter: makeRegentFactory(filter, custom),
   find: makeRegentFactory(find, custom),

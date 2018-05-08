@@ -9,17 +9,21 @@ export default (obj, data, custom = {}) => {
     result = !evaluateRule(notRule, data, custom);
   } else {
     const action = obj.compose;
+    const fxn = rule => (
+      evaluateRule(rule, data, custom)
+    );
+
     switch (action) {
       case 'or':
-        result = obj.rules.some(rule => (
-          evaluateRule(rule, data, custom)
-        ));
+        result = obj.rules.some(fxn);
+        break;
+
+      case 'xor':
+        result = obj.rules.some(fxn) && !obj.rules.every(fxn);
         break;
 
       case 'and':
-        result = obj.rules.every(rule => (
-          evaluateRule(rule, data, custom)
-        ));
+        result = obj.rules.every(fxn);
         break;
 
       default:
@@ -27,7 +31,6 @@ export default (obj, data, custom = {}) => {
         break;
     }
   }
-
 
   return result;
 };
