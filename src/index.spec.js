@@ -1,5 +1,5 @@
 import test from 'tape';
-import { find, filter, init, crown, evaluate, or, and, not, explain, constants, makeRegentFactory } from './index';
+import { find, filter, init, crown, evaluate, or, xor, and, not, explain, constants, makeRegentFactory } from './index';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -222,11 +222,12 @@ test('constants should be an object', (assert) => {
   assert.end();
 });
 
-test('init should return an object with and, not, or, find, filter, evaluate, and rule methods', (assert) => {
+test('init should return an object with and, not, or, xor, find, filter, evaluate, and rule methods', (assert) => {
   const regent = init();
   assert.equal(typeof regent.and, 'function');
   assert.equal(typeof regent.not, 'function');
   assert.equal(typeof regent.or, 'function');
+  assert.equal(typeof regent.xor, 'function');
   assert.equal(typeof regent.find, 'function');
   assert.equal(typeof regent.filter, 'function');
   assert.equal(typeof regent.explain, 'function');
@@ -333,6 +334,28 @@ test('ja.or should return a properly formatted or object', (assert) => {
   const actual = or(secondGreetingIsSayonara, secondGreetingIsGoodbye);
   const expected = {
     compose: 'or',
+    rules: [
+      secondGreetingIsSayonara,
+      secondGreetingIsGoodbye,
+    ],
+  };
+
+  assert.deepEqual(actual, expected);
+  assert.end();
+});
+
+test('ja.xor should be a function', (assert) => {
+  assert.equal(typeof xor, 'function');
+  assert.end();
+});
+
+test('ja.xor should return a properly formatted xor object', (assert) => {
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
+
+  const actual = xor(secondGreetingIsSayonara, secondGreetingIsGoodbye);
+  const expected = {
+    compose: 'xor',
     rules: [
       secondGreetingIsSayonara,
       secondGreetingIsGoodbye,
@@ -534,6 +557,16 @@ test('explain should stringify a composed OR rule', (assert) => {
   const mammal = or(human, dog);
   const actual = explain(mammal);
   const expected = '((@species equals "human") or (@species equals "dog"))';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('explain should stringify a composed XOR rule', (assert) => {
+  const human = { left: '@species', fn: 'equals', right: 'human' };
+  const dog = { left: '@species', fn: 'equals', right: 'dog' };
+  const mammal = xor(human, dog);
+  const actual = explain(mammal);
+  const expected = '((@species equals "human") xor (@species equals "dog"))';
   assert.equal(actual, expected);
   assert.end();
 });
