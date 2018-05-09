@@ -66,6 +66,31 @@ test('evaluateRule should correctly evaluate a composed rule', (assert) => {
   assert.end();
 });
 
+test('evaluateRule should throw when using a composed XOR object made without helper with more than 2 rules', (assert) => {
+  const secondGreetingIsSayonara = { left: '@greetings.second', fn: 'equals', right: 'sayonara' };
+  const secondGreetingIsGoodbye = { left: '@greetings.second', fn: 'equals', right: 'goodbye' };
+  const secondGreetingIsHello = { left: '@greetings.second', fn: 'equals', right: 'hello' };
+
+  const obj = {
+    greetings: {
+      first: 'hello',
+      second: 'goodbye',
+    },
+  };
+
+  const oneGreeting = {
+    compose: 'xor',
+    rules: [
+      secondGreetingIsSayonara,
+      secondGreetingIsGoodbye,
+      secondGreetingIsHello,
+    ],
+  };
+
+  assert.throws(() => evaluateRule(oneGreeting, obj));
+  assert.end();
+});
+
 test('evaluateRule should return true for a regex rule', (assert) => {
   const pirate = { left: '@saying', fn: 'regex', right: /yar/ };
   const data = {

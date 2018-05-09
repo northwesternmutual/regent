@@ -19,7 +19,9 @@ export default (obj, data, custom = {}) => {
         break;
 
       case 'xor':
-        result = obj.rules.some(fxn) && !obj.rules.every(fxn);
+        if (obj.rules.length !== 2) throw Error('XOR must take exactly 2 rules');
+        result = (fxn(obj.rules[0]) && !fxn(obj.rules[1]))
+          || (fxn(obj.rules[1]) && !fxn(obj.rules[0]));
         break;
 
       case 'and':

@@ -25,10 +25,13 @@ export const or = (...rules) => ({
   rules,
 });
 
-export const xor = (...rules) => ({
-  compose: 'xor',
-  rules,
-});
+export const xor = (...rules) => {
+  if (rules.length !== 2) throw Error('XOR must take exactly 2 rules');
+  return {
+    compose: 'xor',
+    rules,
+  };
+};
 
 export const and = (...rules) => ({
   compose: 'and',

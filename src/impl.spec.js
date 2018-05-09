@@ -24,6 +24,8 @@ test('Implement Regent without init()', (assert) => {
   const WET_BUT_NOT_TOO_WET = xor(IS_RAINING, IS_SNOWING);
   assert.true(evaluate(WET_BUT_NOT_TOO_WET, data), 'Should return true');
 
+  assert.throws(() => xor(IS_RAINING, IS_SNOWING, IS_COLD), 'XOR with more than 2 arguments should throw.');
+
   const explanation = explain(SHOULD_WEAR_COAT, data);
   assert.equal(explanation, '((@precipitation->["rain"] includes "rain") or (@precipitation->["rain"] includes "snow") or (@temperature->78 lessThan 75))', 'Regent explain is not working properly');
 
