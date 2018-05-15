@@ -18,12 +18,13 @@ test('Implement Regent without init()', (assert) => {
   assert.equal(explain(NO_PRECIPITATION), '(NOT (@precipitation includes "rain") and NOT (@precipitation includes "snow"))', 'Explain should work for NOT rules');
 
   const SHOULD_WEAR_COAT = or(IS_RAINING, IS_SNOWING, IS_COLD);
-
   assert.true(evaluate(SHOULD_WEAR_COAT, data), 'Should Wear Coat should return true');
 
   const WET_BUT_NOT_TOO_WET = xor(IS_RAINING, IS_SNOWING);
   assert.true(evaluate(WET_BUT_NOT_TOO_WET, data), 'Should return true');
 
+  assert.throws(() => xor(), 'XOR with 0 arguments should throw.');
+  assert.throws(() => xor(IS_RAINING), 'XOR with 1 argument should throw.');
   assert.throws(() => xor(IS_RAINING, IS_SNOWING, IS_COLD), 'XOR with more than 2 arguments should throw.');
 
   const explanation = explain(SHOULD_WEAR_COAT, data);
