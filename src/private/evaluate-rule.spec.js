@@ -67,7 +67,6 @@ test('evaluateRule should correctly evaluate a composed rule', (assert) => {
 });
 
 test('evaluateRule should throw when using a composed XOR object made without helper with 0 rules', (assert) => {
-
   const obj = {
     greetings: {
       first: 'hello',
