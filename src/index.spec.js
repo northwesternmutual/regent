@@ -654,6 +654,17 @@ test('explain should work for rules with only a left and fn prop (empty)', (asse
   assert.end();
 });
 
+test('explain should work for rules with only a right and fn prop (empty)', (assert) => {
+  const data = {
+    precip: ['hail'],
+  };
+  const NO_PRECIP = { fn: 'empty', right: '@precip' };
+  const actual = explain(NO_PRECIP, data);
+  const expected = '(empty @precip->["hail"])';
+  assert.equal(actual, expected);
+  assert.end();
+});
+
 test('makeRegentFactory should be a function', (assert) => {
   assert.equal(typeof makeRegentFactory, 'function');
   assert.end();
