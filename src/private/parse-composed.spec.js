@@ -51,6 +51,69 @@ test('parseComposed should evaluate the rules in the rules array, and return boo
   assert.end();
 });
 
+test('parseComposed should evaluate the rules in the rules array, and return bool given the comp type "xor"', (assert) => {
+  let row = {
+    compose: 'xor',
+    rules: [
+      { left: '@greetings.second', fn: 'equals', right: 'sayonara' },
+      { left: '@greetings.second', fn: 'equals', right: 'goodbye' },
+    ],
+  };
+
+  let data = {
+    greetings: {
+      first: 'hello',
+      second: 'goodbye',
+    },
+  };
+
+  let actual = parseComposed(row, data);
+  let expected = true;
+  assert.equal(actual, expected, 'should return true because second rule is true');
+
+  data = {
+    greetings: {
+      first: 'hello',
+      second: 'sayonara',
+    },
+  };
+
+  actual = parseComposed(row, data);
+  expected = true;
+  assert.equal(actual, expected, 'should return true because first rule is true');
+
+  data = {
+    greetings: {
+      first: 'hello',
+      second: 'caio',
+    },
+  };
+
+  actual = parseComposed(row, data);
+  expected = false;
+  assert.equal(actual, expected, 'should return false because neither rule is true');
+
+  row = {
+    compose: 'xor',
+    rules: [
+      { left: '@greetings.first', fn: 'equals', right: 'sayonara' },
+      { left: '@greetings.second', fn: 'equals', right: 'goodbye' },
+    ],
+  };
+
+  data = {
+    greetings: {
+      first: 'sayonara',
+      second: 'goodbye',
+    },
+  };
+
+  actual = parseComposed(row, data);
+  expected = false;
+  assert.equal(actual, expected, 'should return false because both rules are true');
+  assert.end();
+});
+
 test('parseComposed should evaluate the rules in the rules array and return bool given the comp type "and"', (assert) => {
   const row = {
     compose: 'and',
