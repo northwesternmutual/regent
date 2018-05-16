@@ -51,7 +51,12 @@ export const explain = (rule, data) => {
       leftPart = isLookup(rule.left) ? rule.left : JSON.stringify(rule.left);
       rightPart = isLookup(rule.right) ? rule.right : JSON.stringify(rule.right);
     }
-    return `(${leftPart} ${rule.fn} ${rightPart})`;
+    const arr = [
+      leftPart,
+      rule.fn,
+      rightPart,
+    ].filter(x => x);
+    return `(${arr.join(' ')})`;
   }
 
   if (get(rule, 'not')) {

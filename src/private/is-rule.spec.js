@@ -19,3 +19,15 @@ test('isRule should return false when called with a poorly-formed rule', (assert
   assert.false(isRule(data));
   assert.end();
 });
+
+test('isRule should return true for rules that have only a left and fn property.', (assert) => {
+  const data = { left: '@foo', fn: 'bar' };
+  assert.true(isRule(data));
+  assert.end();
+});
+
+test('isRule should return true for rules that have only a right and fn property.', (assert) => {
+  const data = { fn: 'bar', right: '@foo' };
+  assert.true(isRule(data));
+  assert.end();
+});
