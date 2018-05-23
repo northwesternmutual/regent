@@ -518,16 +518,16 @@ explain(PRECIPITATION)
 `explain` also accepts an optional data object as a second argument. When provided explain will show the actual values of the lookup keys in the explanation.
 
 ```javascript
-const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
 const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
-const PRECIPITATION = and(IS_RAINING, IS_SNOWING);
+const PRECIPITATION = or(IS_RAINING, IS_SNOWING);
 
 const data = {
   precipitation: ['sleet', 'hail']
 };
 
 explain(PRECIPITATION, data)
-// => ​​​​​((@precipitation->["sleet","hail"] includes "snow") and (@precipitation->["sleet","hail"] includes "snow"))
+// => ​​​​​((@precipitation->["sleet","hail"] includes "rain") or (@precipitation->["sleet","hail"] includes "snow"))
 ```
 
 # API Reference
