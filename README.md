@@ -507,12 +507,12 @@ Other notable use cases of a custom predicate could include custom date formatti
 `explain` was built to help a developer visualize their logic. Because we are defining small rules and composing them together, a rule abstracts away the actual logic check. Running the rule through explain returns the logic in a human readable form. Check out this example.
 
 ```javascript
-const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
 const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
-const PRECIPITATION = and(IS_RAINING, IS_SNOWING);
+const PRECIPITATION = or(IS_RAINING, IS_SNOWING);
 
 explain(PRECIPITATION)
-// => ​​​​​((@precipitation includes "snow") and (@precipitation includes "snow"))​​​​​
+// => ​​​​​((@precipitation includes "rain") or (@precipitation includes "snow"))​​​​​
 ```
 
 `explain` also accepts an optional data object as a second argument. When provided explain will show the actual values of the lookup keys in the explanation.
