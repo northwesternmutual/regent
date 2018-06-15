@@ -142,7 +142,7 @@ Both `left` and `right` support lookup values. Please visit [the Lodash.get docs
 
 Regent's built in predicates are:
 
-`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `greaterThanEquals`, `includes`, `lessThan`, `lessThanEquals`, `regex`, `typeOf`
+`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `greaterThanOrEquals`, `includes`, `lessThan`, `lessThanOrEquals`, `regex`, `typeOf`
 
 You can learn more about predicates in the [Predicates](#predicates) section of the docs.
 
@@ -650,7 +650,7 @@ const data = {
 { left: '@highTemp', fn: 'greaterThan', right: '@currentTemp' } // true
 ```
 
-### greaterThanEquals
+### greaterThanOrEquals
 
 Uses the [greater than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is greater than or equal to `right`.
 
@@ -660,14 +660,14 @@ const data = {
   highTemp: 72
 }
 
-{ left: '@highTemp', fn: 'greaterThanEquals', right: '@currentTemp' } // true
+{ left: '@highTemp', fn: 'greaterThanOrEquals', right: '@currentTemp' } // true
 
 const data = {
   currentTemp: 72,
   highTemp: 72
 }
 
-{ left: '@highTemp', fn: 'greaterThanEquals', right: '@currentTemp' } // true
+{ left: '@highTemp', fn: 'greaterThanOrEquals', right: '@currentTemp' } // true
 ```
 
 ### includes
@@ -693,7 +693,7 @@ const data = {
 { left: '@currentTemp', fn: 'lessThan', right: '@highTemp' } // true
 ```
 
-### lessThanEquals
+### lessThanOrEquals
 
 Uses the [less than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is less than or equal to `right`.
 
@@ -703,14 +703,14 @@ const data = {
   highTemp: 68
 }
 
-{ left: '@currentTemp', fn: 'lessThanEquals', right: '@highTemp' } // true
+{ left: '@currentTemp', fn: 'lessThanOrEquals', right: '@highTemp' } // true
 
 const data = {
   currentTemp: 68,
   highTemp: 68
 }
 
-{ left: '@currentTemp', fn: 'lessThanEquals', right: '@highTemp' } // true
+{ left: '@currentTemp', fn: 'lessThanOrEquals', right: '@highTemp' } // true
 ```
 
 ### regex
