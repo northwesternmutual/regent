@@ -4,8 +4,10 @@ import deepEquals from './functions/deep-equals';
 import empty from './functions/empty';
 import equals from './functions/equals';
 import greaterThan from './functions/greater-than';
+import greaterThanOrEquals from './functions/greater-than-equals';
 import includes from './functions/includes';
 import lessThan from './functions/less-than';
+import lessThanOrEquals from './functions/less-than-equals';
 import regex from './functions/regex';
 import typeOf from './functions/type-of';
 
@@ -16,8 +18,10 @@ const fn = {
   empty,
   equals,
   greaterThan,
+  greaterThanOrEquals,
   includes,
   lessThan,
+  lessThanOrEquals,
   regex,
   typeOf,
 };

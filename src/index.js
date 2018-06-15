@@ -97,8 +97,10 @@ export const constants = {
   empty: 'empty',
   equals: 'equals',
   greaterThan: 'greaterThan',
+  greaterThanOrEquals: 'greaterThanOrEquals',
   includes: 'includes',
   lessThan: 'lessThan',
+  lessThanOrEquals: 'lessThanOrEquals',
   regex: 'regex',
   typeOf: 'typeOf',
 };

@@ -142,7 +142,7 @@ Both `left` and `right` support lookup values. Please visit [the Lodash.get docs
 
 Regent's built in predicates are:
 
-`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `includes`, `lessThan`, `regex`, `typeOf`
+`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `greaterThanOrEquals`, `includes`, `lessThan`, `lessThanOrEquals`, `regex`, `typeOf`
 
 You can learn more about predicates in the [Predicates](#predicates) section of the docs.
 
@@ -650,6 +650,26 @@ const data = {
 { left: '@highTemp', fn: 'greaterThan', right: '@currentTemp' } // true
 ```
 
+### greaterThanOrEquals
+
+Uses the [greater than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is greater than or equal to `right`.
+
+```javascript
+const data = {
+  currentTemp: 75,
+  highTemp: 72
+}
+
+{ left: '@highTemp', fn: 'greaterThanOrEquals', right: '@currentTemp' } // true
+
+const data = {
+  currentTemp: 72,
+  highTemp: 72
+}
+
+{ left: '@highTemp', fn: 'greaterThanOrEquals', right: '@currentTemp' } // true
+```
+
 ### includes
 
 Uses [lodash.includes](https://lodash.com/docs/4.17.5#includes) to check if `right` is in `left`.
@@ -671,6 +691,26 @@ const data = {
 }
 
 { left: '@currentTemp', fn: 'lessThan', right: '@highTemp' } // true
+```
+
+### lessThanOrEquals
+
+Uses the [less than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is less than or equal to `right`.
+
+```javascript
+const data = {
+  currentTemp: 60,
+  highTemp: 68
+}
+
+{ left: '@currentTemp', fn: 'lessThanOrEquals', right: '@highTemp' } // true
+
+const data = {
+  currentTemp: 68,
+  highTemp: 68
+}
+
+{ left: '@currentTemp', fn: 'lessThanOrEquals', right: '@highTemp' } // true
 ```
 
 ### regex
