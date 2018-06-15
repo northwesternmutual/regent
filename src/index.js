@@ -25,6 +25,14 @@ export const or = (...rules) => ({
   rules,
 });
 
+export const xor = (...rules) => {
+  if (rules.length !== 2) throw Error('XOR must take exactly 2 rules');
+  return {
+    compose: 'xor',
+    rules,
+  };
+};
+
 export const and = (...rules) => ({
   compose: 'and',
   rules,
@@ -74,6 +82,7 @@ export const init = (custom = {}) => ({
   explain,
   not,
   or,
+  xor,
   evaluate: makeRegentFactory(evaluate, custom),
   filter: makeRegentFactory(filter, custom),
   find: makeRegentFactory(find, custom),
@@ -88,8 +97,10 @@ export const constants = {
   empty: 'empty',
   equals: 'equals',
   greaterThan: 'greaterThan',
+  greaterThanOrEquals: 'greaterThanOrEquals',
   includes: 'includes',
   lessThan: 'lessThan',
+  lessThanOrEquals: 'lessThanOrEquals',
   regex: 'regex',
   typeOf: 'typeOf',
 };

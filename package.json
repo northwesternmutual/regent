@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Javascript logic framework",
   "main": "lib/regent.js",
   "scripts": {
@@ -64,9 +64,7 @@
   },
   "nyc": {
     "exclude": [
-      "**/*styles.js",
-      "**/*spec.js",
-      "src/polyfills/*"
+      "**/*spec.js"
     ]
   }
 }

@@ -1,5 +1,5 @@
 import test from 'tape';
-import { evaluate, and, or, explain, not, filter, find } from './index';
+import { evaluate, and, or, xor, explain, not, filter, find } from './index';
 
 // An example of using Regent without custom predicates
 test('Implement Regent without init()', (assert) => {
@@ -18,8 +18,15 @@ test('Implement Regent without init()', (assert) => {
   assert.equal(explain(NO_PRECIPITATION), '(NOT (@precipitation includes "rain") and NOT (@precipitation includes "snow"))', 'Explain should work for NOT rules');
 
   const SHOULD_WEAR_COAT = or(IS_RAINING, IS_SNOWING, IS_COLD);
-
   assert.true(evaluate(SHOULD_WEAR_COAT, data), 'Should Wear Coat should return true');
+
+  const WET_BUT_NOT_TOO_WET = xor(IS_RAINING, IS_SNOWING);
+  assert.true(evaluate(WET_BUT_NOT_TOO_WET, data), 'Should return true');
+
+  assert.throws(() => xor(), 'XOR with 0 arguments should throw.');
+  assert.throws(() => xor(IS_RAINING), 'XOR with 1 argument should throw.');
+  assert.throws(() => xor(IS_RAINING, IS_SNOWING, IS_COLD), 'XOR with more than 2 arguments should throw.');
+
   const explanation = explain(SHOULD_WEAR_COAT, data);
   assert.equal(explanation, '((@precipitation->["rain"] includes "rain") or (@precipitation->["rain"] includes "snow") or (@temperature->78 lessThan 75))', 'Regent explain is not working properly');
 

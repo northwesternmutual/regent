@@ -27,6 +27,30 @@ test('lessThan should return false if "left" is equal to "right"', (assert) => {
   assert.end();
 });
 
+test('lessThan should return false if the key is undefined', (assert) => {
+  const actual = lessThan(undefined, 0);
+  const expected = false;
+  assert.equal(actual, expected);
+  assert.end();
+});
+
+test('lessThan should return false if the key is a string that parses to NaN', (assert) => {
+  const redProps = [
+    'cool',
+    'some string',
+    'undefined',
+    'null',
+    'false',
+    'true',
+  ];
+  redProps.forEach((val) => {
+    const actual = lessThan(val, 0);
+    const expected = false;
+    assert.equal(actual, expected, `should return false when passed ${val}`);
+  });
+  assert.end();
+});
+
 test('lessThan should compare strings based on standard lexicographical ordering, using Unicode values', (assert) => {
   assert.equal(lessThan('a', 'b'), true, 'case 1');
   assert.equal(lessThan('aaaa', 'abaa'), true, 'case 2');

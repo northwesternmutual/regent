@@ -142,7 +142,7 @@ Both `left` and `right` support lookup values. Please visit [the Lodash.get docs
 
 Regent's built in predicates are:
 
-`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `includes`, `lessThan`, `regex`, `typeOf`
+`dateAfterInclusive`, `dateBeforeInclusive`, `deepEquals`, `empty`, `equals`, `greaterThan`, `greaterThanOrEquals`, `includes`, `lessThan`, `lessThanOrEquals`, `regex`, `typeOf`
 
 You can learn more about predicates in the [Predicates](#predicates) section of the docs.
 
@@ -507,27 +507,27 @@ Other notable use cases of a custom predicate could include custom date formatti
 `explain` was built to help a developer visualize their logic. Because we are defining small rules and composing them together, a rule abstracts away the actual logic check. Running the rule through explain returns the logic in a human readable form. Check out this example.
 
 ```javascript
-const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
 const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
-const PRECIPITATION = and(IS_RAINING, IS_SNOWING);
+const PRECIPITATION = or(IS_RAINING, IS_SNOWING);
 
 explain(PRECIPITATION)
-// => ​​​​​((@precipitation includes "snow") and (@precipitation includes "snow"))​​​​​
+// => ​​​​​((@precipitation includes "rain") or (@precipitation includes "snow"))​​​​​
 ```
 
 `explain` also accepts an optional data object as a second argument. When provided explain will show the actual values of the lookup keys in the explanation.
 
 ```javascript
-const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'snow' };
+const IS_RAINING = { left: '@precipitation', fn: 'includes', right: 'rain' };
 const IS_SNOWING = { left: '@precipitation', fn: 'includes', right: 'snow' };
-const PRECIPITATION = and(IS_RAINING, IS_SNOWING);
+const PRECIPITATION = or(IS_RAINING, IS_SNOWING);
 
 const data = {
   precipitation: ['sleet', 'hail']
 };
 
 explain(PRECIPITATION, data)
-// => ​​​​​((@precipitation->["sleet","hail"] includes "snow") and (@precipitation->["sleet","hail"] includes "snow"))
+// => ​​​​​((@precipitation->["sleet","hail"] includes "rain") or (@precipitation->["sleet","hail"] includes "snow"))
 ```
 
 # API Reference
@@ -650,6 +650,26 @@ const data = {
 { left: '@highTemp', fn: 'greaterThan', right: '@currentTemp' } // true
 ```
 
+### greaterThanOrEquals
+
+Uses the [greater than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is greater than or equal to `right`.
+
+```javascript
+const data = {
+  currentTemp: 75,
+  highTemp: 72
+}
+
+{ left: '@highTemp', fn: 'greaterThanOrEquals', right: '@currentTemp' } // true
+
+const data = {
+  currentTemp: 72,
+  highTemp: 72
+}
+
+{ left: '@highTemp', fn: 'greaterThanOrEquals', right: '@currentTemp' } // true
+```
+
 ### includes
 
 Uses [lodash.includes](https://lodash.com/docs/4.17.5#includes) to check if `right` is in `left`.
@@ -671,6 +691,26 @@ const data = {
 }
 
 { left: '@currentTemp', fn: 'lessThan', right: '@highTemp' } // true
+```
+
+### lessThanOrEquals
+
+Uses the [less than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns true if `left` is less than or equal to `right`.
+
+```javascript
+const data = {
+  currentTemp: 60,
+  highTemp: 68
+}
+
+{ left: '@currentTemp', fn: 'lessThanOrEquals', right: '@highTemp' } // true
+
+const data = {
+  currentTemp: 68,
+  highTemp: 68
+}
+
+{ left: '@currentTemp', fn: 'lessThanOrEquals', right: '@highTemp' } // true
 ```
 
 ### regex
