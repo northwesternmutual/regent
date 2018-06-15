@@ -35,6 +35,10 @@ test('greaterThan should return false if the value given is less than or equal t
   expected = false;
   assert.equal(actual, expected);
 
+  actual = greaterThan(4, 4);
+  expected = false;
+  assert.equal(actual, expected);
+
   assert.end();
 });
 
