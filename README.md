@@ -758,6 +758,12 @@ const data = {
 
 `or(rule1, rule2, [rule3], [rule4...])`
 
+### xor
+
+`xor` accepts exactly 2 rules as arguments and returns a composed rule that returns true if exactly 1 of the subrules is true and the other is false.
+
+`xor(rule1, rule2)`
+
 ## Queries
 
 ### evaluate
@@ -832,4 +838,3 @@ const myClothing = filter(clothingLogic, data); // =>
 # Examples
 
 For more examples please see our [examples folder](https://github.com/northwesternmutual/regent/tree/master/examples).
-
