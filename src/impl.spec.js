@@ -1,5 +1,5 @@
 import test from 'tape';
-import { evaluate, and, or, xor, explain, not, filter, find } from './index';
+import { evaluate, and, or, xor, explain, not, filter, find, init } from './index';
 
 // An example of using Regent without custom predicates
 test('Implement Regent without init()', (assert) => {
