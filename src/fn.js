@@ -11,6 +11,7 @@ import includes from './functions/includes';
 import lessThan from './functions/less-than';
 import lessThanOrEquals from './functions/less-than-equals';
 import regex from './functions/regex';
+import some from './functions/some';
 import typeOf from './functions/type-of';
 
 export default (id, custom) => (
@@ -28,6 +29,7 @@ export default (id, custom) => (
       lessThan,
       lessThanOrEquals,
       regex,
+      some,
       typeOf,
     };
 
