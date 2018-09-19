@@ -28,7 +28,7 @@ const data = { isRaining: true };
 const isUmbrellaNeeded = evaluate(isRaining, data); // true
 ```
 
-[Source](../examples/basic-example.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/basic-example-weather.js)
 
 Taking the previous example a bit further, we can refine the scenario to be more precise. We can create and combine multiple rules to test this condition:
 
@@ -51,45 +51,58 @@ const isUmbrellaNeeded = evaluate(isRainingAndCalm, data); // false
 
 ## Troubleshooting
 
-When conditional logic becomes too complex (and it will), use Regent’s [explain](docs/Queries.md#explain) method to simplify the abstraction.
+When conditional logic becomes too complex (and it will), use Regent’s [explain](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#explain) method to simplify the abstraction.
 
 ## Documentation
 
-- [Rules](docs/Rules.md)
-- [Predicates](docs/Predicates.md)
-  - [Built-in Predicates](docs/Predicates.md#built-in-predicates)
-    - [constants](docs/Predicates.md#constants)
-    - [dateAfterInclusive](docs/Predicates.md#dateAfterInclusive)
-    - [dateBeforeInclusive](docs/Predicates.md#dateBeforeInclusive)
-    - [deepEquals](docs/Predicates.md#deepEquals)
-    - [empty](docs/Predicates.md#empty)
-    - [equals](docs/Predicates.md#equals)
-    - [greaterThan](docs/Predicates.md#greaterThan)
-    - [greaterThanOrEquals](docs/Predicates.md#greaterThanOrEquals)
-    - [includes](docs/Predicates.md#includes)
-    - [lessThan](docs/Predicates.md#lessThan)
-    - [lessThanOrEquals](docs/Predicates.md#lessThanOrEquals)
-    - [regex](docs/Predicates.md#regex)
-    - [typeOf](docs/Predicates.md#typeOf)
-  - [Custom Predicates](docs/Predicates.md#custom-predicates)
-    - [crown](docs/Predicates.md#crown)
-    - [init](docs/Predicates.md#init)
-- [Composition](docs/Composition.md)
-  - [and](docs/Composition.md#and)
-  - [not](docs/Composition.md#not)
-  - [or](docs/Composition.md#or)
-  - [xor](docs/Composition.md#xor)
-- [Queries](docs/Queries.md)
-  - [evaluate](docs/Queries.md#evaluate)
-  - [explain](docs/Queries.md#explain)
-  - [filter](docs/Queries.md#filter)
-  - [find](docs/Queries.md#find)
+- [Rules](https://github.com/northwesternmutual/regent/blob/master/docs/Rules.md)
+- [Predicates](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md)
+  - [Built-in Predicates](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#built-in-predicates)
+    - [`constants`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#constants)
+    - [`dateAfterInclusive`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#dateafterinclusive)
+    - [`dateBeforeInclusive`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#datebeforeinclusive)
+    - [`deepEquals`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#deepequals)
+    - [`empty`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#empty)
+    - [`equals`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#equals)
+    - [`greaterThan`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#greaterthan)
+    - [`greaterThanOrEquals`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#greaterthanorequals)
+    - [`includes`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#includes)
+    - [`lessThan`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#lessthan)
+    - [`lessThanOrEquals`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#lessthanorequals)
+    - [`regex`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#regex)
+    - [`typeOf`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#typeof)
+  - [Custom Predicates](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#custom-predicates)
+    - [`crown`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#crown)
+    - [`init`](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#init)
+- [Composition](https://github.com/northwesternmutual/regent/blob/master/docs/Composition.md)
+  - [`and`](https://github.com/northwesternmutual/regent/blob/master/docs/Composition.md#and)
+  - [`not`](https://github.com/northwesternmutual/regent/blob/master/docs/Composition.md#not)
+  - [`or`](https://github.com/northwesternmutual/regent/blob/master/docs/Composition.md#or)
+  - [`xor`](https://github.com/northwesternmutual/regent/blob/master/docs/Composition.md#xor)
+- [Queries](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md)
+  - [`evaluate`](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#evaluate)
+  - [`explain`](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#explain)
+  - [`filter`](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#filter)
+  - [`find`](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#find)
 
 ## Examples
 
-- [Weather](examples/weather.js)
-- [Batman Flow Chart](examples/batman-flow-chart.js)
-- TODO: List more examples
+- [Basic Example](https://github.com/northwesternmutual/regent/blob/master/examples/basic-example-weather.js)
+- [Advanced Example: Weather](https://github.com/northwesternmutual/regent/blob/master/examples/advanced-example-weather.js)
+- [Advanced Example: Batman](https://github.com/northwesternmutual/regent/blob/master/examples/advanced-example-batman.js)
+- [Custom Predicate: Data Parsing](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-data-parsing.js)
+- [Custom Predicate: Global Registration](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-global-registration.js)
+- [Custom Predicate: Query Argument](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-query-argument.js)
+- [Custom Predicate: With Lodash](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-with-lodash.js)
+- [Composition with `and`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-and.js)
+- [Composition with `and` (manual)](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-and-manually.js)
+- [Composition with `not`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-not.js)
+- [Composition with `or`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-or.js)
+- [Composition with `xor`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-xor.js)
+- [Querying with `evaluate`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-evaluate.js)
+- [Querying with `explain`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-explain.js)
+- [Querying with `filter`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-filter.js)
+- [Querying with `find`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-find.js)
 
 ## License
 

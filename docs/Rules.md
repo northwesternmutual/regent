@@ -12,7 +12,7 @@ const isRaining = {
 
 ### `left`
 
-The `left` property represents the left side of a [predicate](./Predicates.md). In the above example, the `@` character means this value will be looked up in your data object. When you specify a lookup value with an `@` Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
+The `left` property represents the left side of a [predicate](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md). In the above example, the `@` character means this value will be looked up in your data object. When you specify a lookup value with an `@` Regent uses `lodash.get` to evaluate strings representing fully qualified object paths. This means you can navigate deep into the data structure for your rule, like this:
 
 ```javascript
 import { evaluate } from 'regent';
@@ -45,7 +45,7 @@ const test = evaluate(isTomorrowsRecordHighRecent, data); // true
 
 ### `fn`
 
-The `fn` property represents a predicate. Regent ships with a multitude of built-in [predicates](./Predicates.md), and also supports [custom predicates](./Predicates.md#custom-predicates). Our first example uses `equals`, which checks strict equality between the `left` and `right` values.
+The `fn` property represents a predicate. Regent ships with a multitude of built-in [predicates](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md), and also supports [custom predicates](https://github.com/northwesternmutual/regent/blob/master/docs/Predicates.md#custom-predicates). Our first example uses `equals`, which checks strict equality between the `left` and `right` values.
 
 ### `right`
 

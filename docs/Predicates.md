@@ -16,18 +16,18 @@ There are 2 types of Regent predicates:
 ## Built-in predicates
 
 - [constants](#constants)
-- [dateAfterInclusive](#dateAfterInclusive)
-- [dateBeforeInclusive](#dateBeforeInclusive)
-- [deepEquals](#deepEquals)
+- [dateAfterInclusive](#dateafterinclusive)
+- [dateBeforeInclusive](#datebeforeinclusive)
+- [deepEquals](#deepequals)
 - [empty](#empty)
 - [equals](#equals)
-- [greaterThan](#greaterThan)
-- [greaterThanOrEquals](#greaterThanOrEquals)
+- [greaterThan](#greaterthan)
+- [greaterThanOrEquals](#greaterthanorequals)
 - [includes](#includes)
-- [lessThan](#lessThan)
-- [lessThanOrEquals](#lessThanOrEquals)
+- [lessThan](#lessthan)
+- [lessThanOrEquals](#lessthanorequals)
 - [regex](#regex)
-- [typeOf](#typeOf)
+- [typeOf](#typeof)
 
 ### `constants`
 
@@ -248,11 +248,11 @@ const { evaluate } = regent.init(customPredicates);
 export default regent.init(customPredicates);
 ```
 
-[Source](../examples/custom-predicate-global-registration.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-global-registration.js)
 
 ### 2. As a Query Argument
 
-The second way to tell Regent that custom predicates exist is to provide them as the optional third parameter to [Queries](./Queries.md). The advantage to passing predicates into [evaluate](./Queries.md#evaluate), [filter](./Queries.md#filter), or [find](./Queries.md#find) is that you don't need to keep the initialized object around, which is handy for querying isolated rules.
+The second way to tell Regent that custom predicates exist is to provide them as the optional third parameter to [Queries](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md). The advantage to passing predicates into [evaluate](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#evaluate), [filter](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#filter), or [find](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#find) is that you don't need to keep the initialized object around, which is handy for querying isolated rules.
 
 ```javascript
 import { evaluate, explain } from 'regent';
@@ -297,11 +297,11 @@ const isMike2 = explain(isFirstNameMike, data);
 console.log(isMike2); // (@firstName->"Mike" equalsMike)
 ```
 
-[Source](../examples/custom-predicate-query-argument.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-query-argument.js)
 
 ### Use Cases
 
 Notable use cases of custom predicates could include custom date formatting, or data parsing and manipulation that needs to be done before a logical expression can be expressed.
 
-- [Data Parsing](../examples/custom-predicate-data-parsing.js)
-- [Using Lodash](../examples/custom-predicate-with-lodash.js)
+- [Custom Predicate: Data Parsing](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-data-parsing.js)
+- [Custom Predicate: With Lodash](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-with-lodash.js)

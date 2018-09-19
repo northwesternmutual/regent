@@ -35,7 +35,7 @@ const data = { temperature: 78 };
 const isBeachDay = evaluate(isBeachTemperature, data); // true
 ```
 
-[Source](../examples/querying-with-evaluate.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-evaluate.js)
 
 ### `explain`
 
@@ -63,7 +63,7 @@ const isUmbrellaNeeded2 = explain(hasPrecipitation, data);
 // ((@precipitation->["sleet","hail"] includes "rain") or (@precipitation->["sleet","hail"] includes "snow"))
 ```
 
-[Source](../examples/querying-with-explain.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-explain.js)
 
 ### `filter`
 
@@ -97,7 +97,7 @@ const clothingLogicFiltered = filter(clothingLogic, data);
 // => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
 ```
 
-[Source](../examples/querying-with-filter.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-filter.js)
 
 ### `find`
 
@@ -129,7 +129,7 @@ const clothingItems = find(clothingLogic, data);
 // => { value: ['sandals', 't-shirt'], rule: isWarm }
 ```
 
-[Source](../examples/querying-with-find.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-find.js)
 
 ## A Thorough Example
 

@@ -48,7 +48,7 @@ const shouldIStayInside2 = explain(isBadWeather, data);
 console.log(shouldIStayInside2); // ((@isRaining->true equals true) and (@windSpeedInMph->20 greaterThan 15) and (@temperature->45 lessThan 55))
 ```
 
-[Source](../examples/composition-with-and.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-and.js)
 
 ### `or`
 
@@ -86,7 +86,7 @@ const shouldIDressWarm2 = explain(isRainingOrCold, data);
 console.log(shouldIDressWarm2); // ((@isRaining->true equals true) or (@temperature->45 lessThan 55))
 ```
 
-[Source](../examples/composition-with-or.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-or.js)
 
 ### `xor`
 
@@ -124,7 +124,7 @@ const isSmart2 = explain(isWaterproof, data);
 console.log(isSmart2); // (("@isRaining" equals true) xor ("@hasUmbrella" equals true))
 ```
 
-[Source](../examples/composition-with-xor.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-xor.js)
 
 ### `not`
 
@@ -165,7 +165,7 @@ console.log(shouldIWearAJacket2); // (@temperature->45 lessThan 55)
 console.log(shouldIWearATShirt2); // NOT (@temperature->45 lessThan 55)
 ```
 
-[Source](../examples/composition-with-not.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-not.js)
 
 ## Composing Rules Manually
 
@@ -208,4 +208,4 @@ const shouldIStayInside2 = explain(isBadWeather, data);
 console.log(shouldIStayInside2); // ((@isRaining->true equals true) and (@windSpeedInMph->20 greaterThan 15) and (@temperature->45 lessThan 55))
 ```
 
-[Source](../examples/composition-with-and-manually.js)
+[Source](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-and-manually.js)
