@@ -1,5 +1,5 @@
 import test from 'tape';
-import { evaluate, and, or, xor, explain, not, filter, find } from './index';
+import { init, evaluate, and, or, xor, explain, not, filter, find } from './index';
 
 // An example of using Regent without custom predicates
 test('Implement Regent without init()', (assert) => {
@@ -47,5 +47,20 @@ test('Implement Regent without init()', (assert) => {
   const firstResult = find(clothingLogic, data).value;
   assert.deepEqual(firstResult, ['sandals', 't-shirt'], 'Find should return the first matching row');
 
+  assert.end();
+});
+
+test('regent.explain', (assert) => {
+  const king = init();
+  const data = {
+    hello: 'world',
+    foo: ['bar', 'baz', 'biz'],
+  };
+  const matchesHello = { left: '@__', fn: 'equals', right: '@hello' };
+  const iterRule = { left: '@foo', fn: 'some', right: matchesHello };
+
+  const actual = king.explain(iterRule, data);
+  const expected = '(@foo->["bar","baz","biz"] some {"left":"@__","fn":"equals","right":"@hello"})';
+  assert.equal(actual, expected);
   assert.end();
 });
