@@ -51,7 +51,8 @@ const config = {
     'lodash.isobject': 'lodash.isobject',
     'lodash.isstring': 'lodash.isstring',
     'lodash.isequal': 'lodash.isequal',
-    'lodash.includes': 'lodash.includes'
+    'lodash.includes': 'lodash.includes',
+    'lodash.assign': 'lodash.assign'
   }
 };
 
