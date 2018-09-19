@@ -77,16 +77,20 @@ export const explain = (rule, data) => {
   return result;
 };
 
-export const init = (custom = {}) => ({
-  and,
-  explain,
-  not,
-  or,
-  xor,
-  evaluate: makeRegentFactory(evaluate, custom),
-  filter: makeRegentFactory(filter, custom),
-  find: makeRegentFactory(find, custom),
-});
+export const init = (custom = {}) => {
+  const evalRule = makeRegentFactory(evaluate, custom);
+  return ({
+    and,
+    evaluate: evalRule,
+    explain,
+    filter: makeRegentFactory(filter, custom),
+    find: makeRegentFactory(find, custom),
+    not,
+    or,
+    rule: evalRule,
+    xor,
+  });
+};
 
 export const crown = init;
 

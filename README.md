@@ -808,6 +808,8 @@ const data = {
 
 `evaluate(rule, data, [customPredicates])`
 
+_alias: rule_
+
 ### explain
 
 `explain` accepts a regent rule and returns a human readable description of the logic (and composed logic) that makes up the rule. It optionally accepts an object (data) which it will use to show the actual values of lookup properties in the description.
