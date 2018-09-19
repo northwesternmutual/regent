@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Javascript logic framework",
   "main": "lib/regent.js",
   "scripts": {
@@ -55,6 +55,7 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
+    "lodash.assign": "^4.2.0",
     "lodash.get": "^4.4.2",
     "lodash.includes": "^4.3.0",
     "lodash.isequal": "^4.5.0",
