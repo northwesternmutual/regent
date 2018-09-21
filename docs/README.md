@@ -218,6 +218,24 @@ const data = {
 { left: '@currentTemp', fn: 'equals', right: '@highTemp' } // true
 ```
 
+#### `every`
+
+Accepts an array as a left value, and a regent rule as a right value. Every will iterate over the array, and assign the current value to the `__` property on the data object. Every will return true if every rule passes. See also [some](#some)
+
+```javascript
+const data = {
+  historicTemperatures: [
+    { high: 78, low: 51 },
+    { high: 81, low: 49 },
+    { high: 89, low: 53 },
+  ]
+}
+
+const highTemperatureGreaterThan75 = { left: '@__.high', fn: 'greaterThan', right: 75 }
+
+const allTempsGreaterThan75 = { left: '@historicTemperatures', fn: 'every', right: highTemperatureGreaterThan75 } // true
+```
+
 #### `greaterThan`
 
 Uses the [greater than operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns `true` if `left` is greater than `right`.
@@ -306,6 +324,24 @@ const data = {
 
 { left: '@firstName', fn: 'regex', right: /[a-zA-Z]+/} // true
 { left: '@phone', fn: 'regex', right: /[a-zA-Z]+/ } // false
+```
+
+### `some`
+
+Accepts an array as a left value, and a regent rule as a right value. Some will iterate over the array, and assign the current value to the `__` property on the data object. Some will return true if any rule passes. See also [every](#every)
+
+```javascript
+const data = {
+  historicTemperatures: [
+    { high: 78, low: 51 },
+    { high: 81, low: 49 },
+    { high: 89, low: 53 },
+  ]
+}
+
+const highTemperatureLessThan80 = { left: '@__.high', fn: 'lessThan', right: 80 }
+
+const temperaturesNotAllAbove80 = { left: '@historicTemperatures', fn: 'every', right: highTemperatureLessThan80 } // true
 ```
 
 #### `typeOf`
@@ -645,6 +681,8 @@ The methods `filter` and `find` take an array of objects as the parameter, aka "
 The `evaluate` method takes a rule and a data object and returns a boolean value. It also optionally accepts an object of custom predicates. In the example below we are evaluating the rule `isBeachTemperature` against a data object.
 
 **API:** `evaluate(rule, data, [customPredicates])`
+
+_alias: rule_
 
 ```javascript
 import { evaluate } from 'regent';
