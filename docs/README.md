@@ -370,13 +370,13 @@ The first way is to use `regent.init` (or `regent.crown`). The advantage to usin
 
 An alias of `init` (sticking with the Regent theme).
 
-**API:** `crown([customPredicates])`
+**API:** `crown(customPredicates)`
 
 #### `init`
 
 The `init` method will return the full Regent API, with knowledge of custom predicates applied. The custom predicate property keys will become the reference strings to each custom predicate. The value of each property should be a function that accepts up to two arguments, and returns a boolean value.
 
-**API:** `init([customPredicates])`
+**API:** `init(customPredicates)`
 
 ```javascript
 import regent from 'regent';
