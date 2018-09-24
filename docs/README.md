@@ -123,7 +123,7 @@ There are 2 types of Regent predicates:
 1. [Built-in Predicates](#built-in-predicates)
 2. [Custom Predicates](#custom-predicates)
 
-## Built-in predicates
+### Built-in predicates
 
 - [constants](#constants)
 - [dateAfterInclusive](#dateAfterInclusive)
@@ -326,7 +326,7 @@ const data = {
 { left: '@phone', fn: 'regex', right: /[a-zA-Z]+/ } // false
 ```
 
-### `some`
+#### `some`
 
 Accepts an array as a left value, and a regent rule as a right value. Some will iterate over the array, and assign the current value to the `__` property on the data object. Some will return true if any rule passes. See also [every](#every)
 
@@ -362,17 +362,17 @@ const data = {
 
 Regent can be used with custom predicates for handling complex logical expressions not provided by the built-in predicates. A custom predicate is a function that accepts up to two arguments, `left` and `right`, and returns a boolean value. In order to use custom predicates we need to tell Regent that they exist. There are two ways to do that.
 
-#### 1. Registering Globally
+#### Registering Globally
 
 The first way is to use `regent.init` (or `regent.crown`). The advantage to using `init` when register your predicates with Regent is that you can evaluate multiple rules with the returned object. This is helpful when you have a large amount of rules to query. Custom predicates registered for global consumption enables sharing when leveraging module importing and exporting.
 
-#### `crown`
+##### `crown`
 
 An alias of `init` (sticking with the Regent theme).
 
 **API:** `crown(customPredicates)`
 
-#### `init`
+##### `init`
 
 The `init` method will return the full Regent API, with knowledge of custom predicates applied. The custom predicate property keys will become the reference strings to each custom predicate. The value of each property should be a function that accepts up to two arguments, and returns a boolean value.
 
@@ -396,7 +396,7 @@ export default regent.init(customPredicates);
 
 [Source](../examples/custom-predicate-global-registration.js)
 
-#### 2. As a Query Argument
+#### As a Query Argument
 
 The second way to tell Regent that custom predicates exist is to provide them as the optional third parameter to [Queries](./Queries.md). The advantage to passing predicates into [evaluate](./Queries.md#evaluate), [filter](./Queries.md#filter), or [find](./Queries.md#find) is that you don't need to keep the initialized object around, which is handy for querying isolated rules.
 
@@ -445,7 +445,7 @@ console.log(isMike2); // (@firstName->"Mike" equalsMike)
 
 [Source](../examples/custom-predicate-query-argument.js)
 
-#### Use Cases
+##### Use Cases
 
 Notable use cases of custom predicates could include custom date formatting, or data parsing and manipulation that needs to be done before a logical expression can be expressed.
 
@@ -662,7 +662,7 @@ const shouldIStayInside2 = explain(isBadWeather, data);
 console.log(shouldIStayInside2); // ((@isRaining->true equals true) and (@windSpeedInMph->20 greaterThan 15) and (@temperature->45 lessThan 55))
 ```
 
-### Queries
+## Queries
 
 Queries are methods that allow you to parse your rules into boolean values, except for `explain`, which returns a string value.
 
@@ -703,7 +703,7 @@ const isBeachDay = evaluate(isBeachTemperature, data); // true
 
 [Source](../examples/querying-with-evaluate.js)
 
-#### `explain`
+### `explain`
 
 Because we are defining small rules and composing them together, a rule abstracts away the actual logic check. To help visualize your rules, run them through the `explain` method and your logic will be sent back in human readable form. If you also provide your data object as the second argument, the result will also include the values of the lookup keys.
 
@@ -731,7 +731,7 @@ const isUmbrellaNeeded2 = explain(hasPrecipitation, data);
 
 [Source](../examples/querying-with-explain.js)
 
-#### `filter`
+### `filter`
 
 The `filter` query has the same signature as `find`, but returns an array of all the rows whose rules all return `true`. If there are no matches, it will return an empty array. You can think of it like `Array.filter()`. In the example below, `filter` will return an array of all rows that have a rule that evaluates to `true`.
 
@@ -765,7 +765,7 @@ const clothingLogicFiltered = filter(clothingLogic, data);
 
 [Source](../examples/querying-with-filter.js)
 
-#### `find`
+### `find`
 
 The `find` query will iterate over the logic array and return the entire object of first item whose rule returns `true`. It will **not** continue looking through the following rows. You can think of it like `Array.find()`. In the example below, the second array item will be returned, because `isWarm` returns `true`.
 
