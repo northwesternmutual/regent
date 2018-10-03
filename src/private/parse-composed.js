@@ -1,4 +1,6 @@
 import get from 'lodash.get';
+import every from 'lodash.every';
+import some from 'lodash.some';
 import evaluateRule from './evaluate-rule';
 
 export default (obj, data, custom = {}) => {
@@ -15,7 +17,7 @@ export default (obj, data, custom = {}) => {
 
     switch (action) {
       case 'or':
-        result = obj.rules.some(fxn);
+        result = some(obj.rules, fxn);
         break;
 
       case 'xor':
@@ -25,7 +27,7 @@ export default (obj, data, custom = {}) => {
         break;
 
       case 'and':
-        result = obj.rules.every(fxn);
+        result = every(obj.rules, fxn);
         break;
 
       default:

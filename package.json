@@ -40,6 +40,7 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "benchmark": "^2.1.4",
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-loader": "^1.9.0",
@@ -56,12 +57,14 @@
   },
   "dependencies": {
     "lodash.assign": "^4.2.0",
+    "lodash.every": "^4.6.0",
     "lodash.get": "^4.4.2",
     "lodash.includes": "^4.3.0",
     "lodash.isequal": "^4.5.0",
     "lodash.isobject": "^3.0.2",
     "lodash.isstring": "^4.0.1",
-    "lodash.set": "^4.3.2"
+    "lodash.set": "^4.3.2",
+    "lodash.some": "^4.6.0"
   },
   "nyc": {
     "exclude": [
