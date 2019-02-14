@@ -1,4 +1,5 @@
 import assign from 'lodash.assign';
+import isarray from 'lodash.isarray';
 import { evaluate } from '../index';
 import isRule from '../private/is-rule';
 
@@ -7,8 +8,8 @@ export default (left, right, data, custom) => {
     throw new Error('Regent: the right property of an every rule must be a regent rule');
   }
 
-  if (!Array.isArray(left)) {
-    throw new Error('Regent: the left property of an every rule must be an array');
+  if (!isarray(left)) {
+    return false;
   }
 
   return left.some(x => evaluate(right, assign({}, data, { __: x }), custom));

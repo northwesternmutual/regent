@@ -54,6 +54,7 @@ const config = {
     'lodash.includes': 'lodash.includes',
     'lodash.isequal': 'lodash.isequal',
     'lodash.isobject': 'lodash.isobject',
+    'lodash.isarray': 'lodash.isarray',
     'lodash.isstring': 'lodash.isstring',
     'lodash.set': 'lodash.set',
     'lodash.some': 'lodash.some',
