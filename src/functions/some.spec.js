@@ -61,7 +61,7 @@ test('some should throw an error if right is not a regent rule', (assert) => {
     { value: true },
     { value: true },
   ];
-  const right = { not: 'a rule' };
+  const right = { this_is_not: 'a rule' };
   assert.throws(() => some(left, right));
   assert.end();
 });
@@ -91,5 +91,23 @@ test('some should return false if left is undefined', (assert) => {
   const actual = some(undefined, right);
   const expected = false;
   assert.equal(actual, expected);
+  assert.end();
+});
+
+test('some should work with helper composed rules', (assert) => {
+  const left = [
+    { value: true },
+    { value: 'yes' },
+    { value: false },
+  ];
+  const right = {
+    compose: 'or',
+    rules: [
+      { left: '@__.value', fn: 'equals', right: true },
+      { left: '@__.value', fn: 'equals', right: 'yes' },
+    ],
+  };
+  const actual = some(left, right);
+  assert.equal(actual, true);
   assert.end();
 });
