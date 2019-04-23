@@ -7,6 +7,5 @@ module.exports = function (config) {
     testRunner: 'jest',
     reporters: ['progress', 'clear-text', 'html'],
     coverageAnalysis: 'off',
-    logLevel: 'debug',
   });
 };
