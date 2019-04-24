@@ -58,7 +58,7 @@ describe('every', () => {
       { value: true },
     ];
     const right = { something: 'not a rule' };
-    expect(() => every(left, right).toThrow());
+    expect(() => every(left, right)).toThrow('Regent: the right property of an every rule must be a regent rule');
   });
 
   it('every should work if right is a composed rule', () => {

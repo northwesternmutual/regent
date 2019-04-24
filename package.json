@@ -9,7 +9,8 @@
     "build": "webpack --env dev && webpack --env build && npm run test",
     "lint": "eslint './src/**/*.js'",
     "prepublish": "npm run build",
-    "test-coverage": "stryker run",
+    "test-coverage": "nyc --check-coverage --statements 100 --lines 100 --functions 100 --branches 100 --per-file npm test",
+    "stryker": "stryker run",
     "perf": "node ./performance/regent-find-perf.js"
   },
   "pre-push": [

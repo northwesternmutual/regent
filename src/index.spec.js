@@ -1,4 +1,5 @@
 import { find, filter, init, crown, evaluate, or, xor, and, not, explain, constants, makeRegentFactory } from './index';
+import { JestFakeTimers } from '@jest/fake-timers';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
@@ -347,6 +348,10 @@ it('ja.xor should return a properly formatted xor object', () => {
   expect(actual).toEqual(expected);
 });
 
+it('xor should throw error "XOR must take exactly 2 rules" if rules.length is not === 2', () => {
+  expect(() => xor({ rules: [] })).toThrow('XOR must take exactly 2 rules');
+});
+
 it('ja.and should be a function', () => {
   expect(typeof and).toEqual('function');
 });
@@ -497,12 +502,12 @@ it('explain should be a function', () => {
 });
 
 it('explain should throw if called without an argument', () => {
-  expect(() => explain()).toThrow();
+  expect(() => explain()).toThrow('regent.explain must be called with a regent rule');
 });
 
 it('explain should throw if called without a well-formed rule', () => {
   const data = {};
-  expect(() => explain(data)).toThrow();
+  expect(() => explain(data)).toThrow('regent.explain must be called with a regent rule');
 });
 
 it('explain should stringify a single rule', () => {

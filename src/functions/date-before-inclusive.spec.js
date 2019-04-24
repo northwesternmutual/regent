@@ -27,11 +27,17 @@ describe('dateBeforeInclusive', () => {
     const number = 3513513155;
     const bool = true;
     const valid = '01/01/1975';
-    expect(() => dateBeforeInclusive(nonDateString, valid)).toThrow();
-    expect(() => dateBeforeInclusive(number, valid)).toThrow();
-    expect(() => dateBeforeInclusive(bool, valid)).toThrow();
-    expect(() => dateBeforeInclusive(undefined, valid)).toThrow();
-    expect(() => dateBeforeInclusive(valid, undefined)).toThrow();
+    expect(() => dateBeforeInclusive(nonDateString, valid)).toThrow('date-before-inclusive: Left and right must both be date formatted strings');
+    expect(() => dateBeforeInclusive(number, valid)).toThrow('date-before-inclusive: Left and right must both be date formatted strings');
+    expect(() => dateBeforeInclusive(bool, valid)).toThrow('date-before-inclusive: Left and right must both be date formatted strings');
+    expect(() => dateBeforeInclusive(undefined, valid)).toThrow('date-before-inclusive: Left and right are both required for the date-before-inclusive predicate');
+    expect(() => dateBeforeInclusive(valid, undefined)).toThrow('date-before-inclusive: Left and right are both required for the date-before-inclusive predicate');
+  });
+
+  it('dateBeforeInclusive should throw if there is no input and/or no params', () => {
+    const input = undefined;
+    const args = [''];
+    expect(() => dateBeforeInclusive(input, args)).toThrow('date-before-inclusive: Left and right are both required for the date-before-inclusive predicate');
   });
 });
 

@@ -40,4 +40,10 @@ describe('FN', () => {
     expected = false;
     expect(actual).toEqual(expected);
   });
+
+  it('should log if there is an error', () => {
+    global.console = { log: jest.fn() };
+    FN('nah')('left', 'right'); // function does not exist
+    expect(console.log).toBeCalled(); // eslint-disable-line
+  });
 });

@@ -35,4 +35,34 @@ describe('isComposedRule', () => {
 
     expect(isComposedRule(rule)).toEqual(true);
   });
+
+  it('should return false if composedRule is true, but the rule does not have a valid composed rule prop', () => {
+    const rule = {
+      foo: 'bar',
+    };
+
+    expect(isComposedRule(rule)).toEqual(false);
+  });
+
+  it('should return false if typeof composedRule !== string', () => {
+    const rule = {
+      compose: 123,
+      rules: [],
+    };
+
+    expect(isComposedRule(rule)).toEqual(false);
+  });
+
+  it('should return false if typeof composedRule.rules === undefined', () => {
+    const rule = {
+      compose: 'or',
+      rules: undefined,
+    };
+
+    expect(isComposedRule(rule)).toEqual(false);
+  });
+
+  it('should return false if composedRule is undefined', () => {
+    expect(isComposedRule()).toEqual(false);
+  });
 });

@@ -47,6 +47,14 @@ describe('isEscaped', () => {
     str = undefined;
     actual = isEscaped(str);
     expect(actual).toEqual(expected);
+
+    str = [];
+    actual = isEscaped(str);
+    expect(actual).toEqual(expected);
+
+    str = {};
+    actual = isEscaped(str);
+    expect(actual).toEqual(expected);
   });
 
   it('isEscaped Function: Should return false when the argument does not start with @@', () => {
