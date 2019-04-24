@@ -1,5 +1,4 @@
 import { find, filter, init, crown, evaluate, or, xor, and, not, explain, constants, makeRegentFactory } from './index';
-import { JestFakeTimers } from '@jest/fake-timers';
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
