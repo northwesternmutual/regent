@@ -43,7 +43,7 @@ export const not = singleRule => ({
 });
 
 export const explain = (rule, data) => {
-  let result = '';
+  let result;
   if (!isComposedRule(rule)) {
     if (!isRule(rule)) {
       throw new Error('regent.explain must be called with a regent rule');

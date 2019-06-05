@@ -4,12 +4,13 @@
   "description": "Javascript logic framework",
   "main": "lib/regent.js",
   "scripts": {
-    "test": "tape -r babel-register src/**/*spec.js src/*spec.js | tap-difflet -p",
-    "test-watch": "tape-watch src/**/*spec.js src/*spec.js -p 'tap-summary' -c -r babel-register",
+    "test": "jest",
+    "test-watch": "jest --watchAll",
     "build": "webpack --env dev && webpack --env build && npm run test",
     "lint": "eslint './src/**/*.js'",
     "prepublish": "npm run build",
-    "test-coverage": "nyc --check-coverage --statements 100 --lines 100 --functions 100 --branches 100 --per-file npm test",
+    "test-coverage": "jest --coverage",
+    "stryker": "stryker run",
     "perf": "node ./performance/regent-find-perf.js"
   },
   "pre-push": [
@@ -34,8 +35,13 @@
   },
   "homepage": "https://github.com/northwesternmutual/regent/blob/master/README.md",
   "devDependencies": {
+    "@babel/preset-env": "^7.4.3",
+    "@stryker-mutator/core": "^1.2.0",
+    "@stryker-mutator/html-reporter": "^1.2.0",
+    "@stryker-mutator/javascript-mutator": "^1.2.0",
+    "@stryker-mutator/jest-runner": "^1.2.0",
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
+    "babel-core": "^7.0.0-0",
     "babel-eslint": "^8.1.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -48,12 +54,8 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.5.1",
-    "nyc": "^14.1.1",
+    "jest": "^24.7.1",
     "pre-push": "^0.1.1",
-    "tap-difflet": "^0.7.0",
-    "tap-summary": "^4.0.0",
-    "tape": "^4.8.0",
-    "tape-watch": "^2.3.0",
     "webpack": "^3.10.0"
   },
   "dependencies": {
@@ -68,9 +70,14 @@
     "lodash.set": "^4.3.2",
     "lodash.some": "^4.6.0"
   },
-  "nyc": {
-    "exclude": [
-      "**/*spec.js"
-    ]
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
   }
 }

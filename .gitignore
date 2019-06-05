@@ -62,3 +62,6 @@ settings.json
 
 lib
 dist
+
+# stryker
+reports/

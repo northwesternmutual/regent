@@ -1,5 +1,7 @@
 # Regent: A JavaScript Rule Engine
 
+![regent logo](https://northwesternmutual.github.io/regent/regent-logo-small.png)
+
 Regent provides a lightweight framework aimed at helping you organize your application’s business logic by separating the “how” from the “why”. At the lowest level, Regent logic is written in tiny, single responsibility rules that are both self-documenting and human readable.
 
 ## Installation
