@@ -1,4 +1,3 @@
-import mem from 'mem';
 import dateAfterInclusive from './functions/date-after-inclusive';
 import dateBeforeInclusive from './functions/date-before-inclusive';
 import deepEquals from './functions/deep-equals';
@@ -14,7 +13,7 @@ import regex from './functions/regex';
 import some from './functions/some';
 import typeOf from './functions/type-of';
 
-export default (id, custom) => mem((left, right, data) => {
+export default (id, custom) => (left, right, data) => {
   const fn = {
     dateAfterInclusive,
     dateBeforeInclusive,
@@ -47,4 +46,4 @@ export default (id, custom) => mem((left, right, data) => {
   }
 
   return false;
-});
+};
