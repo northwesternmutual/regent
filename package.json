@@ -13,7 +13,6 @@
     "stryker": "stryker run",
     "perf": "node ./performance/regent-find-perf.js"
   },
-  "type": "module",
   "pre-push": [
     "lint",
     "test-coverage"
