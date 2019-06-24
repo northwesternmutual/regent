@@ -15,7 +15,7 @@ import typeOf from './functions/type-of';
 
 export default (id, custom) => (
   (left, right, data) => {
-    const fn = {
+    const fn = Object.assign({}, {
       dateAfterInclusive,
       dateBeforeInclusive,
       deepEquals,
@@ -30,8 +30,7 @@ export default (id, custom) => (
       regex,
       some,
       typeOf,
-      ...custom,
-    };
+    }, custom);
 
     let result = false;
 
