@@ -33,19 +33,21 @@ export default (id, custom) => (
       ...custom,
     };
 
+    let result = false;
+
     try {
       const exec = key => fn[key](left, right, data, custom);
-      return /^!/.test(id) ? !exec(id.slice(1)) : exec(id);
+      result = /^!/.test(id) ? !exec(id.slice(1)) : exec(id);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(`regent error:
-          fn: "${id}"
-          left: "${JSON.stringify(left)}"
-          right: "${JSON.stringify(right)}"
-          error: ${e}
-        `);
+        fn: "${id}"
+        left: "${JSON.stringify(left)}"
+        right: "${JSON.stringify(right)}"
+        error: ${e}
+      `);
     }
 
-    return false;
+    return result;
   }
 );
