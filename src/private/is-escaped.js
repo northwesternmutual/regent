@@ -1,1 +1,2 @@
-export default arg => /(^@{2}.*)/.test(arg);
+const isEscapedRegex = /^@@/;
+export default arg => isEscapedRegex.test(arg);
