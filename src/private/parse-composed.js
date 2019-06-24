@@ -20,11 +20,12 @@ export default (obj, data, custom = {}) => {
         result = some(obj.rules, fxn);
         break;
 
-      case 'xor':
+      case 'xor': {
         if (obj.rules.length !== 2) throw Error('XOR must take exactly 2 rules');
-        result = (fxn(obj.rules[0]) && !fxn(obj.rules[1]))
-          || (fxn(obj.rules[1]) && !fxn(obj.rules[0]));
+        const [r1, r2] = obj.rules.map(fxn);
+        result = (r1 && !r2) || (r2 && !r1);
         break;
+      }
 
       case 'and':
         result = every(obj.rules, fxn);

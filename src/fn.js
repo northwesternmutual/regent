@@ -1,4 +1,3 @@
-import assign from 'lodash.assign';
 import dateAfterInclusive from './functions/date-after-inclusive';
 import dateBeforeInclusive from './functions/date-before-inclusive';
 import deepEquals from './functions/deep-equals';
@@ -16,7 +15,7 @@ import typeOf from './functions/type-of';
 
 export default (id, custom) => (
   (left, right, data) => {
-    const fn = {
+    const fn = Object.assign({}, {
       dateAfterInclusive,
       dateBeforeInclusive,
       deepEquals,
@@ -31,22 +30,17 @@ export default (id, custom) => (
       regex,
       some,
       typeOf,
-    };
+    }, custom);
 
-    let f = id;
     let result = false;
 
     try {
-      if (id.indexOf('!') === 0) {
-        f = id.replace('!', '');
-        result = !assign({}, fn, custom)[f](left, right, data, custom);
-      } else {
-        result = assign({}, fn, custom)[f](left, right, data, custom);
-      }
+      const exec = key => fn[key](left, right, data, custom);
+      result = /^!/.test(id) ? !exec(id.slice(1)) : exec(id);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(`regent error:
-        fn: "${f}"
+        fn: "${id}"
         left: "${JSON.stringify(left)}"
         right: "${JSON.stringify(right)}"
         error: ${e}
