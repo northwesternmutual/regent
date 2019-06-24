@@ -13,37 +13,39 @@ import regex from './functions/regex';
 import some from './functions/some';
 import typeOf from './functions/type-of';
 
-export default (id, custom) => (left, right, data) => {
-  const fn = {
-    dateAfterInclusive,
-    dateBeforeInclusive,
-    deepEquals,
-    empty,
-    equals,
-    every,
-    greaterThan,
-    greaterThanOrEquals,
-    includes,
-    lessThan,
-    lessThanOrEquals,
-    regex,
-    some,
-    typeOf,
-    ...custom,
-  };
+export default (id, custom) => (
+  (left, right, data) => {
+    const fn = {
+      dateAfterInclusive,
+      dateBeforeInclusive,
+      deepEquals,
+      empty,
+      equals,
+      every,
+      greaterThan,
+      greaterThanOrEquals,
+      includes,
+      lessThan,
+      lessThanOrEquals,
+      regex,
+      some,
+      typeOf,
+      ...custom,
+    };
 
-  try {
-    const exec = key => fn[key](left, right, data, custom);
-    return /^!/.test(id) ? !exec(id.slice(1)) : exec(id);
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log(`regent error:
-        fn: "${id}"
-        left: "${JSON.stringify(left)}"
-        right: "${JSON.stringify(right)}"
-        error: ${e}
-      `);
+    try {
+      const exec = key => fn[key](left, right, data, custom);
+      return /^!/.test(id) ? !exec(id.slice(1)) : exec(id);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(`regent error:
+          fn: "${id}"
+          left: "${JSON.stringify(left)}"
+          right: "${JSON.stringify(right)}"
+          error: ${e}
+        `);
+    }
+
+    return false;
   }
-
-  return false;
-};
+);
