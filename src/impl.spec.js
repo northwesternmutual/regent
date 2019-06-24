@@ -61,5 +61,24 @@ describe('impl tests', () => {
     const expected = '(@foo->["bar","baz","biz"] some {"left":"@__","fn":"equals","right":"@hello"})';
     expect(actual).toEqual(expected);
   });
+
+  it('greaterThan, lessThan, greaterThanOrEqual, lessThanOrEqual alias', () => {
+    const king = init();
+    const data = {
+      number: 42,
+    };
+
+    const bigger = { left: '@number', fn: '>', right: 41 };
+    expect(king.rule(bigger, data)).toEqual(true);
+
+    const biggerOrEqual = { left: '@number', fn: '>=', right: 42 };
+    expect(king.rule(biggerOrEqual, data)).toEqual(true);
+
+    const smaller = { left: '@number', fn: '<', right: 43 };
+    expect(king.rule(smaller, data)).toEqual(true);
+
+    const smallerOrEqual = { left: '@number', fn: '<=', right: 42 };
+    expect(king.rule(smallerOrEqual, data)).toEqual(true);
+  });
 });
 
