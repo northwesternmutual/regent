@@ -58,7 +58,7 @@ describe('some', () => {
       { value: true },
     ];
     const right = { this_is_not: 'a rule' };
-    expect(() => some(left, right)).toThrow('Regent: the right property of an every rule must be a regent rule');
+    expect(() => some(left, right)).toThrow('Regent: the right property of a some rule must be a regent rule');
   });
 
   it('some should return false if left is not an array', () => {

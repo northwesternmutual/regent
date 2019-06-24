@@ -1,6 +1,8 @@
 import isString from 'lodash.isstring';
 import isEscaped from './is-escaped';
 
+const isLookupRegex = /^@/;
+
 export default function isLookup(arg) {
   // If it's not a string it can't be a lookup
   if (!isString(arg)) {
@@ -11,5 +13,5 @@ export default function isLookup(arg) {
     return false;
   }
   // If it makes it to here and it matches the following regex then it is a lookup.
-  return /(^@.*)/g.test(arg);
+  return isLookupRegex.test(arg);
 }
