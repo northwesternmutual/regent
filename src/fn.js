@@ -33,20 +33,20 @@ export default (id, custom) => (
       typeOf,
     };
 
-    let f = id;
     let result = false;
 
     try {
-      if (id.indexOf('!') === 0) {
-        f = id.replace('!', '');
-        result = !assign({}, fn, custom)[f](left, right, data, custom);
-      } else {
-        result = assign({}, fn, custom)[f](left, right, data, custom);
-      }
+      let negater = x => x;
+      const f = id.replace(/^!/, () => {
+        negater = x => !x;
+        return '';
+      });
+
+      result = negater(assign({}, fn, custom)[f](left, right, data, custom));
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(`regent error:
-        fn: "${f}"
+        fn: "${id}"
         left: "${JSON.stringify(left)}"
         right: "${JSON.stringify(right)}"
         error: ${e}
