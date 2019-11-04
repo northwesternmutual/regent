@@ -672,6 +672,7 @@ Regent’s built-in queries are:
 
 - [evaluate](#evaluate)
 - [explain](#explain)
+- [explainLogic](#explainlogic)
 - [filter](#filter)
 - [find](#find)
 
