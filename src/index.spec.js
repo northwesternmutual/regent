@@ -1,4 +1,33 @@
-import { find, filter, init, crown, evaluate, or, xor, and, not, explain, constants, makeRegentFactory } from './index';
+import { find, filter, init, crown, evaluate, or, xor, and, not, explain, constants, makeRegentFactory, explainLogic } from './index';
+
+describe('explainLogic', () => {
+  it('should return a table of explanations', () => {
+    const RAINING = { left: '@raining', fn: 'equals', right: true };
+    const SWIMMING = { left: '@place', fn: 'equals', right: 'pool' };
+    const INSIDE = { left: '@place', fn: 'equals', right: 'inside' };
+    const I_AM_WET = and(or(RAINING, SWIMMING), not(INSIDE));
+
+    const logic = [
+      { text: 'I\'m all wet.', rule: I_AM_WET },
+      { text: 'I\'m pretty dry.', rule: not(I_AM_WET) },
+      { text: 'Man. I hate rain.', rule: RAINING },
+    ];
+
+    const data = {
+      raining: true,
+      place: 'inside',
+    };
+
+    const actual = explainLogic(logic, data);
+    const expected = [
+      { result: false, because: '(((@raining->true equals true) or (@place->"inside" equals "pool")) and NOT (@place->"inside" equals "inside"))' },
+      { result: true, because: 'NOT (((@raining->true equals true) or (@place->"inside" equals "pool")) and NOT (@place->"inside" equals "inside"))' },
+      { result: true, because: '(@raining->true equals true)' },
+    ];
+
+    expect(expected).toEqual(actual);
+  });
+});
 
 // Mock up a set of rules to use. These rules will be
 // provided by the consuming application in the wild
