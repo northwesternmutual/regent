@@ -10,7 +10,7 @@ describe('explainLogic', () => {
     const logic = [
       { text: 'I\'m all wet.', rule: I_AM_WET },
       { text: 'I\'m pretty dry.', rule: not(I_AM_WET) },
-      { text: 'Man. I hate rain.', rule: RAINING }
+      { text: 'Man. I hate rain.', rule: RAINING },
     ];
 
     const data = {
@@ -20,9 +20,9 @@ describe('explainLogic', () => {
 
     const actual = explainLogic(logic, data);
     const expected = [
-      { result: false, because: '(((@raining->true equals true) or (@place->"inside" equals "pool")) and NOT (@place->"inside" equals "inside"))'},
-      { result: true, because: 'NOT (((@raining->true equals true) or (@place->"inside" equals "pool")) and NOT (@place->"inside" equals "inside"))'},
-      { result: true, because: '(@raining->true equals true)'},
+      { result: false, because: '(((@raining->true equals true) or (@place->"inside" equals "pool")) and NOT (@place->"inside" equals "inside"))' },
+      { result: true, because: 'NOT (((@raining->true equals true) or (@place->"inside" equals "pool")) and NOT (@place->"inside" equals "inside"))' },
+      { result: true, because: '(@raining->true equals true)' },
     ];
 
     expect(expected).toEqual(actual);

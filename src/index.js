@@ -80,7 +80,7 @@ export const explain = (rule, data) => {
 export const explainLogic = (rules, data) => (
   rules.map(row => ({
     result: evaluate(row.rule, data),
-    because: explain(row.rule, data)
+    because: explain(row.rule, data),
   }))
 );
 
