@@ -90,6 +90,7 @@ export const init = (custom = {}) => {
     and,
     evaluate: evalRule,
     explain,
+    explainLogic,
     filter: makeRegentFactory(filter, custom),
     find: makeRegentFactory(find, custom),
     not,
