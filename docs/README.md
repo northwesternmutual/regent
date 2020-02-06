@@ -672,6 +672,7 @@ Regent’s built-in queries are:
 
 - [evaluate](#evaluate)
 - [explain](#explain)
+- [explainLogic](#explainlogic)
 - [filter](#filter)
 - [find](#find)
 
@@ -732,6 +733,33 @@ const isUmbrellaNeeded2 = explain(hasPrecipitation, data);
 ```
 
 [Source](../examples/querying-with-explain.js)
+
+### `explainLogic`
+
+`explainLogic` gives you a look at every row in a logic table and provides the bool result of the rule given a provided set of data. It also provides the output of `explain`.
+
+```javascript
+import { explainLogic } from 'regent';
+
+const isRaining = { left: '@precipitation', fn: 'includes', right: 'rain' };
+const isSnowing = { left: '@precipitation', fn: 'includes', right: 'snow' };
+
+const data = { precipitation: ['sleet', 'snow'] };
+
+const logic = [
+  { id: 'rain coat', rule: isRaining },
+  { id: 'mittens', rule: isSnowing }
+]
+
+console.log(explainLogic(logic, data))
+
+/**
+[ { result: false,
+        because: '(@precipitation->["sleet","snow"] includes "rain")' },
+  { result: true,
+        because: '(@precipitation->["sleet","snow"] includes "snow")' } ]
+ */
+```
 
 ### `filter`
 

@@ -85,6 +85,7 @@ When conditional logic becomes too complex (and it will), use Regent’s [explai
 - [Queries](https://northwesternmutual.github.io/regent/#/?id=queries)
   - [`evaluate`](https://northwesternmutual.github.io/regent/#/?id=evaluate)
   - [`explain`](https://northwesternmutual.github.io/regent/#/?id=explain)
+  - [`explainLogic`](https://northwesternmutual.github.io/regent/#/?id=explainlogic)
   - [`filter`](https://northwesternmutual.github.io/regent/#/?id=filter)
   - [`find`](https://northwesternmutual.github.io/regent/#/?id=find)
 

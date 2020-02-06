@@ -77,12 +77,20 @@ export const explain = (rule, data) => {
   return result;
 };
 
+export const explainLogic = (rules, data) => (
+  rules.map(row => ({
+    result: evaluate(row.rule, data),
+    because: explain(row.rule, data),
+  }))
+);
+
 export const init = (custom = {}) => {
   const evalRule = makeRegentFactory(evaluate, custom);
   return ({
     and,
     evaluate: evalRule,
     explain,
+    explainLogic,
     filter: makeRegentFactory(filter, custom),
     find: makeRegentFactory(find, custom),
     not,
