@@ -42,6 +42,8 @@ export const not = singleRule => ({
   not: singleRule,
 });
 
+export const none = (...rules) => not(or(...rules));
+
 export const explain = (rule, data) => {
   let result;
   if (!isComposedRule(rule)) {
@@ -97,6 +99,7 @@ export const init = (custom = {}) => {
     or,
     rule: evalRule,
     xor,
+    none,
   });
 };
 

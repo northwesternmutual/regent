@@ -1,4 +1,4 @@
-import { find, filter, init, crown, evaluate, or, xor, and, not, explain, constants, makeRegentFactory, explainLogic } from './index';
+import { find, filter, init, crown, evaluate, or, xor, and, not, none, explain, constants, makeRegentFactory, explainLogic } from './index';
 
 describe('explainLogic', () => {
   it('should return a table of explanations', () => {
@@ -241,6 +241,7 @@ describe('init', () => {
     expect(typeof regent.filter).toEqual('function');
     expect(typeof regent.explain).toEqual('function');
     expect(typeof regent.evaluate).toEqual('function');
+    expect(typeof regent.none).toEqual('function');
   });
 
   it('init should accept an object of custom functions', () => {
@@ -734,4 +735,26 @@ it('makeRegentFactory should not require a custom object', () => {
 
   const expected = Object.assign({}, data, rule);
   expect(actual(data, rule)).toEqual(expected);
+});
+
+describe('none', () => {
+  test('should be a function', () => {
+    expect(typeof none).toBe('function');
+  });
+
+  test('should return not(or(...rules))', () => {
+    const blue = { left: 'color', fn: 'equals', right: 'blue' };
+    const red = { left: 'color', fn: 'equals', right: 'red' };
+    const actual = none(blue, red);
+    const expected = {
+      not: {
+        compose: 'or',
+        rules: [
+          blue,
+          red,
+        ],
+      },
+    };
+    expect(actual).toEqual(expected);
+  });
 });
