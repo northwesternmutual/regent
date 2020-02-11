@@ -466,6 +466,7 @@ Regent’s built-in composition helpers are:
 - [or](#or)
 - [xor](#xor)
 - [not](#not)
+- [none](#none)
 
 #### `and`
 
@@ -622,6 +623,44 @@ console.log(shouldIWearATShirt2); // NOT (@temperature->45 lessThan 55)
 ```
 
 [Source](../examples/composition-with-not.js)
+
+#### `none`
+
+A rule composed with `none` will return `true` if **none** of the subrules return `true`.
+
+**API:** `none(rule1, rule2, [...moreRules])`
+
+```javascript
+import { none, evaluate, explain } from 'regent';
+
+// Rule(s)
+const isRaining = { left: '@isRaining', fn: 'equals', right: true };
+const isCold = { left: '@temperature', fn: 'lessThan', right: 55 };
+const isWarmAndSunny = none(isRaining, isCold); // Example of a composed rule
+
+// Data
+const data = { isRaining: false, temperature: 75 };
+
+/**
+ * Evaluation
+ *
+ * @type {Boolean}
+ */
+const shouldWearHawaiianShirt1 = evaluate(isWarmAndSunny, data);
+
+console.log(shouldWearHawaiianShirt1); // true
+
+/**
+ * Explanation
+ *
+ * @type {String}
+ */
+const shouldWearHawaiianShirt2 = explain(isWarmAndSunny, data);
+
+console.log(shouldWearHawaiianShirt2); // NOT ((@isRaining->false equals true) or (@temperature->75 lessThan 55))
+```
+
+[Source](../examples/composition-with-none.js)
 
 ### Composing Rules Manually
 
