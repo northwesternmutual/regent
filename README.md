@@ -79,6 +79,7 @@ When conditional logic becomes too complex (and it will), use Regent’s [explai
     - [`init`](https://northwesternmutual.github.io/regent/#/?id=init)
 - [Composition](https://northwesternmutual.github.io/regent/#/?id=composition)
   - [`and`](https://northwesternmutual.github.io/regent/#/?id=and)
+    [`none`](https://northwesternmutual.github.io/regent/#/?id=none)
   - [`not`](https://northwesternmutual.github.io/regent/#/?id=not)
   - [`or`](https://northwesternmutual.github.io/regent/#/?id=or)
   - [`xor`](https://northwesternmutual.github.io/regent/#/?id=xor)
