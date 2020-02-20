@@ -10,6 +10,12 @@ import { deepEqualsFN } from './functions/deep-equals';
 import { emptyFN } from './functions/empty';
 import { equalsFN } from './functions/equals';
 import { greaterThanOrEqualsFN } from './functions/greater-than-equals';
+import { greaterThanFN } from './functions/greater-than';
+import { includesFN } from './functions/includes';
+import { lessThanOrEqualsFN } from './functions/less-than-equals';
+import { lessThanFN } from './functions/less-than';
+import { regexFN } from './functions/regex';
+import { typeOfFN } from './functions/type-of';
 
 export const find = (rules, data, custom = {}) => (
   rules.find(line => evaluateRule(line.rule, data, custom))
@@ -130,6 +136,12 @@ export const deepEquals = deepEqualsFN;
 export const empty = emptyFN;
 export const equals = equalsFN;
 export const greaterThanOrEquals = greaterThanOrEqualsFN;
+export const greaterThan = greaterThanFN;
+export const includes = includesFN;
+export const lessThanOrEquals = lessThanOrEqualsFN;
+export const lessThan = lessThanFN;
+export const regex = regexFN;
+export const typeOf = typeOfFN;
 
 export default {
   constants,

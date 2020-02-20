@@ -17,6 +17,12 @@ import {
   empty,
   equals,
   greaterThanOrEquals,
+  greaterThan,
+  includes,
+  lessThanOrEquals,
+  lessThan,
+  regex,
+  typeOf,
 } from './index';
 
 describe('3.x.x - functional rules public export', () => {
@@ -34,6 +40,30 @@ describe('3.x.x - functional rules public export', () => {
 
   it('empty should be a function', () => {
     expect(typeof empty).toEqual('function');
+  });
+
+  it('greaterThan should be a function', () => {
+    expect(typeof greaterThan).toEqual('function');
+  });
+
+  it('includes should be a function', () => {
+    expect(typeof includes).toEqual('function');
+  });
+
+  it('lessThanOrEquals should be a function', () => {
+    expect(typeof lessThanOrEquals).toEqual('function');
+  });
+
+  it('lessThan should be a function', () => {
+    expect(typeof lessThan).toEqual('function');
+  });
+
+  it('regex should be a function', () => {
+    expect(typeof regex).toEqual('function');
+  });
+
+  it('typeOf should be a function', () => {
+    expect(typeof typeOf).toEqual('function');
   });
 });
 
