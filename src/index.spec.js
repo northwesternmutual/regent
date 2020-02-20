@@ -13,23 +13,27 @@ import {
   constants,
   makeRegentFactory,
   explainLogic,
+  deepEquals,
+  empty,
   equals,
   greaterThanOrEquals,
 } from './index';
 
 describe('3.x.x - functional rules public export', () => {
   it('equals should be a function', () => {
-    const actual = typeof equals;
-    const expected = 'function';
-
-    expect(actual).toEqual(expected);
+    expect(typeof equals).toEqual('function');
   });
 
   it('greaterThanOrEquals should be a function', () => {
-    const actual = typeof greaterThanOrEquals;
-    const expected = 'function';
+    expect(typeof greaterThanOrEquals).toEqual('function');
+  });
 
-    expect(actual).toEqual(expected);
+  it('deepEquals should be a function', () => {
+    expect(typeof deepEquals).toEqual('function');
+  });
+
+  it('empty should be a function', () => {
+    expect(typeof empty).toEqual('function');
   });
 });
 

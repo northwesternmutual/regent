@@ -1,4 +1,25 @@
-import lessThanOrEquals from './less-than-equals';
+import { lessThanOrEquals, lessThanOrEqualsFN } from './less-than-equals';
+
+describe('3.x.x - lessThanOrEquals should work in functional style', () => {
+  it('should be a function', () => {
+    const actual = typeof lessThanOrEqualsFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should perform lessThanOrEquals', () => {
+    const data = {
+      foo: 10,
+    };
+
+    const RULE = lessThanOrEqualsFN('@foo', 10);
+    const actual = RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('lessThan', () => {
   it('lessThanOrEquals should be a function', () => {

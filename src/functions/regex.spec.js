@@ -1,4 +1,25 @@
-import regex from './regex';
+import { regex, regexFN } from './regex';
+
+describe('3.x.x - regexFN should work in functional style', () => {
+  it('should be a function', () => {
+    const actual = typeof regexFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should perform regexFN', () => {
+    const data = {
+      foo: 'hello',
+    };
+
+    const RULE = regexFN('@foo', /^hello/);
+    const actual = RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('regex', () => {
   it('regex should be a function', () => {

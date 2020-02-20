@@ -8,7 +8,6 @@ import {
   not,
   filter,
   find,
-  equals,
 } from './index';
 
 // An example of using Regent without custom predicates

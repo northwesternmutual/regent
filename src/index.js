@@ -6,6 +6,8 @@ import evaluateRule from './private/evaluate-rule';
 import isRule from './private/is-rule';
 import isComposedRule from './private/is-composed-rule';
 
+import { deepEqualsFN } from './functions/deep-equals';
+import { emptyFN } from './functions/empty';
 import { equalsFN } from './functions/equals';
 import { greaterThanOrEqualsFN } from './functions/greater-than-equals';
 
@@ -124,6 +126,8 @@ export const constants = {
 };
 
 // 3.x.x functional rules
+export const deepEquals = deepEqualsFN;
+export const empty = emptyFN;
 export const equals = equalsFN;
 export const greaterThanOrEquals = greaterThanOrEqualsFN;
 

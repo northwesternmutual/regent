@@ -1,7 +1,5 @@
-import makeArgs from '../private/make-args';
+import make from '../private/make';
 
 export const equals = (left, right) => left === right;
 
-export const equalsFN = (...args) =>
-  data =>
-    equals(...Object.values(makeArgs(data, ...args)));
+export const equalsFN = make(equals);
