@@ -1,4 +1,15 @@
-import { init, evaluate, and, or, xor, explain, not, filter, find } from './index';
+import {
+  init,
+  evaluate,
+  and,
+  or,
+  xor,
+  explain,
+  not,
+  filter,
+  find,
+  equals,
+} from './index';
 
 // An example of using Regent without custom predicates
 describe('impl tests', () => {
@@ -81,4 +92,3 @@ describe('impl tests', () => {
     expect(king.rule(smallerOrEqual, data)).toEqual(true);
   });
 });
-

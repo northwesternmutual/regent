@@ -1,4 +1,4 @@
-import greaterThanOrEquals from './greater-than-equals';
+import { greaterThanOrEquals, greaterThanOrEqualsFN } from './greater-than-equals';
 
 describe('greaterThanOrEquals', () => {
   it('greaterThanOrEquals should be a function', () => {
@@ -87,6 +87,35 @@ describe('greaterThanOrEquals', () => {
     expect(greaterThanOrEquals('2', '4')).toEqual(false);
     expect(greaterThanOrEquals('2', '2')).toEqual(true);
     expect(greaterThanOrEquals(4, 4)).toEqual(true);
+  });
+
+  describe('greaterThanOrEqualsFN', () => {
+    it('should be a function', () => {
+      const actual = typeof greaterThanOrEqualsFN;
+      const expected = 'function';
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('should work in a functional style (true)', () => {
+      const data = {
+        foo: 5,
+      };
+      const actual = greaterThanOrEqualsFN('@foo', 3)(data);
+      const expected = true;
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('should work in a functional style (false)', () => {
+      const data = {
+        foo: 2,
+      };
+      const actual = greaterThanOrEqualsFN('@foo', 3)(data);
+      const expected = false;
+
+      expect(actual).toEqual(expected);
+    });
   });
 });
 

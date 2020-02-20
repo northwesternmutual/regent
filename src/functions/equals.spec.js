@@ -1,4 +1,4 @@
-import equals from './equals';
+import { equals, equalsFN } from './equals';
 
 describe('equals', () => {
   it('equals should be a function', () => {
@@ -22,3 +22,31 @@ describe('equals', () => {
   });
 });
 
+describe('equalsFN', () => {
+  it('should be a function', () => {
+    const actual = typeof equalsFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should work in a functional style (true)', () => {
+    const data = {
+      foo: 'bar',
+    };
+    const actual = equalsFN('@foo', 'bar')(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should work in a functional style (false)', () => {
+    const data = {
+      foo: 'baz',
+    };
+    const actual = equalsFN('@foo', 'bar')(data);
+    const expected = false;
+
+    expect(actual).toEqual(expected);
+  });
+});

@@ -1,4 +1,37 @@
-import { find, filter, init, crown, evaluate, or, xor, and, not, none, explain, constants, makeRegentFactory, explainLogic } from './index';
+import {
+  find,
+  filter,
+  init,
+  crown,
+  evaluate,
+  or,
+  xor,
+  and,
+  not,
+  none,
+  explain,
+  constants,
+  makeRegentFactory,
+  explainLogic,
+  equals,
+  greaterThanOrEquals,
+} from './index';
+
+describe('3.x.x - functional rules public export', () => {
+  it('equals should be a function', () => {
+    const actual = typeof equals;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('greaterThanOrEquals should be a function', () => {
+    const actual = typeof greaterThanOrEquals;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('explainLogic', () => {
   it('should return a table of explanations', () => {

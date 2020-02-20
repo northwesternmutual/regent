@@ -4,10 +4,9 @@ import stripAt from './strip-at';
 
 // makeArgs will sort out if the leftArg and rightArg are lookups or
 // static and return the the data that your predicates needs.
-export default function makeArgs(data, leftArg, rightArg) {
-  const left = isLookup(leftArg) ? get(data, stripAt(leftArg)) : stripAt(leftArg);
-  const right = isLookup(rightArg) ? get(data, stripAt(rightArg)) : stripAt(rightArg);
-
+export default function makeArgs(data, ...args) {
+  const left = isLookup(args[0]) ? get(data, stripAt(args[0])) : stripAt(args[0]);
+  const right = isLookup(args[1]) ? get(data, stripAt(args[1])) : stripAt(args[1]);
   return {
     left,
     right,

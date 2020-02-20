@@ -6,6 +6,9 @@ import evaluateRule from './private/evaluate-rule';
 import isRule from './private/is-rule';
 import isComposedRule from './private/is-composed-rule';
 
+import { equalsFN } from './functions/equals';
+import { greaterThanOrEqualsFN } from './functions/greater-than-equals';
+
 export const find = (rules, data, custom = {}) => (
   rules.find(line => evaluateRule(line.rule, data, custom))
 );
@@ -119,6 +122,10 @@ export const constants = {
   regex: 'regex',
   typeOf: 'typeOf',
 };
+
+// 3.x.x functional rules
+export const equals = equalsFN;
+export const greaterThanOrEquals = greaterThanOrEqualsFN;
 
 export default {
   constants,
