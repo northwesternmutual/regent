@@ -5,6 +5,7 @@ import isLookup from './private/is-lookup';
 import evaluateRule from './private/evaluate-rule';
 import isRule from './private/is-rule';
 import isComposedRule from './private/is-composed-rule';
+import makeFN from './private/make';
 
 import { deepEqualsFN } from './functions/deep-equals';
 import { emptyFN } from './functions/empty';
@@ -142,6 +143,8 @@ export const lessThanOrEquals = lessThanOrEqualsFN;
 export const lessThan = lessThanFN;
 export const regex = regexFN;
 export const typeOf = typeOfFN;
+
+export const make = makeFN;
 
 export default {
   constants,

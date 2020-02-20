@@ -12,6 +12,7 @@ import {
   explain,
   constants,
   makeRegentFactory,
+  make,
   explainLogic,
   deepEquals,
   empty,
@@ -64,6 +65,10 @@ describe('3.x.x - functional rules public export', () => {
 
   it('typeOf should be a function', () => {
     expect(typeof typeOf).toEqual('function');
+  });
+
+  it('make should be a function', () => {
+    expect(typeof make).toEqual('function');
   });
 });
 
