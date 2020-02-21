@@ -20,4 +20,8 @@ describe('make', () => {
 
     expect(actual).toEqual(expected);
   });
+
+  it('it should throw an error if what is passed in is not a function', () => {
+    expect(() => make('hello')).toThrow('make must be passed a function as argument 1');
+  });
 });
