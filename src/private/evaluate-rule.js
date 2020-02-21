@@ -10,6 +10,9 @@ export default (rule, data, custom = {}) => {
     result = parseComposed(rule, data, custom); // eslint-disable-line no-use-before-define
   } else if (typeof rule === 'function') {
     result = rule(data);
+  // Pass booleans as-is
+  } else if (typeof rule === 'boolean') {
+    result = rule;
   } else {
     // This is a base rule, execute it
     const { left, right } = makeArgs(data, rule.left, rule.right);
