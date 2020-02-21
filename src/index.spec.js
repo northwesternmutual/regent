@@ -1,4 +1,4 @@
-import {
+import defaultExport, {
   find,
   filter,
   init,
@@ -301,6 +301,7 @@ describe('filter', () => {
 describe('init', () => {
   it('init should be a function', () => {
     expect(typeof init).toEqual('function');
+    expect(typeof defaultExport.init).toEqual('function'); // eslint-disable-line
   });
 
   it('init should return an object with and, not, or, xor, find, filter, evaluate, and rule methods', () => {
@@ -342,10 +343,26 @@ describe('init', () => {
 
 it('crown should be a function', () => {
   expect(typeof crown).toEqual('function');
+  expect(typeof defaultExport.crown).toEqual('function'); // eslint-disable-line
 });
 
 it('constants should be an object', () => {
   expect(typeof constants).toEqual('object');
+  expect(typeof defaultExport.constants).toEqual('object'); // eslint-disable-line
+  expect(constants).toEqual({
+    dateAfterInclusive: 'dateAfterInclusive',
+    dateBeforeInclusive: 'dateBeforeInclusive',
+    deepEquals: 'deepEquals',
+    empty: 'empty',
+    equals: 'equals',
+    greaterThan: 'greaterThan',
+    greaterThanOrEquals: 'greaterThanOrEquals',
+    includes: 'includes',
+    lessThan: 'lessThan',
+    lessThanOrEquals: 'lessThanOrEquals',
+    regex: 'regex',
+    typeOf: 'typeOf',
+  });
 });
 
 
