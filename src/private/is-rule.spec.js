@@ -27,6 +27,13 @@ describe('isRule', () => {
     const data = { fn: 'bar', right: '@foo' };
     expect(isRule(data)).toEqual(true);
   });
+
+  it('should return false if object only has fn', () => {
+    const actual = isRule({ fn: 'equals' });
+    const expected = false;
+
+    expect(actual).toEqual(expected);
+  });
 });
 
 describe('3.x.x - isRule', () => {
