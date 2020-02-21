@@ -24,6 +24,8 @@ import defaultExport, {
   lessThan,
   regex,
   typeOf,
+  every,
+  some,
 } from './index';
 
 describe('3.x.x - functional rules public export', () => {
@@ -69,6 +71,14 @@ describe('3.x.x - functional rules public export', () => {
 
   it('make should be a function', () => {
     expect(typeof make).toEqual('function');
+  });
+
+  it('every should be a function', () => {
+    expect(typeof every).toEqual('function');
+  });
+
+  it('some should be a function', () => {
+    expect(typeof some).toEqual('function');
   });
 });
 

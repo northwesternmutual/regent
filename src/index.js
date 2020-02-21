@@ -17,6 +17,8 @@ import { lessThanOrEqualsFN } from './functions/less-than-equals';
 import { lessThanFN } from './functions/less-than';
 import { regexFN } from './functions/regex';
 import { typeOfFN } from './functions/type-of';
+import { everyFN } from './functions/every';
+import { someFN } from './functions/some';
 
 export const find = (rules, data, custom = {}) => (
   rules.find(line => evaluateRule(line.rule, data, custom))
@@ -143,6 +145,8 @@ export const lessThanOrEquals = lessThanOrEqualsFN;
 export const lessThan = lessThanFN;
 export const regex = regexFN;
 export const typeOf = typeOfFN;
+export const every = everyFN;
+export const some = someFN;
 
 export const make = makeFN;
 

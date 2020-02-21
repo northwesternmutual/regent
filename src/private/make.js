@@ -7,6 +7,6 @@ export default (fn) => {
 
   return (...args) =>
     data =>
-      fn(...Object.values(makeArgs(data, ...args)));
+      fn(...Object.values(makeArgs(data, ...args)), data);
 };
 

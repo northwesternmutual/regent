@@ -1,5 +1,39 @@
-import some from './some';
-import { init } from '../index';
+import { some, someFN } from './some';
+import { init, equals } from '../index';
+
+describe('3.x.x - some', () => {
+  it('should work with function style rules (passing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'foo' },
+      ],
+    };
+
+    const RULE = equals('@__.foo', 'bar');
+    const E_RULE = someFN('@nodes', RULE);
+    const actual = E_RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should work with function style rules (failing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'foo' },
+        { foo: 'foo' },
+      ],
+    };
+
+    const RULE = equals('@__.foo', 'bar');
+    const E_RULE = someFN('@nodes', RULE);
+    const actual = E_RULE(data);
+    const expected = false;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('some', () => {
   it('some should be a function', () => {
