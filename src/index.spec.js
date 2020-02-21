@@ -299,6 +299,21 @@ it('rule should evaluate the rule provided with the data provided', () => {
   expect(actual).toEqual(expected);
 });
 
+it('rule should evaluate booleans', () => {
+  const data = {};
+
+  const placeIsWorld = false;
+  const placeIsNotWorld = true;
+
+  let actual = evaluate(placeIsNotWorld, data);
+  let expected = true;
+  expect(actual).toEqual(expected);
+
+  actual = evaluate(placeIsWorld, data);
+  expected = false;
+  expect(actual).toEqual(expected);
+});
+
 it('find should handle a string representation of an object path', () => {
   const obj = {
     greetings: {
@@ -357,6 +372,22 @@ it('ja.or should return a properly formatted or object', () => {
   expect(actual).toEqual(expected);
 });
 
+it('ja.or should return booleans', () => {
+  const secondGreetingIsSayonara = true;
+  const secondGreetingIsGoodbye = false;
+
+  const actual = or(secondGreetingIsSayonara, secondGreetingIsGoodbye);
+  const expected = {
+    compose: 'or',
+    rules: [
+      true,
+      false,
+    ],
+  };
+
+  expect(actual).toEqual(expected);
+});
+
 it('ja.xor should be a function', () => {
   expect(typeof xor).toEqual('function');
 });
@@ -371,6 +402,22 @@ it('ja.xor should return a properly formatted xor object', () => {
     rules: [
       secondGreetingIsSayonara,
       secondGreetingIsGoodbye,
+    ],
+  };
+
+  expect(actual).toEqual(expected);
+});
+
+it('ja.xor should return booleans', () => {
+  const secondGreetingIsSayonara = true;
+  const secondGreetingIsGoodbye = false;
+
+  const actual = xor(secondGreetingIsSayonara, secondGreetingIsGoodbye);
+  const expected = {
+    compose: 'xor',
+    rules: [
+      true,
+      false,
     ],
   };
 
@@ -395,6 +442,21 @@ it('ja.and should return a properly formatted and object', () => {
     rules: [
       firstGreetingIsHello,
       secondGreetingIsGoodbye,
+    ],
+  };
+  expect(actual).toEqual(expected);
+});
+
+it('ja.and should return booleans', () => {
+  const firstGreetingIsHello = true;
+  const secondGreetingIsGoodbye = false;
+
+  const actual = and(firstGreetingIsHello, secondGreetingIsGoodbye);
+  const expected = {
+    compose: 'and',
+    rules: [
+      true,
+      false,
     ],
   };
   expect(actual).toEqual(expected);
@@ -520,6 +582,15 @@ it('not should return a "composed" object with a compose value of not', () => {
   const actual = not(singleRule);
   const expected = {
     not: singleRule,
+  };
+  expect(actual).toEqual(expected);
+});
+
+it('not should return a "composed" boolean with a compose value of not', () => {
+  const singleRule = true;
+  const actual = not(singleRule);
+  const expected = {
+    not: true,
   };
   expect(actual).toEqual(expected);
 });
