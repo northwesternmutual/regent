@@ -330,6 +330,6 @@ const data = { isRaining: false, temperature: 75 };
 evaluate(isWarmAndSunny, data); // true
 ```
 
-# License
+## License
 
 MIT
