@@ -1,4 +1,25 @@
-import typeOf from './type-of';
+import { typeOf, typeOfFN } from './type-of';
+
+describe('3.x.x - typeOfFN should work in functional style', () => {
+  it('should be a function', () => {
+    const actual = typeof typeOfFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should perform typeof', () => {
+    const data = {
+      foo: () => {},
+    };
+
+    const RULE = typeOfFN('@foo', 'function');
+    const actual = RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('typeOf', () => {
   it('typeOf should be a function', () => {

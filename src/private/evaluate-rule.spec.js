@@ -1,5 +1,53 @@
 import evaluateRule from './evaluate-rule';
-import { or, not, and } from '../index';
+import { or, not, and, equals, greaterThanOrEquals } from '../index';
+
+describe('3.x.x function rule syntax evaluate rule', () => {
+  it('should work with function style rules', () => {
+    const data = {
+      foo: 'bar',
+    };
+
+    const RULE = equals('@foo', 'bar');
+    const actual = evaluateRule(RULE, data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should work with composed function style rules', () => {
+    const data = {
+      foo: 'bar',
+      biz: 'baz',
+      num: 4,
+    };
+
+    const RULE = equals('@foo', 'bar');
+    const RULE2 = equals('@biz', 'baz');
+    const RULE3 = greaterThanOrEquals('@num', 3);
+    const COMPOSED = and(RULE, RULE2, RULE3);
+    const actual = evaluateRule(COMPOSED, data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should work with composed function style rules and classic rules', () => {
+    const data = {
+      foo: 'bar',
+      biz: 'baz',
+      num: 4,
+    };
+
+    const RULE = equals('@foo', 'bar');
+    const RULE2 = equals('@biz', 'baz');
+    const RULE3 = { left: '@num', fn: 'greaterThanOrEquals', right: 3 };
+    const COMPOSED = and(RULE, RULE2, RULE3);
+    const actual = evaluateRule(COMPOSED, data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('evaluateRule', () => {
   it('evaluateRule should be a function', () => {

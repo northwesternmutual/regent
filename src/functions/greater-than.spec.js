@@ -1,4 +1,25 @@
-import greaterThan from './greater-than';
+import { greaterThan, greaterThanFN } from './greater-than';
+
+describe('3.x.x - greaterThan should work in functional style', () => {
+  it('should be a function', () => {
+    const actual = typeof greaterThanFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should evaluate greaterThan', () => {
+    const data = {
+      foo: 3,
+    };
+
+    const RULE = greaterThanFN('@foo', 1);
+    const actual = RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('greaterThan', () => {
   it('greaterThan should be a function', () => {

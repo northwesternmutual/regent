@@ -1,8 +1,73 @@
-# Regent: A JavaScript Rule Engine
+# Regent: Business Rules engine in JavaScript
 
-![regent logo](https://northwesternmutual.github.io/regent/regent-logo-small.png)
+![regent logo (the letter R wearing a crown)](https://northwesternmutual.github.io/regent/regent-logo-small.png)
 
-Regent provides a lightweight framework aimed at helping you organize your application’s business logic by separating the “how” from the “why”. At the lowest level, Regent logic is written in tiny, single responsibility rules that are both self-documenting and human readable.
+Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable.
+
+```javascript
+import { equals } from 'regent';
+
+// return a function that evaluates to true
+// if prop `isRaining` is equal to true
+const isRaining = equals('@isRaining', true);
+
+// Define your data structure
+const data = { isRaining: true };
+
+// Evaluate the rule
+const isUmbrellaNeeded = isRaining(data); // true
+```
+
+[`equals` predicate documentation](https://northwesternmutual.github.io/regent/#/?id=equals)
+
+Taking the previous example a bit further, we can refine the scenario to be more precise. We can create and combine multiple rules to test this condition
+
+> _If it is raining **and** the wind isn't so strong the umbrella will turn inside-out and blow out of our hands, we need an umbrella._
+
+```javascript
+import { and, equals, lessThan } from 'regent';
+
+// Define a rule for `isRaining` and a rule for `isCalm`.
+// Use regent and to compose them together
+const isRaining = equals('@isRaining', true);
+const isCalm = lessThan('@windSpeedInMph', 25);
+const isRainingAndCalm = and(isRaining, isCalm);
+
+// Define your data structure
+const data = { isRaining: true, windSpeedInMph: 20 };
+
+// Evaluate the rule
+isRainingAndCalm(data); // true
+```
+
+[`composition` documentation](https://northwesternmutual.github.io/regent/#/?id=composition)
+
+Regent also provides a simple way to find or filter array items based on a regent rule.
+
+```javascript
+{ equals, lessThan, find, filter } from 'regent';
+
+const isRaining = equals('@isRaining', true);
+const isSunny = lessThan('@cloudCover', 10);
+const isCold = lessThan('@temperature', 60);
+
+const data = {
+  isRaining: false,
+  cloudCover: 0,
+  temperature: 42
+};
+
+const items = [
+  { item: 'Winter hat', rule: isCold },
+  { item: 'Sunglasses', rule: isSunny },
+  { item: 'Umbrella', rule: isRaining },
+]
+
+// filter will return an array with the Winter Hat and Sunglasses objects
+// because it is cold and sunny
+// [{ item: 'Winter hat', rule: isCold }, { item: 'Sunglasses', rule: isSunny }]
+filter(items, data)
+```
 
 ## Installation
 
@@ -10,104 +75,7 @@ Regent provides a lightweight framework aimed at helping you organize your appli
 npm install --save regent
 ```
 
-## Implementation
-
-For our first example, we’ll use a real life scenario that is easy to identify with. Only a single rule is needed to test this condition:
-
-> _If it is raining, an umbrella is needed._
-
-
-```javascript
-import { evaluate } from 'regent';
-
-// Rule(s)
-const isRaining = { left: '@isRaining', fn: 'equals', right: true };
-
-// Data
-const data = { isRaining: true };
-
-// Evaluation
-const isUmbrellaNeeded = evaluate(isRaining, data); // true
-```
-
-[Source](https://github.com/northwesternmutual/regent/blob/master/examples/basic-example-weather.js)
-
-Taking the previous example a bit further, we can refine the scenario to be more precise. We can create and combine multiple rules to test this condition:
-
-> _If it is raining **and** the wind is calm, an umbrella is needed._
-
-```javascript
-import { and, evaluate } from 'regent';
-
-// Rule(s)
-const isRaining = { left: '@isRaining', fn: 'equals', right: true };
-const isCalm = { left: '@windSpeedInMph', fn: 'lessThan', right: 15 };
-const isRainingAndCalm = and(isRaining, isCalm);
-
-// Data
-const data = { isRaining: true, windSpeedInMph: 20 };
-
-// Evaluation
-const isUmbrellaNeeded = evaluate(isRainingAndCalm, data); // false
-```
-
-## Troubleshooting
-
-When conditional logic becomes too complex (and it will), use Regent’s [explain](https://github.com/northwesternmutual/regent/blob/master/docs/Queries.md#explain) method to simplify the abstraction.
-
 ## [Documentation](https://northwesternmutual.github.io/regent/#/?id=documentation)
-
-- [Rules](https://northwesternmutual.github.io/regent/#/?id=rules)
-- [Predicates](https://northwesternmutual.github.io/regent/#/?id=predicates)
-  - [Built-in Predicates](https://northwesternmutual.github.io/regent/#/?id=built-in-predicates)
-    - [`constants`](https://northwesternmutual.github.io/regent/#/?id=constants)
-    - [`dateAfterInclusive`](https://northwesternmutual.github.io/regent/#/?id=dateafterinclusive)
-    - [`dateBeforeInclusive`](https://northwesternmutual.github.io/regent/#/?id=datebeforeinclusive)
-    - [`deepEquals`](https://northwesternmutual.github.io/regent/#/?id=deepequals)
-    - [`empty`](https://northwesternmutual.github.io/regent/#/?id=empty)
-    - [`equals`](https://northwesternmutual.github.io/regent/#/?id=equals)
-    - [`every`](https://northwesternmutual.github.io/regent/#/?id=every)
-    - [`greaterThan`](https://northwesternmutual.github.io/regent/#/?id=greaterthan)
-    - [`greaterThanOrEquals`](https://northwesternmutual.github.io/regent/#/?id=greaterthanorequals)
-    - [`includes`](https://northwesternmutual.github.io/regent/#/?id=includes)
-    - [`lessThan`](https://northwesternmutual.github.io/regent/#/?id=lessthan)
-    - [`lessThanOrEquals`](https://northwesternmutual.github.io/regent/#/?id=lessthanorequals)
-    - [`regex`](https://northwesternmutual.github.io/regent/#/?id=regex)
-    - [`typeOf`](https://northwesternmutual.github.io/regent/#/?id=typeof)
-  - [Custom Predicates](https://northwesternmutual.github.io/regent/#/?id=custom-predicates)
-    - [`crown`](https://northwesternmutual.github.io/regent/#/?id=crown)
-    - [`init`](https://northwesternmutual.github.io/regent/#/?id=init)
-- [Composition](https://northwesternmutual.github.io/regent/#/?id=composition)
-  - [`and`](https://northwesternmutual.github.io/regent/#/?id=and)
-  - [`none`](https://northwesternmutual.github.io/regent/#/?id=none)
-  - [`not`](https://northwesternmutual.github.io/regent/#/?id=not)
-  - [`or`](https://northwesternmutual.github.io/regent/#/?id=or)
-  - [`xor`](https://northwesternmutual.github.io/regent/#/?id=xor)
-- [Queries](https://northwesternmutual.github.io/regent/#/?id=queries)
-  - [`evaluate`](https://northwesternmutual.github.io/regent/#/?id=evaluate)
-  - [`explain`](https://northwesternmutual.github.io/regent/#/?id=explain)
-  - [`explainLogic`](https://northwesternmutual.github.io/regent/#/?id=explainlogic)
-  - [`filter`](https://northwesternmutual.github.io/regent/#/?id=filter)
-  - [`find`](https://northwesternmutual.github.io/regent/#/?id=find)
-
-## Examples
-
-- [Basic Example](https://github.com/northwesternmutual/regent/blob/master/examples/basic-example-weather.js)
-- [Advanced Example: Weather](https://github.com/northwesternmutual/regent/blob/master/examples/advanced-example-weather.js)
-- [Advanced Example: Batman](https://github.com/northwesternmutual/regent/blob/master/examples/advanced-example-batman.js)
-- [Custom Predicate: Data Parsing](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-data-parsing.js)
-- [Custom Predicate: Global Registration](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-global-registration.js)
-- [Custom Predicate: Query Argument](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-query-argument.js)
-- [Custom Predicate: With Lodash](https://github.com/northwesternmutual/regent/blob/master/examples/custom-predicate-with-lodash.js)
-- [Composition with `and`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-and.js)
-- [Composition with `and` (manual)](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-and-manually.js)
-- [Composition with `not`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-not.js)
-- [Composition with `or`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-or.js)
-- [Composition with `xor`](https://github.com/northwesternmutual/regent/blob/master/examples/composition-with-xor.js)
-- [Querying with `evaluate`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-evaluate.js)
-- [Querying with `explain`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-explain.js)
-- [Querying with `filter`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-filter.js)
-- [Querying with `find`](https://github.com/northwesternmutual/regent/blob/master/examples/querying-with-find.js)
 
 ## License
 

@@ -1,3 +1,6 @@
-import includes from 'lodash.includes';
+import _includes from 'lodash.includes';
+import make from '../private/make';
 
-export default (left, right) => includes(left, right);
+export const includes = (left, right) => _includes(left, right);
+
+export const includesFN = make(includes);

@@ -46,4 +46,36 @@ describe('FN', () => {
     FN('nah')('left', 'right'); // function does not exist
     expect(console.log).toBeCalled(); // eslint-disable-line
   });
+
+  it('should export aliases for equals, greaterThan, greaterThanOrEquals, lessThan, and lessThanOrEquals', () => {
+    let left = 2;
+    let right = 1;
+    let actual = FN('>')(left, right);
+    let expected = true;
+    expect(actual).toEqual(expected);
+
+    left = 2;
+    right = 2;
+    actual = FN('>=')(left, right);
+    expected = true;
+    expect(actual).toEqual(expected);
+
+    left = 1;
+    right = 2;
+    actual = FN('<')(left, right);
+    expected = true;
+    expect(actual).toEqual(expected);
+
+    left = 2;
+    right = 2;
+    actual = FN('<=')(left, right);
+    expected = true;
+    expect(actual).toEqual(expected);
+
+    left = 2;
+    right = 2;
+    actual = FN('=')(left, right);
+    expected = true;
+    expect(actual).toEqual(expected);
+  });
 });

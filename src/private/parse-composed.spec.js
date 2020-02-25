@@ -111,6 +111,42 @@ describe('parseComposed', () => {
     expect(actual).toEqual(expected);
   });
 
+  it('parseComposed should throw and exception if xor is given more or less than 2 rules', () => {
+    let row = {
+      compose: 'xor',
+      rules: [
+        { left: '@greetings.first', fn: 'equals', right: 'hello' },
+      ],
+    };
+
+    let data = {
+      greetings: {
+        first: 'hello',
+        second: 'goodbye',
+      },
+    };
+
+    expect(() => parseComposed(row, data, 'should throw because only one rule')).toThrow('XOR must take exactly 2 rules');
+
+    row = {
+      compose: 'xor',
+      rules: [
+        { left: '@greetings.first', fn: 'equals', right: 'hello' },
+        { left: '@greetings.first', fn: 'equals', right: 'hello' },
+        { left: '@greetings.first', fn: 'equals', right: 'hello' },
+      ],
+    };
+
+    data = {
+      greetings: {
+        first: 'hello',
+        second: 'goodbye',
+      },
+    };
+
+    expect(() => parseComposed(row, data, 'should throw because more than 2 rules')).toThrow('XOR must take exactly 2 rules');
+  });
+
   it('parseComposed should evaluate the rules in the rules array and return bool given the comp type "and"', () => {
     const row = {
       compose: 'and',

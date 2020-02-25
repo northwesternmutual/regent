@@ -1,4 +1,25 @@
-import lessThan from './less-than';
+import { lessThan, lessThanFN } from './less-than';
+
+describe('3.x.x - lessThanFN should work in functional style', () => {
+  it('should be a function', () => {
+    const actual = typeof lessThanFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should perform lessThanFN', () => {
+    const data = {
+      foo: 1,
+    };
+
+    const RULE = lessThanFN('@foo', 2);
+    const actual = RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('lessThan', () => {
   it('lessThan should be a function', () => {

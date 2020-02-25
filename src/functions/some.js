@@ -3,8 +3,9 @@ import isarray from 'lodash.isarray';
 import { evaluate } from '../index';
 import isRule from '../private/is-rule';
 import isComposedRule from '../private/is-composed-rule';
+import make from '../private/make';
 
-export default (left, right, data, custom) => {
+export const some = (left, right, data, custom) => {
   if (!isRule(right) && !isComposedRule(right)) {
     throw new Error('Regent: the right property of an every rule must be a regent rule');
   }
@@ -15,3 +16,5 @@ export default (left, right, data, custom) => {
 
   return left.some(x => evaluate(right, assign({}, data, { __: x }), custom));
 };
+
+export const someFN = make(some);

@@ -1,4 +1,31 @@
-import empty from './empty';
+import { empty, emptyFN } from './empty';
+
+describe('3.x.x - empty functional style', () => {
+  it('should be a function', () => {
+    const actual = typeof emptyFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should return true for empty items', () => {
+    const data = {
+      foo: '',
+      bar: null,
+      biz: 'undefined',
+    };
+
+    const RULE = emptyFN('@foo')(data);
+    const RULE2 = emptyFN('@bar')(data);
+    const RULE3 = emptyFN('@biz')(data);
+    const RULE4 = emptyFN('@baz')(data);
+
+    expect(RULE).toEqual(true);
+    expect(RULE2).toEqual(true);
+    expect(RULE3).toEqual(true);
+    expect(RULE4).toEqual(true);
+  });
+});
 
 describe('empty', () => {
   it('empty should be a function', () => {

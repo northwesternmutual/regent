@@ -1,4 +1,86 @@
-import { find, filter, init, crown, evaluate, or, xor, and, not, none, explain, constants, makeRegentFactory, explainLogic } from './index';
+import defaultExport, {
+  find,
+  filter,
+  init,
+  crown,
+  evaluate,
+  or,
+  xor,
+  and,
+  not,
+  none,
+  explain,
+  constants,
+  makeRegentFactory,
+  make,
+  explainLogic,
+  deepEquals,
+  empty,
+  equals,
+  greaterThanOrEquals,
+  greaterThan,
+  includes,
+  lessThanOrEquals,
+  lessThan,
+  regex,
+  typeOf,
+  every,
+  some,
+} from './index';
+
+describe('3.x.x - functional rules public export', () => {
+  it('equals should be a function', () => {
+    expect(typeof equals).toEqual('function');
+  });
+
+  it('greaterThanOrEquals should be a function', () => {
+    expect(typeof greaterThanOrEquals).toEqual('function');
+  });
+
+  it('deepEquals should be a function', () => {
+    expect(typeof deepEquals).toEqual('function');
+  });
+
+  it('empty should be a function', () => {
+    expect(typeof empty).toEqual('function');
+  });
+
+  it('greaterThan should be a function', () => {
+    expect(typeof greaterThan).toEqual('function');
+  });
+
+  it('includes should be a function', () => {
+    expect(typeof includes).toEqual('function');
+  });
+
+  it('lessThanOrEquals should be a function', () => {
+    expect(typeof lessThanOrEquals).toEqual('function');
+  });
+
+  it('lessThan should be a function', () => {
+    expect(typeof lessThan).toEqual('function');
+  });
+
+  it('regex should be a function', () => {
+    expect(typeof regex).toEqual('function');
+  });
+
+  it('typeOf should be a function', () => {
+    expect(typeof typeOf).toEqual('function');
+  });
+
+  it('make should be a function', () => {
+    expect(typeof make).toEqual('function');
+  });
+
+  it('every should be a function', () => {
+    expect(typeof every).toEqual('function');
+  });
+
+  it('some should be a function', () => {
+    expect(typeof some).toEqual('function');
+  });
+});
 
 describe('explainLogic', () => {
   it('should return a table of explanations', () => {
@@ -229,6 +311,7 @@ describe('filter', () => {
 describe('init', () => {
   it('init should be a function', () => {
     expect(typeof init).toEqual('function');
+    expect(typeof defaultExport.init).toEqual('function'); // eslint-disable-line
   });
 
   it('init should return an object with and, not, or, xor, find, filter, evaluate, and rule methods', () => {
@@ -270,10 +353,26 @@ describe('init', () => {
 
 it('crown should be a function', () => {
   expect(typeof crown).toEqual('function');
+  expect(typeof defaultExport.crown).toEqual('function'); // eslint-disable-line
 });
 
 it('constants should be an object', () => {
   expect(typeof constants).toEqual('object');
+  expect(typeof defaultExport.constants).toEqual('object'); // eslint-disable-line
+  expect(constants).toEqual({
+    dateAfterInclusive: 'dateAfterInclusive',
+    dateBeforeInclusive: 'dateBeforeInclusive',
+    deepEquals: 'deepEquals',
+    empty: 'empty',
+    equals: 'equals',
+    greaterThan: 'greaterThan',
+    greaterThanOrEquals: 'greaterThanOrEquals',
+    includes: 'includes',
+    lessThan: 'lessThan',
+    lessThanOrEquals: 'lessThanOrEquals',
+    regex: 'regex',
+    typeOf: 'typeOf',
+  });
 });
 
 
