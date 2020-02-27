@@ -219,7 +219,7 @@ A rule composed with `and` will return `true` if **all** subrules return `true`.
 **API:** `and(rule1, rule2, [...moreRules])`
 
 ```javascript
-import { and, evaluate, equals, greaterThan, lessThan } from 'regent';
+import { and, equals, greaterThan, lessThan } from 'regent';
 
 // Rule(s)
 const isRaining = equals('@isRaining', true);
@@ -234,12 +234,7 @@ const data = {
   windSpeedInMph: 20
 };
 
-/**
- * Evaluation
- *
- * @type {Boolean}
- */
-const shouldIStayInside = isBadWeather(data); // true
+isBadWeather(data); // true
 ```
 
 #### `or`
@@ -249,7 +244,7 @@ A rule composed with `or` will return `true` if **any** subrules return `true`.
 **API:** `or(rule1, rule2, [...moreRules])`
 
 ```javascript
-import { or, evaluate, explain } from 'regent';
+import { or, equals, lessThan } from 'regent';
 
 // Rule(s)
 const isRaining = equals('@isRaining', true);
@@ -262,12 +257,7 @@ const data = {
   temperature: 45
 };
 
-/**
- * Evaluation
- *
- * @type {Boolean}
- */
-const shouldIDressWarm = isRainingOrCold(data); // true
+isRainingOrCold(data); // true
 ```
 
 #### `xor`
@@ -276,10 +266,6 @@ A rule composed with `xor` will return `true` if **1** subrule returns `true` an
 
 **API:** `xor(rule1, rule2)`
 
-```javascript
-import { xor, evaluate, explain } from 'regent';
-```
-
 #### `not`
 
 A rule composed with `not` will return `true` if the subrule returns `false`.
@@ -287,7 +273,7 @@ A rule composed with `not` will return `true` if the subrule returns `false`.
 **API:** `not(rule)`
 
 ```javascript
-import { not, evaluate, explain } from 'regent';
+import { not, equals } from 'regent';
 
 // Rule(s)
 const isCold = equals('@temperature', 55);
@@ -296,13 +282,8 @@ const isWarm = not(isCold); // Example of a composed rule
 // Data
 const data = { temperature: 45 };
 
-/**
- * Evaluation
- *
- * @type {Boolean}
- */
-evaluate(isCold, data); // true
-evaluate(isWarm, data); // false
+isCold(data); // true
+isWarm(data); // false
 ```
 
 #### `none`
@@ -312,7 +293,7 @@ A rule composed with `none` will return `true` if **none** of the subrules retur
 **API:** `none(rule1, rule2, [...moreRules])`
 
 ```javascript
-import { none, evaluate, explain } from 'regent';
+import { none, equals, lessThan } from 'regent';
 
 // Rule(s)
 const isRaining = equals('@isRaining', true);
@@ -322,13 +303,72 @@ const isWarmAndSunny = none(isRaining, isCold); // Example of a composed rule
 // Data
 const data = { isRaining: false, temperature: 75 };
 
-/**
- * Evaluation
- *
- * @type {Boolean}
- */
-evaluate(isWarmAndSunny, data); // true
+isWarmAndSunny(data); // true
 ```
+
+## Queries
+
+### `find`
+
+The `find` query will iterate over the logic array and return the entire object of first item whose rule returns `true`. It will **not** continue looking through the following rows. You can think of it like `Array.find()`. In the example below, the second array item will be returned, because `isWarm` returns `true`.
+
+**API:** `find(logicArray, data, [customPredicates])`
+
+```javascript
+import { find, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  temperature: 82
+};
+
+// Logic table
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rule: isCold },
+  { value: ['sandals', 't-shirt'], rule: isWarm },
+];
+
+// Query
+const clothingItems = find(clothingLogic, data);
+// => { value: ['sandals', 't-shirt'], rule: isWarm }
+```
+
+### `filter`
+
+The `filter` query has the same signature as `find`, but returns an array of all the rows whose rules all return `true`. If there are no matches, it will return an empty array. You can think of it like `Array.filter()`. In the example below, `filter` will return an array of all rows that have a rule that evaluates to `true`.
+
+**API:** `filter(logicArray, data, [customPredicates])`
+
+```javascript
+import { filter, includes, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isRaining = includes('@precipitation','rain');
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  precipitation: ['rain'],
+  temperature: 82,
+};
+
+// Logic table
+const clothingLogic = [
+  { rule: isWarm, value: ['sandals', 't-shirt'] },
+  { rule: isCold, value: ['hat', 'scarf', 'boots'] },
+  { rule: isRaining, value: ['umbrella'] },
+];
+
+// Query
+const clothingLogicFiltered = filter(clothingLogic, data);
+// => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
+```
+
 
 ## License
 
