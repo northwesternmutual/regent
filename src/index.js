@@ -60,6 +60,11 @@ export const none = (...rules) => not(or(...rules));
 
 export const explain = (rule, data) => {
   let result;
+
+  if (typeof rule === 'function') {
+    return 'regent.explain does not work with functional style rules';
+  }
+
   if (!isComposedRule(rule)) {
     if (!isRule(rule)) {
       throw new Error('regent.explain must be called with a regent rule');

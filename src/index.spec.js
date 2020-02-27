@@ -109,6 +109,14 @@ describe('explainLogic', () => {
 
     expect(expected).toEqual(actual);
   });
+
+  it('should not die with functional rules', () => {
+    const RAINING = equals('@raining', true);
+    const actual = explain(RAINING);
+    const expected = 'regent.explain does not work with functional style rules';
+
+    expect(actual).toEqual(expected);
+  });
 });
 
 // Mock up a set of rules to use. These rules will be
