@@ -2,7 +2,7 @@
 
 ![regent logo (the letter R wearing a crown)](https://northwesternmutual.github.io/regent/regent-logo-small.png)
 
-Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable.
+Regent lets you ask true and false questions of any data structure. Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable. Let's look at an example.
 
 ```javascript
 import { equals } from 'regent';
