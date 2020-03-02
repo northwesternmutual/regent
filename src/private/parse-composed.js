@@ -21,7 +21,7 @@ export default (obj, data, custom = {}) => {
         break;
 
       case 'xor': {
-        if (obj.rules.length !== 2) throw Error('XOR must take exactly 2 rules');
+        if (obj.rules.length !== 2) throw new Error('XOR must take exactly 2 rules');
         const [r1, r2] = obj.rules.map(fxn);
         result = (r1 && !r2) || (r2 && !r1);
         break;

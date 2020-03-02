@@ -1,4 +1,86 @@
-import { find, filter, init, crown, evaluate, or, xor, and, not, none, explain, constants, makeRegentFactory, explainLogic } from './index';
+import defaultExport, {
+  find,
+  filter,
+  init,
+  crown,
+  evaluate,
+  or,
+  xor,
+  and,
+  not,
+  none,
+  explain,
+  constants,
+  makeRegentFactory,
+  make,
+  explainLogic,
+  deepEquals,
+  empty,
+  equals,
+  greaterThanOrEquals,
+  greaterThan,
+  includes,
+  lessThanOrEquals,
+  lessThan,
+  regex,
+  typeOf,
+  every,
+  some,
+} from './index';
+
+describe('3.x.x - functional rules public export', () => {
+  it('equals should be a function', () => {
+    expect(typeof equals).toEqual('function');
+  });
+
+  it('greaterThanOrEquals should be a function', () => {
+    expect(typeof greaterThanOrEquals).toEqual('function');
+  });
+
+  it('deepEquals should be a function', () => {
+    expect(typeof deepEquals).toEqual('function');
+  });
+
+  it('empty should be a function', () => {
+    expect(typeof empty).toEqual('function');
+  });
+
+  it('greaterThan should be a function', () => {
+    expect(typeof greaterThan).toEqual('function');
+  });
+
+  it('includes should be a function', () => {
+    expect(typeof includes).toEqual('function');
+  });
+
+  it('lessThanOrEquals should be a function', () => {
+    expect(typeof lessThanOrEquals).toEqual('function');
+  });
+
+  it('lessThan should be a function', () => {
+    expect(typeof lessThan).toEqual('function');
+  });
+
+  it('regex should be a function', () => {
+    expect(typeof regex).toEqual('function');
+  });
+
+  it('typeOf should be a function', () => {
+    expect(typeof typeOf).toEqual('function');
+  });
+
+  it('make should be a function', () => {
+    expect(typeof make).toEqual('function');
+  });
+
+  it('every should be a function', () => {
+    expect(typeof every).toEqual('function');
+  });
+
+  it('some should be a function', () => {
+    expect(typeof some).toEqual('function');
+  });
+});
 
 describe('explainLogic', () => {
   it('should return a table of explanations', () => {
@@ -26,6 +108,14 @@ describe('explainLogic', () => {
     ];
 
     expect(expected).toEqual(actual);
+  });
+
+  it('should not die with functional rules', () => {
+    const RAINING = equals('@raining', true);
+    const actual = explain(RAINING);
+    const expected = 'regent.explain does not work with functional style rules';
+
+    expect(actual).toEqual(expected);
   });
 });
 
@@ -229,6 +319,7 @@ describe('filter', () => {
 describe('init', () => {
   it('init should be a function', () => {
     expect(typeof init).toEqual('function');
+    expect(typeof defaultExport.init).toEqual('function'); // eslint-disable-line
   });
 
   it('init should return an object with and, not, or, xor, find, filter, evaluate, and rule methods', () => {
@@ -270,10 +361,26 @@ describe('init', () => {
 
 it('crown should be a function', () => {
   expect(typeof crown).toEqual('function');
+  expect(typeof defaultExport.crown).toEqual('function'); // eslint-disable-line
 });
 
 it('constants should be an object', () => {
   expect(typeof constants).toEqual('object');
+  expect(typeof defaultExport.constants).toEqual('object'); // eslint-disable-line
+  expect(constants).toEqual({
+    dateAfterInclusive: 'dateAfterInclusive',
+    dateBeforeInclusive: 'dateBeforeInclusive',
+    deepEquals: 'deepEquals',
+    empty: 'empty',
+    equals: 'equals',
+    greaterThan: 'greaterThan',
+    greaterThanOrEquals: 'greaterThanOrEquals',
+    includes: 'includes',
+    lessThan: 'lessThan',
+    lessThanOrEquals: 'lessThanOrEquals',
+    regex: 'regex',
+    typeOf: 'typeOf',
+  });
 });
 
 
@@ -289,6 +396,21 @@ it('rule should evaluate the rule provided with the data provided', () => {
 
   const placeIsWorld = { left: '@place', fn: 'equals', right: 'world' };
   const placeIsNotWorld = { left: '@place', fn: '!equals', right: 'world' };
+
+  let actual = evaluate(placeIsNotWorld, data);
+  let expected = true;
+  expect(actual).toEqual(expected);
+
+  actual = evaluate(placeIsWorld, data);
+  expected = false;
+  expect(actual).toEqual(expected);
+});
+
+it('rule should evaluate booleans', () => {
+  const data = {};
+
+  const placeIsWorld = false;
+  const placeIsNotWorld = true;
 
   let actual = evaluate(placeIsNotWorld, data);
   let expected = true;
@@ -357,6 +479,22 @@ it('ja.or should return a properly formatted or object', () => {
   expect(actual).toEqual(expected);
 });
 
+it('ja.or should return booleans', () => {
+  const secondGreetingIsSayonara = true;
+  const secondGreetingIsGoodbye = false;
+
+  const actual = or(secondGreetingIsSayonara, secondGreetingIsGoodbye);
+  const expected = {
+    compose: 'or',
+    rules: [
+      true,
+      false,
+    ],
+  };
+
+  expect(actual).toEqual(expected);
+});
+
 it('ja.xor should be a function', () => {
   expect(typeof xor).toEqual('function');
 });
@@ -371,6 +509,22 @@ it('ja.xor should return a properly formatted xor object', () => {
     rules: [
       secondGreetingIsSayonara,
       secondGreetingIsGoodbye,
+    ],
+  };
+
+  expect(actual).toEqual(expected);
+});
+
+it('ja.xor should return booleans', () => {
+  const secondGreetingIsSayonara = true;
+  const secondGreetingIsGoodbye = false;
+
+  const actual = xor(secondGreetingIsSayonara, secondGreetingIsGoodbye);
+  const expected = {
+    compose: 'xor',
+    rules: [
+      true,
+      false,
     ],
   };
 
@@ -395,6 +549,21 @@ it('ja.and should return a properly formatted and object', () => {
     rules: [
       firstGreetingIsHello,
       secondGreetingIsGoodbye,
+    ],
+  };
+  expect(actual).toEqual(expected);
+});
+
+it('ja.and should return booleans', () => {
+  const firstGreetingIsHello = true;
+  const secondGreetingIsGoodbye = false;
+
+  const actual = and(firstGreetingIsHello, secondGreetingIsGoodbye);
+  const expected = {
+    compose: 'and',
+    rules: [
+      true,
+      false,
     ],
   };
   expect(actual).toEqual(expected);
@@ -520,6 +689,15 @@ it('not should return a "composed" object with a compose value of not', () => {
   const actual = not(singleRule);
   const expected = {
     not: singleRule,
+  };
+  expect(actual).toEqual(expected);
+});
+
+it('not should return a "composed" boolean with a compose value of not', () => {
+  const singleRule = true;
+  const actual = not(singleRule);
+  const expected = {
+    not: true,
   };
   expect(actual).toEqual(expected);
 });

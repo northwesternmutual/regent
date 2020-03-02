@@ -5,6 +5,20 @@ import isLookup from './private/is-lookup';
 import evaluateRule from './private/evaluate-rule';
 import isRule from './private/is-rule';
 import isComposedRule from './private/is-composed-rule';
+import makeFN from './private/make';
+
+import { deepEqualsFN } from './functions/deep-equals';
+import { emptyFN } from './functions/empty';
+import { equalsFN } from './functions/equals';
+import { greaterThanOrEqualsFN } from './functions/greater-than-equals';
+import { greaterThanFN } from './functions/greater-than';
+import { includesFN } from './functions/includes';
+import { lessThanOrEqualsFN } from './functions/less-than-equals';
+import { lessThanFN } from './functions/less-than';
+import { regexFN } from './functions/regex';
+import { typeOfFN } from './functions/type-of';
+import { everyFN } from './functions/every';
+import { someFN } from './functions/some';
 
 export const find = (rules, data, custom = {}) => (
   rules.find(line => evaluateRule(line.rule, data, custom))
@@ -46,6 +60,11 @@ export const none = (...rules) => not(or(...rules));
 
 export const explain = (rule, data) => {
   let result;
+
+  if (typeof rule === 'function') {
+    return 'regent.explain does not work with functional style rules';
+  }
+
   if (!isComposedRule(rule)) {
     if (!isRule(rule)) {
       throw new Error('regent.explain must be called with a regent rule');
@@ -119,6 +138,22 @@ export const constants = {
   regex: 'regex',
   typeOf: 'typeOf',
 };
+
+// 3.x.x functional rules
+export const deepEquals = deepEqualsFN;
+export const empty = emptyFN;
+export const equals = equalsFN;
+export const greaterThanOrEquals = greaterThanOrEqualsFN;
+export const greaterThan = greaterThanFN;
+export const includes = includesFN;
+export const lessThanOrEquals = lessThanOrEqualsFN;
+export const lessThan = lessThanFN;
+export const regex = regexFN;
+export const typeOf = typeOfFN;
+export const every = everyFN;
+export const some = someFN;
+
+export const make = makeFN;
 
 export default {
   constants,

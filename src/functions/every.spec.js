@@ -1,5 +1,39 @@
-import every from './every';
-import { init } from '../index';
+import { every, everyFN } from './every';
+import { init, equals } from '../index';
+
+describe('3.x.x - every', () => {
+  it('should work with function style rules (passing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'bar' },
+      ],
+    };
+
+    const RULE = equals('@__.foo', 'bar');
+    const E_RULE = everyFN('@nodes', RULE);
+    const actual = E_RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should work with function style rules (failing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'foo' },
+      ],
+    };
+
+    const RULE = equals('@__.foo', 'bar');
+    const E_RULE = everyFN('@nodes', RULE);
+    const actual = E_RULE(data);
+    const expected = false;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('every', () => {
   it('every should be a function', () => {

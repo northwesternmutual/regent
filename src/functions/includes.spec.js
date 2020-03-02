@@ -1,4 +1,27 @@
-import includes from './includes';
+import { includes, includesFN } from './includes';
+
+describe('3.x.x - includes should work in functional style', () => {
+  it('should be a function', () => {
+    const actual = typeof includesFN;
+    const expected = 'function';
+
+    expect(actual).toEqual(expected);
+  });
+
+  it('should perform includes functionality', () => {
+    const data = {
+      foo: {
+        a: 'b',
+      },
+    };
+
+    const RULE = includesFN('@foo', 'b');
+    const actual = RULE(data);
+    const expected = true;
+
+    expect(actual).toEqual(expected);
+  });
+});
 
 describe('includes', () => {
   it('includes should be a function', () => {

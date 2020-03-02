@@ -34,6 +34,10 @@ describe('isLookup', () => {
     str = undefined;
     actual = isLookup(str);
     expect(actual).toEqual(expected);
+
+    str = () => {};
+    actual = isLookup(str);
+    expect(actual).toEqual(expected);
   });
 
 
