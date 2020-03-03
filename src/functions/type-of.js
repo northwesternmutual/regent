@@ -1,4 +1,4 @@
-import make from '../private/make';
+import make from '../private/make'
 
-export const typeOf = (left, right) => typeof left === right; // eslint-disable-line
-export const typeOfFN = make(typeOf);
+export const typeOfFn = (left, right) => typeof left === right; // eslint-disable-line
+export default make(typeOfFn)

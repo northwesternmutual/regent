@@ -1,4 +1,4 @@
-import make from '../private/make';
+import make from '../private/make'
 
-export const lessThanOrEquals = (left, right) => left <= right;
-export const lessThanOrEqualsFN = make(lessThanOrEquals);
+export const lessThanOrEqualsFn = (left, right) => left <= right
+export default make(lessThanOrEqualsFn)

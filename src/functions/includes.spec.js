@@ -1,51 +1,50 @@
-import { includes, includesFN } from './includes';
+import includes, { includesFn } from './includes'
 
 describe('3.x.x - includes should work in functional style', () => {
   it('should be a function', () => {
-    const actual = typeof includesFN;
-    const expected = 'function';
+    const actual = typeof includes
+    const expected = 'function'
 
-    expect(actual).toEqual(expected);
-  });
+    expect(actual).toEqual(expected)
+  })
 
   it('should perform includes functionality', () => {
     const data = {
       foo: {
-        a: 'b',
-      },
-    };
+        a: 'b'
+      }
+    }
 
-    const RULE = includesFN('@foo', 'b');
-    const actual = RULE(data);
-    const expected = true;
+    const RULE = includes('@foo', 'b')
+    const actual = RULE(data)
+    const expected = true
 
-    expect(actual).toEqual(expected);
-  });
-});
+    expect(actual).toEqual(expected)
+  })
+})
 
-describe('includes', () => {
-  it('includes should be a function', () => {
-    expect(typeof includes).toEqual('function');
-  });
+describe('includesFn', () => {
+  it('includesFn should be a function', () => {
+    expect(typeof includesFn).toEqual('function')
+  })
 
-  it('includes Function: Should return true when first argument is in the args array', () => {
-    const args = [2, 3, 4];
-    const actual = includes(args, 3);
-    const expected = true;
-    expect(actual).toEqual(expected);
-  });
+  it('includesFn Function: Should return true when first argument is in the args array', () => {
+    const args = [2, 3, 4]
+    const actual = includesFn(args, 3)
+    const expected = true
+    expect(actual).toEqual(expected)
+  })
 
-  it('includes Function: Should return false when the first argument is not in args array.', () => {
-    const args = [2, 3, 4];
-    const actual = includes(5, args);
-    const expected = false;
-    expect(actual).toEqual(expected);
-  });
+  it('includesFn Function: Should return false when the first argument is not in args array.', () => {
+    const args = [2, 3, 4]
+    const actual = includesFn(5, args)
+    const expected = false
+    expect(actual).toEqual(expected)
+  })
 
-  it('includes should honor lodash.includes wishes :)', () => {
-    expect(includes([1, 2, 3], 1)).toEqual(true);
-    expect(includes({ a: 1, b: 2 }, 1)).toEqual(true);
-    expect(includes('abcd', 'bc')).toEqual(true);
-  });
-});
-
+  it('includesFn should honor lodash.includesFn wishes :)', () => {
+    expect(includesFn([1, 2, 3], 1)).toEqual(true)
+    expect(includesFn({ a: 1, b: 2 }, 1)).toEqual(true)
+    expect(includesFn('abcd', 'bc')).toEqual(true)
+  })
+})

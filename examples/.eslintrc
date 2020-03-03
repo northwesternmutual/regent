@@ -1,9 +1,0 @@
-{
-  "extends": ["../.eslintrc"],
-  "rules": {
-    "import/no-unresolved": "off",
-    "max-len": "off",
-    "no-console": "off",
-    "object-curly-newline": "off"
-  }
-}

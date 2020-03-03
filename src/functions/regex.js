@@ -1,4 +1,4 @@
-import make from '../private/make';
+import make from '../private/make'
 
-export const regex = (left, right) => right.test(left);
-export const regexFN = make(regex);
+export const regexFn = (left, right) => right.test(left)
+export default make(regexFn)
