@@ -1,4 +1,4 @@
-import make from '../private/make'
+import make from './make'
 
 export const greaterThanOrEqualsFn = (left, right) => left >= right
 

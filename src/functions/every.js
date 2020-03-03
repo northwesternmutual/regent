@@ -1,7 +1,7 @@
 import assign from 'lodash.assign'
 import isarray from 'lodash.isarray'
 import isRule from '../private/is-rule'
-import make from '../private/make'
+import make from './make'
 
 export const everyFn = (left, right, data) => {
   if (!isRule(right)) {

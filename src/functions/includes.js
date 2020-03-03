@@ -1,5 +1,5 @@
 import _includes from 'lodash.includes'
-import make from '../private/make'
+import make from './make'
 
 export const includesFn = (left, right) => _includes(left, right)
 

@@ -1,4 +1,4 @@
-import makeArgs from './make-args'
+import makeArgs from '../private/make-args'
 
 export default (fn) => {
   if (typeof fn !== 'function') {

@@ -1,5 +1,5 @@
 import isEqual from 'lodash.isequal'
-import make from '../private/make'
+import make from './make'
 
 export const deepEqualsFn = (left, right) => isEqual(left, right)
 
