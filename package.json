@@ -17,6 +17,10 @@
     "dev": "microbundle watch",
     "stryker": "npx stryker run"
   },
+  "pre-push": [
+    "test",
+    "build"
+  ],
   "keywords": [
     "logic",
     "engine",
@@ -40,6 +44,7 @@
     "@stryker-mutator/jest-runner": "^2.5.0",
     "jest": "^24.1.0",
     "microbundle": "^0.12.0-next.8",
+    "pre-push": "^0.1.1",
     "standard": "^14.3.1"
   },
   "dependencies": {},
