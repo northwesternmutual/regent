@@ -8,4 +8,4 @@ module.exports = function (config) {
     reporters: ['progress', 'clear-text', 'html'],
     coverageAnalysis: 'off'
   })
-};
+}

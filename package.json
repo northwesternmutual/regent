@@ -8,12 +8,12 @@
   },
   "source": "src/regent.js",
   "main": "dist/regent.js",
-  "module": "dist/regent.module.js",
+  "module": "dist/regent.modern.module.js",
   "unpkg": "dist/regent.umd.js",
   "scripts": {
     "test": "standard && jest",
     "test-watch": "jest --watch",
-    "build": "microbundle",
+    "build": "microbundle --external none",
     "dev": "microbundle watch"
   },
   "keywords": [
@@ -37,15 +37,13 @@
     "@stryker-mutator/html-reporter": "^2.5.0",
     "@stryker-mutator/javascript-mutator": "^2.5.0",
     "@stryker-mutator/jest-runner": "^2.5.0",
-    "jest": "^25.1.0",
-    "microbundle": "^0.11.0",
+    "jest": "^24.1.0",
+    "microbundle": "^0.12.0-next.8",
     "standard": "^14.3.1"
   },
   "dependencies": {
-    "lodash.assign": "^4.2.0",
     "lodash.get": "^4.4.2",
     "lodash.includes": "^4.3.0",
-    "lodash.isarray": "^4.0.0",
     "lodash.isequal": "^4.5.0"
   },
   "standard": {
