@@ -38,4 +38,17 @@ describe('3.x.x - every', () => {
     const right = { something: 'not a rule' }
     expect(() => every('@nodes', right)({})).toThrow('Regent: the right property of an every rule must be a regent rule')
   })
+
+  it('should return false if the first argument is not an array', () => {
+    const data = {
+      nodes: 'string'
+    }
+
+    const RULE = equals('@__.foo', 'bar')
+    const E_RULE = every('@nodes', RULE)
+    const actual = E_RULE(data)
+    const expected = false
+
+    expect(actual).toEqual(expected)
+  })
 })

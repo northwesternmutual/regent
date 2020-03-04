@@ -27,4 +27,11 @@ describe('stripAt', () => {
     const expected = 'he@llo'
     expect(actual).toEqual(expected)
   })
+
+  it('should return the arg if it is not a string', () => {
+    const actual = stripAt(12)
+    const expected = 12
+
+    expect(actual).toEqual(expected)
+  })
 })

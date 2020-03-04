@@ -116,4 +116,12 @@ describe('someFn', () => {
     const actual = someFn(left, right)
     expect(actual).toEqual(true)
   })
+
+  it('should return false if the first argument is not an array', () => {
+    const RULE = equals('string', 'bar')
+    const actual = someFn('@nodes', RULE)
+    const expected = false
+
+    expect(actual).toEqual(expected)
+  })
 })

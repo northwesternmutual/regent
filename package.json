@@ -14,7 +14,8 @@
     "test": "standard && jest",
     "test-watch": "jest --watch",
     "build": "microbundle --external none",
-    "dev": "microbundle watch"
+    "dev": "microbundle watch",
+    "stryker": "npx stryker run"
   },
   "keywords": [
     "logic",
