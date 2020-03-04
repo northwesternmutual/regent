@@ -2,6 +2,8 @@ import and from './functions/and'
 import empty from './functions/empty'
 import equals from './functions/equals'
 import every from './functions/every'
+import filter from './functions/filter'
+import find from './functions/find'
 import greaterThanOrEquals from './functions/greater-than-equals'
 import greaterThan from './functions/greater-than'
 import lessThanOrEquals from './functions/less-than-equals'
@@ -20,6 +22,8 @@ export default {
   empty,
   equals,
   every,
+  filter,
+  find,
   greaterThanOrEquals,
   greaterThan,
   lessThanOrEquals,
