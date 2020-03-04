@@ -49,4 +49,16 @@ describe('equals', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should work with array syntax', () => {
+    const data = {
+      foo: [
+        { bar: 'bar' }
+      ]
+    }
+    const actual = equals('@foo[0].bar', 'bar')(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
 })

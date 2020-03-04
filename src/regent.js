@@ -1,11 +1,9 @@
 import and from './functions/and'
-import deepEquals from './functions/deep-equals'
 import empty from './functions/empty'
 import equals from './functions/equals'
 import every from './functions/every'
 import greaterThanOrEquals from './functions/greater-than-equals'
 import greaterThan from './functions/greater-than'
-import includes from './functions/includes'
 import lessThanOrEquals from './functions/less-than-equals'
 import lessThan from './functions/less-than'
 import make from './functions/make'
@@ -19,13 +17,11 @@ import xor from './functions/xor'
 
 export default {
   and,
-  deepEquals,
   empty,
   equals,
   every,
   greaterThanOrEquals,
   greaterThan,
-  includes,
   lessThanOrEquals,
   lessThan,
   make,

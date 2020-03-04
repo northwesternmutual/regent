@@ -1,4 +1,4 @@
-import get from 'lodash.get'
+import get from './get'
 import isLookup from './is-lookup'
 import stripAt from './strip-at'
 
