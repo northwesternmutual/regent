@@ -1,7 +1,7 @@
 import isRule from '../private/is-rule'
-import make from './make'
+import makeWithContext from '../private/make-with-context'
 
-export const someFn = (left, right, data, custom) => {
+export const someFn = (left, right, context = '__', data) => {
   if (!isRule(right)) {
     throw new Error('Regent: the right property of an every rule must be a regent rule')
   }
@@ -10,7 +10,7 @@ export const someFn = (left, right, data, custom) => {
     return false
   }
 
-  return left.some(x => right(Object.assign({}, data, { __: x })))
+  return left.some(x => right(Object.assign({}, data, { [context]: x })))
 }
 
-export default make(someFn)
+export default makeWithContext(someFn)

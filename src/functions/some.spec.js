@@ -19,6 +19,22 @@ describe('3.x.x - some', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should work with custom context (passing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'foo' }
+      ]
+    }
+
+    const RULE = equals('@this.foo', 'bar')
+    const E_RULE = some('@nodes', RULE, 'this')
+    const actual = E_RULE(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
   it('should work with function style rules (failing)', () => {
     const data = {
       nodes: [

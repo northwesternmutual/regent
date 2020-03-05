@@ -18,6 +18,22 @@ describe('3.x.x - every', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should work with custom context param (passing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'bar' }
+      ]
+    }
+
+    const RULE = equals('@context.foo', 'bar')
+    const E_RULE = every('@nodes', RULE, 'context')
+    const actual = E_RULE(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
   it('should work with function style rules (failing)', () => {
     const data = {
       nodes: [
