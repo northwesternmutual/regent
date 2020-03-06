@@ -24,7 +24,8 @@ Taking the previous example a bit further, we can refine the scenario to be more
 
 > _If it is raining **and** the wind isn't so strong the umbrella will turn inside-out and blow out of our hands, we need an umbrella._
 
-```javascript
+```
+
 import { and, equals, lessThan } from 'regent';
 
 // Define a rule for `isRaining` and a rule for `isCalm`.
