@@ -1,5 +1,5 @@
-import make from '../private/make';
+import make from './make'
 
-export const greaterThan = (left, right) => left > right;
+export const greaterThanFn = (left, right) => left > right
 
-export const greaterThanFN = make(greaterThan);
+export default make(greaterThanFn)

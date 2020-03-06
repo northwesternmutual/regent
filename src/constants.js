@@ -1,2 +1,0 @@
-// eslint-disable-next-line
-export const FUNCTION_DEPRECATION_WARNING = func => `REGENT: ${func} is now deprecated and will not be supported in the next major version of Regent. If you need this functionality it is recommended that you implement a custom predicate. Visit https://northwesternmutual.github.io/regent/#/?id=custom-predicates for more information.`

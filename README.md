@@ -1,8 +1,8 @@
-# Regent: Business Rules engine in JavaScript
+# Regent: Business Rules in JavaScript
 
-![regent logo (the letter R wearing a crown)](https://northwesternmutual.github.io/regent/regent-logo-small.png)
+![regent logo (the letter R wearing a crown)](https://github.com/northwesternmutual/regent/blob/master/docs/regent-logo-holographic.png)
 
-Regent lets you ask true and false questions of any data structure. Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable. Let's look at an example.
+Regent lets you query a data structure by asking true or false questions. Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable. Let's look at an example.
 
 ```javascript
 import { equals } from 'regent';
@@ -16,6 +16,7 @@ const data = { isRaining: true };
 
 // Evaluate the rule
 const isUmbrellaNeeded = isRaining(data); // true
+
 ```
 
 [`equals` predicate documentation](https://northwesternmutual.github.io/regent/#/?id=equals)

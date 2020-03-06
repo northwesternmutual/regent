@@ -1,2 +1,2 @@
-const isEscapedRegex = /^@@/;
-export default arg => isEscapedRegex.test(arg);
+const isEscapedRegex = /^@@/
+export default arg => isEscapedRegex.test(arg)

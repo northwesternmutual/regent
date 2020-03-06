@@ -1,5 +1,5 @@
-import make from '../private/make';
+import make from './make'
 
-export const equals = (left, right) => left === right;
+export const equalsFn = (left, right) => left === right
 
-export const equalsFN = make(equals);
+export default make(equalsFn)

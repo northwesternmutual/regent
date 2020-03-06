@@ -1,10 +1,10 @@
-import make from '../private/make';
+import make from './make'
 
-export const empty = input => (
+export const emptyFn = input => (
   input === undefined ||
   input === null ||
   input === 'undefined' ||
   input === ''
-);
+)
 
-export const emptyFN = make(empty);
+export default make(emptyFn)

@@ -1,318 +1,631 @@
-# Regent: Business Rules engine in JavaScript
+# Regent: Business Rules in JavaScript
 
-![regent logo (the letter R wearing a crown)](https://northwesternmutual.github.io/regent/regent-logo-small.png)
+![regent logo (the letter R wearing a crown)](https://github.com/northwesternmutual/regent/blob/master/docs/regent-logo-holographic.png)
 
-Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable.
+Regent lets you query a data structure by asking true or false questions. Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable. Let's look at an example.
 
-## Rules
-
-A regent rule is a function that takes an object, and returns a boolean. Regent rules are created by using a built in predicate factory function. Regent contains multiple [predicates](#Predicates) and supports [custom predicates](#custom_predicates). The following example uses `equals`.
+> _If it is raining the `isUmbrellaNeeded` rule should evaluate to `true`_
 
 ```javascript
+import { equals } from 'regent';
+
+// return a function that evaluates to true
+// if prop `isRaining` is equal to true
 const isRaining = equals('@isRaining', true);
+
+// Define your data structure
+const data = { isRaining: true };
+
+// Evaluate the rule
+const isUmbrellaNeeded = isRaining(data); // true
+
 ```
 
-In the above example we are passing two arguments to the equals predicate. The first is the path to the data we want to look up. the `@` symbol instructs regent to find a property on the data object named `isRaining`. The second argument is the value we want to test equality. In the above example we are passing a boolean literal, but we can use a lookup for the second argument as well.
+[`equals` predicate documentation](https://northwesternmutual.github.io/regent/#/?id=equals)
+
+Taking the previous example a bit further, we can refine the scenario to be more precise. We can create and combine multiple rules to test this condition
+
+> _If it is raining **and** the wind isn't so strong the umbrella will turn inside-out and blow out of our hands, we need an umbrella._
 
 ```javascript
-const stableTemperature = equals('@temperature_today', '@temperature_tomorrow');
+import { and, equals, lessThan } from 'regent';
+
+// Define a rule for `isRaining` and a rule for `isCalm`.
+// Use regent and to compose them together
+const isRaining = equals('@isRaining', true);
+const isCalm = lessThan('@windSpeedInMph', 25);
+const isRainingAndCalm = and(isRaining, isCalm);
+
+// Define your data structure
+const data = { isRaining: true, windSpeedInMph: 20 };
+
+// Evaluate the rule
+isRainingAndCalm(data); // true
 ```
 
-Regent uses lodash.get to evaluate lookup strings. Here is a more complicated example.
+[`composition` documentation](https://northwesternmutual.github.io/regent/#/?id=composition)
+
+Regent also provides a simple way to find or filter array items based on a regent rule.
+
+> _In this next example the rules `isCold` and `isSunny` will evaluate to true, so the "Winter hat" and "Sunglasses" rows will be returned_
 
 ```javascript
+{ equals, lessThan, find, filter } from 'regent';
+
+const isRaining = equals('@isRaining', true);
+const isSunny = lessThan('@cloudCover', 10);
+const isCold = lessThan('@temperature', 60);
+
 const data = {
-  foo: {
-    bar: [
-      { fizz: true }
-    ]
-  }
+  isRaining: false,
+  cloudCover: 0,
+  temperature: 42
 };
 
-const isRaining = equals('@foo.bar[0].fizz', true);
+const items = [
+  { item: 'Winter hat', rule: isCold },
+  { item: 'Sunglasses', rule: isSunny },
+  { item: 'Umbrella', rule: isRaining },
+]
 
-isRaining(data) // true
+// filter will return an array with the Winter Hat and Sunglasses objects
+// because it is cold and sunny
+// [{ item: 'Winter hat', rule: isCold }, { item: 'Sunglasses', rule: isSunny }]
+filter(items, data)
+```
+
+## Installation
+
+```javascript
+npm install --save regent
 ```
 
 ## Predicates
 
-### Built-in predicates
-
-- [deepEquals](#deepEquals)
-- [empty](#empty)
-- [equals](#equals)
-- [greaterThan](#greaterThan)
-- [greaterThanOrEquals](#greaterThanOrEquals)
-- [includes](#includes)
-- [lessThan](#lessThan)
-- [lessThanOrEquals](#lessThanOrEquals)
-- [regex](#regex)
-- [typeOf](#typeOf)
-
-#### deepEquals
-
-Uses [lodash.isEqual](https://lodash.com/docs/#isEqual) to perform a deep comparison between `argument1` and `argument2` to determine if they are equivalent.
+All predicates are factory functions that take arguments and return a function that takes an object to query. Calling that function with an object will return a `boolean` based on the rules.
 
 ```javascript
-deepEquals(arg1, arg2)
+predicate(...args)(data)
+// => boolean
 ```
 
-#### `empty`
+### Regent Rule
 
-Returns `true` if `argument1` is one of `undefined`, `null`, `'undefined'`, or `''`.
+`function(object)`
+
+Each regent rule takes an object to query.
+
+_*Arguments*_
+
+* `object (Object)`: The object to query.
+
+_*Returns*_
+
+`boolean`
+
+_*Example*_
 
 ```javascript
-empty(arg1)
+import { equals } from 'regent`
+
+// returns a function that takes an object to query
+const RULE = equals('@foo', true)
+
+// invoke the function with an object to query
+RULE({ foo: true })
+// => true
 ```
 
-#### `equals`
+### empty
 
-Uses the [strict equals operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns `true` if `argument1` is equal to `argument2`.
+`empty(path)`
+
+Checks whether the resolved value the path is `undefined`, `null`, `''`, or `'undefined'`.
+
+_*Arguments*_
+
+* `path (String):` The path of the property to get.
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
 
 ```javascript
-equal(arg1, arg2)
+import { empty } from regent
+
+const NO_PRECIPITATION = empty('@precipitationTypes')
+
+NO_PRECIPITATION({ precipitationTypes: null })
+// => true
 ```
 
-#### `every`
+### equals
 
-Accepts an array as `argument1`, and a regent rule as `argument2`. `every` will iterate over the array, and assign the current value to the `__` property on the data object. Every will return true if every iteration returns true. See also [some](#some)
+`equals(path1, path2)`
 
-```javascript
-const data = {
-  historicTemperatures: [
-    { high: 78, low: 51 },
-    { high: 81, low: 49 },
-    { high: 89, low: 53 },
-  ]
-}
+Checks whether the resolved value to `path1` is strictly equal (`===`) to the resolved value of `path2`
 
-const highTemperatureGreaterThan75 = greaterThan('@__.high', 75);
-const allTempsGreaterThan75 = every('@historicTemperatures', highTemperatureGreaterThan75) // true
-```
+_*Arguments*_
 
-#### `greaterThan`
+* `path1 (Any):` The path of the property to lookup, or a primitive value
+* `path2 (Any):` The path of the property to lookup, or a primitive value
 
-Uses the [greater than operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns `true` if `argument1` is greater than `argument2`.
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
 
 ```javascript
-greaterThan(arg1, arg2)
-```
+import { equals } from regent
 
-#### `greaterThanOrEquals`
+const IS_SUNNY = equals('@weatherType', 'sunny')
+const IS_RAINING = equals('raining', '@weatherType')
+const SAME_WEATHER_TOMORROW = equals('@today.weatherType', '@tomorrow.weatherType')
 
-Uses the [greater than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns `true` if `argument1` is greater than or equal to `argument2`.
+IS_SUNNY({ weatherType: 'sunny' })
+// => true
 
-```javascript
-greaterThanOrEquals(arg1, arg2)
-```
+IS_RAINING({ weatherType: 'raining' })
+// => true
 
-#### `includes`
-
-```javascript
-includes(arg1, arg2)
-```
-
-Uses [lodash.includes](https://lodash.com/docs/#includes) to check if `argument2` exists in `argument1`.
-
-#### `lessThan`
-
-Uses the [less than operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns `true` if `argument1` is less than `argument2`.
-
-```javascript
-lessThan(arg1, arg2)
-```
-
-#### `lessThanOrEquals`
-
-Uses the [less than or equal operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators) and returns `true` if `argument1` is less than or equal to `argument2`.
-
-```javascript
-lessThanOrEquals(arg1, arg2)
-```
-
-#### `regex`
-
-Uses [RegExp.prototype.test()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test) to test `argument1` against the regex in `argument2`. `argument2` must be of type `regex`
-
-```javascript
-regex(arg1, arg2)
-```
-
-#### `some`
-
-Accepts an array as `argument1`, and a regent rule as `argument2`. Some will iterate over the array, and assign the current value to the `__` property on the data object. Some will return true if any rule passes. See also [every](#every)
-
-```javascript
-const data = {
-  historicTemperatures: [
-    { high: 78, low: 51 },
-    { high: 81, low: 49 },
-    { high: 89, low: 53 },
-  ]
-}
-
-const highTemperatureLessThan80 = lessThan('@__.high', 80);
-const temperaturesNotAllAbove80 = some('@historicTemperatures', highTemperatureLessThan80) // true
-```
-
-#### `typeOf`
-
-Uses the [typeof operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof) to check the `typeof` `argument1` against the value of `argument2`.
-
-```javascript
-typeOf(arg1, arg2)
-```
-
-### Custom predicates
-
-Regent can be used with custom predicates for handling complex logical expressions not provided by the built-in predicates. A custom predicate is a function that accepts any number of arguments, and returns a boolean value. Regent provides a utility function `make` that allows your custom predicate to use regent's lookup syntax. Custom predicates can be composed just like any other regent rule.
-
-```javascript
-import { make } from 'regent';
-
-const temperatureIncreaseInConsecutiveDays = make(weatherData => weatherData.every((x, i) => {
-  // if this isn't the first array item
-  if (i > 0) {
-    // return true if the current temp is greater than
-    // the previous array item's temp
-    return x.temp > weatherData[i - 1].temp;
+SAME_WEATHER_TOMORROW({
+  today: {
+    weatherType: 'sunny'
+  },
+  tomorrow: {
+    weatherType: 'sunny'
   }
+})
+// => true
+```
 
-  // if this is the first array item return true
-  return true;
-}));
+### every
 
-const temperatureIncreaseRule = temperatureIncreaseInConsecutiveDays('@weather.days');
+`every(path, rule, [context = '__'])`
 
-const data = {
-  weather: {
-    days: [
-      { temp: 60 },
-      { temp: 70 },
-      { temp: 80 }
+`path` must resolve to, or be an `array`. `every` iterates over this array and evaluates the rule against each item. The rule prop will have access to the current array item's data through the optional context argument.
+
+_*Arguments*_
+
+* `path (Array|String):` The path of the property to lookup, or an array literal
+* `rule (Regent Rule):` A regent rule to evaluate each item of the array against
+* `[context='__'] (String):` An optional path to place the iteration context on. Defaults to `__`
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { every, equals } from regent
+
+// In this rule the `__` refers to the current iteration of the `thisWeek` array
+const IS_SUNNY = equals('@__.weatherType', 'sunny')
+const NEXT_THREE_DAYS_ARE_SUNNY = every('@thisWeek', IS_SUNNY, '__')
+
+NEXT_THREE_DAYS_ARE_SUNNY({
+    thisWeek: [
+      { weatherType: 'sunny' },
+      { weatherType: 'sunny' },
+      { weatherType: 'sunny' }
     ]
   }
-}
+)
+// => true
+```
 
-temperatureIncreaseRule(data); // true
+### greaterThanOrEquals
 
+`greaterThanOrEquals(path1, path2)`
+
+Checks whether the resolved value to `path1` is greater than or equal to ([>=](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Relational_operators)) to the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Number|String):` The path of the property to lookup, or a primitive value
+* `path2 (Number|String):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { greaterThanOrEquals } from regent
+
+const IS_WARM = greaterThanOrEquals('@temperature', 68)
+
+IS_WARM({ temperature: 68 })
+// => true
+
+IS_WARM({ temperature: 70 })
+// => true
+
+const IS_GREATER_THAN_OR_EQUAL_TO_X = greaterThanOrEquals('@letter', 'x')
+
+IS_GREATER_THAN_OR_EQUAL_TO_X({ letter: 'z' })
+// => true
+```
+
+### greaterThan
+
+`greaterThan(path1, path2)`
+
+Checks whether the resolved value to `path1` is greater than ([>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Relational_operators)) the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Number|String):` The path of the property to lookup, or a primitive value
+* `path2 (Number|String):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { greaterThan } from regent
+
+const IS_WARM = greaterThan('@temperature', 68)
+
+IS_WARM({ temperature: 68 })
+// => false
+
+IS_WARM({ temperature: 70 })
+// => true
+
+const IS_GREATER_THAN_X = greaterThan('@letter', 'x')
+
+IS_GREATER_THAN_X({ letter: 'x' })
+// => false
+
+IS_GREATER_THAN_X({ letter: 'z' })
+// => true
+```
+
+### lessThanOrEquals
+
+`lessThanOrEquals(path1, path2)`
+
+Checks whether the resolved value to `path1` is less than or equal to ([<=](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Relational_operators)) to the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Number|String):` The path of the property to lookup, or a primitive value
+* `path2 (Number|String):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { lessThanOrEquals } from regent
+
+const IS_COLD = lessThanOrEquals('@temperature', 68)
+
+IS_COLD({ temperature: 68 })
+// => true
+
+IS_COLD({ temperature: 59 })
+// => true
+
+const IS_LESS_THAN_OR_EQUAL_TO_X = lessThanOrEquals('@letter', 'x')
+
+IS_LESS_THAN_OR_EQUAL_TO_X({ letter: 'a' })
+// => true
+```
+
+### lessThan
+
+`lessThan(path1, path2)`
+
+Checks whether the resolved value to `path1` is less than ([<](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Relational_operators)) the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Number|String):` The path of the property to lookup, or a primitive value
+* `path2 (Number|String):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { lessThan } from regent
+
+const IS_WARM = lessThan('@temperature', 68)
+
+IS_WARM({ temperature: 68 })
+// => false
+
+IS_WARM({ temperature: 67 })
+// => true
+
+const IS_LESS_THAN_X = lessThan('@letter', 'x')
+
+IS_LESS_THAN_X({ letter: 'x' })
+// => false
+
+IS_LESS_THAN_X({ letter: 'q' })
+// => true
+```
+
+### regex
+
+`regex(path, regex)`
+
+Checks whether the resolved value to `path` matches against the provided regex
+
+_*Arguments*_
+
+* `path (String):` The path of the property to lookup, or a string
+* `regex (Regex):` A regular expression object
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { regex } from regent
+
+const MONTH_ENDS_WITH_ARY = regex('@month', /ary$/)
+
+MONTH_ENDS_WITH_ARY({ month: 'January' })
+// => true
+
+MONTH_ENDS_WITH_ARY({ month: 'March })
+// => false
+```
+
+### typeOf
+
+`typeOf(path, type)`
+
+Checks whether the type of `path` is equal to the provided type
+
+_*Arguments*_
+
+* `path (String):` The path of the property to lookup, or a string
+* `type (String):` The value to check the type against
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { typeOf } from regent
+
+const IS_VALID_TEMPERATURE = typeOf('@temperature', 'number')
+
+IS_VALID_TEMPERATURE({ temperature: 68 })
+// => true
+
+IS_VALID_TEMPERATURE({ temperature: 'March' })
+// => false
 ```
 
 ## Composition
 
-With Regent it is always best to define your rules as granular as possible. To help you with this pattern, either compose rules manually or Regent’s composition helpers to build them up into more complex pieces.
+All regent rules can be composed using built in composition functions. Each composition function takes regent rules, and returns a regent rule.
 
-### Composing Rules Using Helpers
+### and
 
-Regent’s built-in composition helpers are:
+`and(...rules)`
 
-- [and](#and)
-- [or](#or)
-- [xor](#xor)
-- [not](#not)
-- [none](#none)
+`and` takes any number of regent rules checks that they are all true
 
-#### `and`
+_*Arguments*_
 
-A rule composed with `and` will return `true` if **all** subrules return `true`.
+* `rule (Regent rule)` one or more regent rules
 
-**API:** `and(rule1, rule2, [...moreRules])`
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
 
 ```javascript
-import { and, equals, greaterThan, lessThan } from 'regent';
+import { greaterThan, equals, and } from 'regent'
 
-// Rule(s)
-const isRaining = equals('@isRaining', true);
-const isWindy = greaterThan('@windSpeedInMph', 15);
-const isCold = lessThan('@temperature', 55);
-const isBadWeather = and(isRaining, isWindy, isCold); // Example of a composed rule
+const IS_RAINING = equals('@isRaining', true)
+const IS_WARM = greaterThan('@temperature', 68)
+const IS_RAINING_AND_WARM = and(IS_RAINING, IS_WARM)
 
-// Data
-const data = {
-  isRaining: true,
-  temperature: 45,
-  windSpeedInMph: 20
-};
-
-isBadWeather(data); // true
+IS_RAINING_AND_WARM({ isRaining: true, temperature: 70 })
+// => true
 ```
 
-#### `or`
+### none
 
-A rule composed with `or` will return `true` if **any** subrules return `true`.
+`none(...rules)`
 
-**API:** `or(rule1, rule2, [...moreRules])`
+`none` takes any number of regent rules checks that none of them are true. It is equivalent to `not(or(...rules))`
+
+_*Arguments*_
+
+* `rule (Regent rule)` one or more regent rules
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
 
 ```javascript
-import { or, equals, lessThan } from 'regent';
+import { greaterThan, equals, none } from 'regent'
 
-// Rule(s)
-const isRaining = equals('@isRaining', true);
-const isCold = lessThan('@temperature', 55);
-const isRainingOrCold = or(isRaining, isCold); // Example of a composed rule
+const IS_RAINING = equals('@isRaining', true)
+const IS_WARM = greaterThan('@temperature', 68)
+const NOT_RAINING_AND_COLD = none(IS_RAINING, IS_WARM)
 
-// Data
-const data = {
-  isRaining: true,
-  temperature: 45
-};
-
-isRainingOrCold(data); // true
+NOT_RAINING_AND_COLD({ isRaining: false, temperature: 42 })
+// => true
 ```
 
-#### `xor`
+### not
 
-A rule composed with `xor` will return `true` if **1** subrule returns `true` and **1** subrule returns `false`.
+`not(rule)`
 
-**API:** `xor(rule1, rule2)`
+`not` takes a single regent rule checks that it is false
 
-#### `not`
+_*Arguments*_
 
-A rule composed with `not` will return `true` if the subrule returns `false`.
+* `rule (Regent rule)` A single regent rule
 
-**API:** `not(rule)`
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
 
 ```javascript
-import { not, equals } from 'regent';
+import { greaterThan, not } from 'regent'
 
-// Rule(s)
-const isCold = equals('@temperature', 55);
-const isWarm = not(isCold); // Example of a composed rule
+const IS_WARM = greaterThan('@temperature', 68)
+const IS_COLD = not(IS_RAINING)
 
-// Data
-const data = { temperature: 45 };
-
-isCold(data); // true
-isWarm(data); // false
+IS_COLD({ temperature: 42 })
+// => true
 ```
 
-#### `none`
+### or
 
-A rule composed with `none` will return `true` if **none** of the subrules return `true`.
+`or(...rules)`
 
-**API:** `none(rule1, rule2, [...moreRules])`
+`or` takes one ore more regent rules and checks that at least one is true
+
+_*Arguments*_
+
+* `rule (Regent rule)` One or more regent rules
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
 
 ```javascript
-import { none, equals, lessThan } from 'regent';
+import { lessThan, equals, or } from 'regent'
 
-// Rule(s)
-const isRaining = equals('@isRaining', true);
-const isCold = lessThan('@temperature', 55);
-const isWarmAndSunny = none(isRaining, isCold); // Example of a composed rule
+const IS_RAINING = equals('@isRaining', true)
+const IS_COLD = lessThan('@temperature', 58)
+const WEAR_A_JACKET = or(IS_RAINING, IS_COLD)
 
-// Data
-const data = { isRaining: false, temperature: 75 };
+WEAR_A_JACKET({ isRaining: false, temperature: 42 })
+// => true
 
-isWarmAndSunny(data); // true
+WEAR_A_JACKET({ isRaining: true, temperature: 78 })
+// => true
+```
+
+### xor
+
+`xor(rule1, rule2)`
+
+`xor` takes two regent rules and checks that at least one but not both are true
+
+_*Arguments*_
+
+* `rule1 (Regent rule)` Regent rule
+* `rule2 (Regent rule)` Regent rule
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { equals, xor } from 'regent'
+
+const HAS_UMBRELLA = equals('@umbrella', true)
+const IS_INSIDE = equals('@inside', true)
+const ADEQUATELY_PREPARED_FOR_RAIN = xor(HAS_UMBRELLA, IS_INSIDE)
+
+// Outside with an umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: true, inside: false })
+// => true
+
+// Inside with no umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: false, inside: true })
+// => true
+
+// Outside with no umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: false, inside: false })
+// => false
+
+// Inside with an umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: true, inside: true })
+// => false
+```
+
+## Custom Predicates
+
+Regent exports a `make` function that allows you to turn any function that takes arguments and returns a `boolean` into a regent predicate. `make` will allow your function to use the regent get syntax (`@foo.bar`) like any other predicate. You can also compose rules made with these custom predicates using built in composition functions.
+
+### make
+
+`make(fn)`
+
+_*Arguments*_
+
+* `fn (Function)` any function that returns a `boolean`
+
+_*Returns*_
+
+`function`: a [regent predicate](#predicates)
+
+_*Example*_
+
+```javascript
+import _includes from 'lodash.includes` // https://lodash.com/docs/3.10.1#includes
+import { make } from 'regent'
+
+const includes = make(includes)
+
+const IS_RAINING = includes('@precipitationTypes', 'rain')
+
+IS_RAINING({
+  precipitationTypes: [
+    'rain',
+    'snow'
+  ]
+})
+// => true
 ```
 
 ## Queries
 
 ### `find`
 
+`find(logicArray, data)`
+
 The `find` query will iterate over the logic array and return the entire object of first item whose rule returns `true`. It will **not** continue looking through the following rows. You can think of it like `Array.find()`. In the example below, the second array item will be returned, because `isWarm` returns `true`.
 
-**API:** `find(logicArray, data, [customPredicates])`
+_*Arguments*_
+
+* `logicArray (Array)` an array of objects, with each object containing at least a `rule` property set to a regent rule
+* `data (Object)` the data object to query
+
+_*Returns*_
+
+`Object`: the first object with a `rule` property that evaluates to true
+
+_*Example*_
 
 ```javascript
 import { find, greaterThan, not } from 'regent';
@@ -333,15 +646,54 @@ const clothingLogic = [
 ];
 
 // Query
-const clothingItems = find(clothingLogic, data);
+find(clothingLogic, data);
 // => { value: ['sandals', 't-shirt'], rule: isWarm }
 ```
 
+`find` is equivalent to this example
+
+```javascript
+import { find, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  temperature: 82
+};
+
+// Logic table
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rule: isCold },
+  { value: ['sandals', 't-shirt'], rule: isWarm },
+];
+
+// This example is simplified. In production we would
+// probably want to make sure `x.rule` exists and is
+// a function before attempting to call it
+clothingLogic.find(x => x.rule(data))
+// => { value: ['sandals', 't-shirt'], rule: isWarm }
+```
+
+
 ### `filter`
+
+`filter(logicArray, data)`
 
 The `filter` query has the same signature as `find`, but returns an array of all the rows whose rules all return `true`. If there are no matches, it will return an empty array. You can think of it like `Array.filter()`. In the example below, `filter` will return an array of all rows that have a rule that evaluates to `true`.
 
-**API:** `filter(logicArray, data, [customPredicates])`
+_*Arguments*_
+
+* `logicArray (Array)` an array of objects, with each object containing at least a `rule` property set to a regent rule
+* `data (Object)` the data object to query
+
+_*Returns*_
+
+`Array`: array of objects with a `rule` property that evaluates to true
+
+_*Example*_
 
 ```javascript
 import { filter, includes, greaterThan, not } from 'regent';
@@ -365,10 +717,36 @@ const clothingLogic = [
 ];
 
 // Query
-const clothingLogicFiltered = filter(clothingLogic, data);
+filter(clothingLogic, data);
 // => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
 ```
 
+`filter` is equivalent to this example
+
+```javascript
+import { filter, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  temperature: 82
+};
+
+// Logic table
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rule: isCold },
+  { value: ['sandals', 't-shirt'], rule: isWarm },
+];
+
+// This example is simplified. In production we would
+// probably want to make sure `x.rule` exists and is
+// a function before attempting to call it
+clothingLogic.filter(x => x.rule(data))
+// => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
+```
 
 ## License
 

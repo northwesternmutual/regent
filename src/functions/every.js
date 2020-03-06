@@ -1,20 +1,16 @@
-import assign from 'lodash.assign';
-import isarray from 'lodash.isarray';
-import { evaluate } from '../index';
-import isRule from '../private/is-rule';
-import isComposedRule from '../private/is-composed-rule';
-import make from '../private/make';
+import isRule from '../private/is-rule'
+import makeWithContext from '../private/make-with-context'
 
-export const every = (left, right, data, custom) => {
-  if (!isRule(right) && !isComposedRule(right)) {
-    throw new Error('Regent: the right property of an every rule must be a regent rule');
+export const everyFn = (left, right, context, data) => {
+  if (!isRule(right)) {
+    throw new Error('Regent: the right property of an every rule must be a regent rule')
   }
 
-  if (!isarray(left)) {
-    return false;
+  if (!Array.isArray(left)) {
+    return false
   }
 
-  return left.every(x => evaluate(right, assign({}, data, { __: x }), custom));
-};
+  return left.every(x => right({ ...data, [context]: x }))
+}
 
-export const everyFN = make(every);
+export default makeWithContext(everyFn)

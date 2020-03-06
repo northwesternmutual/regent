@@ -6,6 +6,6 @@ module.exports = function (config) {
     mutator: 'javascript',
     testRunner: 'jest',
     reporters: ['progress', 'clear-text', 'html'],
-    coverageAnalysis: 'off',
-  });
-};
+    coverageAnalysis: 'off'
+  })
+}

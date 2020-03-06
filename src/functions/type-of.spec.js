@@ -1,52 +1,52 @@
-import { typeOf, typeOfFN } from './type-of';
+import typeOf, { typeOfFn } from './type-of'
 
-describe('3.x.x - typeOfFN should work in functional style', () => {
+describe('3.x.x - typeOf should work in functional style', () => {
   it('should be a function', () => {
-    const actual = typeof typeOfFN;
-    const expected = 'function';
+    const actual = typeof typeOf
+    const expected = 'function'
 
-    expect(actual).toEqual(expected);
-  });
+    expect(actual).toEqual(expected)
+  })
 
-  it('should perform typeof', () => {
+  it('should perform typeOf', () => {
     const data = {
-      foo: () => {},
-    };
+      foo: () => {}
+    }
 
-    const RULE = typeOfFN('@foo', 'function');
-    const actual = RULE(data);
-    const expected = true;
+    const RULE = typeOf('@foo', 'function')
+    const actual = RULE(data)
+    const expected = true
 
-    expect(actual).toEqual(expected);
-  });
-});
+    expect(actual).toEqual(expected)
+  })
+})
 
-describe('typeOf', () => {
-  it('typeOf should be a function', () => {
-    expect(typeof typeOf).toEqual('function');
-  });
+describe('typeOfFn', () => {
+  it('typeOfFn should be a function', () => {
+    expect(typeof typeOfFn).toEqual('function')
+  })
 
-  it('typeOf should return true if typeof left is equal to right', () => {
-    const left = 'hello';
-    const right = 'string';
-    const actual = typeOf(left, right);
-    const expected = true;
-    expect(actual).toEqual(expected);
-  });
+  it('typeOfFn should return true if typeOfFn left is equal to right', () => {
+    const left = 'hello'
+    const right = 'string'
+    const actual = typeOfFn(left, right)
+    const expected = true
+    expect(actual).toEqual(expected)
+  })
 
-  it('typeOf should return false if typeof left is not equal to right', () => {
-    const left = { a: 'b' };
-    const right = 'string';
-    const actual = typeOf(left, right);
-    const expected = false;
-    expect(actual).toEqual(expected);
-  });
+  it('typeOfFn should return false if typeOfFn left is not equal to right', () => {
+    const left = { a: 'b' }
+    const right = 'string'
+    const actual = typeOfFn(left, right)
+    const expected = false
+    expect(actual).toEqual(expected)
+  })
 
-  it('typeOf should handle undefined', () => {
-    const left = undefined;
-    const right = undefined;
-    const actual = typeOf(left, right);
-    const expected = false;
-    expect(actual).toEqual(expected);
-  });
-});
+  it('typeOfFn should handle undefined', () => {
+    const left = undefined
+    const right = undefined
+    const actual = typeOfFn(left, right)
+    const expected = false
+    expect(actual).toEqual(expected)
+  })
+})
