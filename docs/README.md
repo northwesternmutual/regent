@@ -418,6 +418,336 @@ IS_VALID_TEMPERATURE({ temperature: 'March' })
 // => false
 ```
 
+## Composition
+
+All regent rules can be composed using built in composition functions. Each composition function takes regent rules, and returns a regent rule.
+
+### and
+
+`and(...rules)`
+
+`and` takes any number of regent rules checks that they are all true
+
+_*Arguments*_
+
+* `rule (Regent rule)` one or more regent rules
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { greaterThan, equals, and } from 'regent'
+
+const IS_RAINING = equals('@isRaining', true)
+const IS_WARM = greaterThan('@temperature', 68)
+const IS_RAINING_AND_WARM = and(IS_RAINING, IS_WARM)
+
+IS_RAINING_AND_WARM({ isRaining: true, temperature: 70 })
+// => true
+```
+
+### none
+
+`none(...rules)`
+
+`none` takes any number of regent rules checks that none of them are true. It is equivalent to `not(or(...rules))`
+
+_*Arguments*_
+
+* `rule (Regent rule)` one or more regent rules
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { greaterThan, equals, none } from 'regent'
+
+const IS_RAINING = equals('@isRaining', true)
+const IS_WARM = greaterThan('@temperature', 68)
+const NOT_RAINING_AND_COLD = none(IS_RAINING, IS_WARM)
+
+NOT_RAINING_AND_COLD({ isRaining: false, temperature: 42 })
+// => true
+```
+
+### not
+
+`not(rule)`
+
+`not` takes a single regent rule checks that it is false
+
+_*Arguments*_
+
+* `rule (Regent rule)` A single regent rule
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { greaterThan, not } from 'regent'
+
+const IS_WARM = greaterThan('@temperature', 68)
+const IS_COLD = not(IS_RAINING)
+
+IS_COLD({ temperature: 42 })
+// => true
+```
+
+### or
+
+`or(...rules)`
+
+`or` takes one ore more regent rules and checks that at least one is true
+
+_*Arguments*_
+
+* `rule (Regent rule)` One or more regent rules
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { lessThan, equals, or } from 'regent'
+
+const IS_RAINING = equals('@isRaining', true)
+const IS_COLD = lessThan('@temperature', 58)
+const WEAR_A_JACKET = or(IS_RAINING, IS_COLD)
+
+WEAR_A_JACKET({ isRaining: false, temperature: 42 })
+// => true
+
+WEAR_A_JACKET({ isRaining: true, temperature: 78 })
+// => true
+```
+
+### xor
+
+`xor(rule1, rule2)`
+
+`xor` takes two regent rules and checks that at least one but not both are true
+
+_*Arguments*_
+
+* `rule1 (Regent rule)` Regent rule
+* `rule2 (Regent rule)` Regent rule
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { equals, xor } from 'regent'
+
+const HAS_UMBRELLA = equals('@umbrella', true)
+const IS_INSIDE = equals('@inside', true)
+const ADEQUATELY_PREPARED_FOR_RAIN = xor(HAS_UMBRELLA, IS_INSIDE)
+
+// Outside with an umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: true, inside: false })
+// => true
+
+// Inside with no umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: false, inside: true })
+// => true
+
+// Outside with no umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: false, inside: false })
+// => false
+
+// Inside with an umbrella
+ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: true, inside: true })
+// => false
+```
+
+## Custom Predicates
+
+Regent exports a `make` function that allows you to turn any function that takes arguments and returns a `boolean` into a regent predicate. `make` will allow your function to use the regent get syntax (`@foo.bar`) like any other predicate. You can also compose rules made with these custom predicates using built in composition functions.
+
+### make
+
+`make(fn)`
+
+_*Arguments*_
+
+* `fn (Function)` any function that returns a `boolean`
+
+_*Returns*_
+
+`function`: a [regent predicate](#predicates)
+
+_*Example*_
+
+```javascript
+import _includes from 'lodash.includes` // https://lodash.com/docs/3.10.1#includes
+import { make } from 'regent'
+
+const includes = make(includes)
+
+const IS_RAINING = includes('@precipitationTypes', 'rain')
+
+IS_RAINING({
+  precipitationTypes: [
+    'rain',
+    'snow'
+  ]
+})
+// => true
+```
+
+## Queries
+
+### `find`
+
+`find(logicArray, data)`
+
+The `find` query will iterate over the logic array and return the entire object of first item whose rule returns `true`. It will **not** continue looking through the following rows. You can think of it like `Array.find()`. In the example below, the second array item will be returned, because `isWarm` returns `true`.
+
+_*Arguments*_
+
+* `logicArray (Array)` an array of objects, with each object containing at least a `rule` property set to a regent rule
+* `data (Object)` the data object to query
+
+_*Returns*_
+
+`Object`: the first object with a `rule` property that evaluates to true
+
+_*Example*_
+
+```javascript
+import { find, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  temperature: 82
+};
+
+// Logic table
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rule: isCold },
+  { value: ['sandals', 't-shirt'], rule: isWarm },
+];
+
+// Query
+find(clothingLogic, data);
+// => { value: ['sandals', 't-shirt'], rule: isWarm }
+```
+
+`find` is equivalent to this example
+
+```javascript
+import { find, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  temperature: 82
+};
+
+// Logic table
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rule: isCold },
+  { value: ['sandals', 't-shirt'], rule: isWarm },
+];
+
+// This example is simplified. In production we would
+// probably want to make sure `x.rule` exists and is
+// a function before attempting to call it
+clothingLogic.find(x => x.rule(data))
+// => { value: ['sandals', 't-shirt'], rule: isWarm }
+```
+
+
+### `filter`
+
+`filter(logicArray, data)`
+
+The `filter` query has the same signature as `find`, but returns an array of all the rows whose rules all return `true`. If there are no matches, it will return an empty array. You can think of it like `Array.filter()`. In the example below, `filter` will return an array of all rows that have a rule that evaluates to `true`.
+
+_*Arguments*_
+
+* `logicArray (Array)` an array of objects, with each object containing at least a `rule` property set to a regent rule
+* `data (Object)` the data object to query
+
+_*Returns*_
+
+`Array`: array of objects with a `rule` property that evaluates to true
+
+_*Example*_
+
+```javascript
+import { filter, includes, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isRaining = includes('@precipitation','rain');
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  precipitation: ['rain'],
+  temperature: 82,
+};
+
+// Logic table
+const clothingLogic = [
+  { rule: isWarm, value: ['sandals', 't-shirt'] },
+  { rule: isCold, value: ['hat', 'scarf', 'boots'] },
+  { rule: isRaining, value: ['umbrella'] },
+];
+
+// Query
+filter(clothingLogic, data);
+// => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
+```
+
+`filter` is equivalent to this example
+
+```javascript
+import { filter, greaterThan, not } from 'regent';
+
+// Rule(s)
+const isWarm = greaterThan('@temperature', 68);
+const isCold = not(isWarm);
+
+// Data
+const data {
+  temperature: 82
+};
+
+// Logic table
+const clothingLogic = [
+  { value: ['hat', 'scarf', 'boots'], rule: isCold },
+  { value: ['sandals', 't-shirt'], rule: isWarm },
+];
+
+// This example is simplified. In production we would
+// probably want to make sure `x.rule` exists and is
+// a function before attempting to call it
+clothingLogic.filter(x => x.rule(data))
+// => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
+```
+
 ## License
 
 MIT
