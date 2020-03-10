@@ -61,4 +61,23 @@ describe('equals', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should return false if called with bad data', () => {
+    const redArr = [
+      undefined,
+      null,
+      () => {},
+      true,
+      false,
+      1337
+    ]
+
+    let actual
+
+    const expected = false
+    redArr.forEach((x) => {
+      actual = equals('@foo[0].bar', 'bar')(x)
+      expect(actual).toEqual(expected)
+    })
+  })
 })

@@ -67,4 +67,20 @@ describe('find', () => {
     const expected = 'This is somewhere else!'
     expect(actual).toEqual(expected)
   })
+
+  it('should return undefined when called with no data', () => {
+    const logic = [{ foo: 'hello', rule: equals('@foo', 'foo') }]
+    const actual = find(logic)
+    const expected = undefined
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return undefined when called with null', () => {
+    const logic = [{ foo: 'hello', rule: equals('@foo', 'foo') }]
+    const actual = find(logic, null)
+    const expected = undefined
+
+    expect(actual).toEqual(expected)
+  })
 })

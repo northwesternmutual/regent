@@ -61,4 +61,23 @@ describe('get', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should return undefined when called with bad data', () => {
+    const redArr = [
+      undefined,
+      null,
+      () => {},
+      true,
+      false,
+      1337
+    ]
+
+    let actual
+
+    const expected = undefined
+    redArr.forEach((x) => {
+      actual = get(x, '@foo')
+      expect(actual).toEqual(expected)
+    })
+  })
 })

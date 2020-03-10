@@ -1,4 +1,5 @@
-const get = (object, keys) => {
+const get = (object, keys = '') => {
+  if (!object) { object = {} }
   keys = Array.isArray(keys) ? keys : keys.replace(/\[(['"]?)([\w\d-]+)(['"]?)\]/g, '.$2').split('.')
   object = object[keys[0]]
   if (object && keys.length > 1) {
