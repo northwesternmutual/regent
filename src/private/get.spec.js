@@ -62,6 +62,32 @@ describe('get', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should return undefined if not provided a selector', () => {
+    const data = {
+      foo: { 'ba-ar': 'bars' }
+    }
+    const actual = get(data)
+    const expected = undefined
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should allow lookups in arrays', () => {
+    const greenArr = [
+      '[1]',
+      '1',
+      1
+    ]
+
+    const data = ['foo', 'bar']
+    const expected = 'bar'
+
+    greenArr.forEach((x) => {
+      const actual = get(data, x)
+      expect(actual).toEqual(expected)
+    })
+  })
+
   it('should return undefined when called with bad data', () => {
     const redArr = [
       undefined,
