@@ -496,7 +496,7 @@ _*Example*_
 import { greaterThan, not } from 'regent'
 
 const IS_WARM = greaterThan('@temperature', 68)
-const IS_COLD = not(IS_RAINING)
+const IS_COLD = not(IS_WARM)
 
 IS_COLD({ temperature: 42 })
 // => true
