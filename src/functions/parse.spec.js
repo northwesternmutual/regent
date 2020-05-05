@@ -1,6 +1,6 @@
 import parseFn from './parse'
 
-describe('import', () => {
+describe('parse', () => {
   it('should be a function', () => {
     const actual = typeof parseFn
     const expected = 'function'
