@@ -1,11 +1,39 @@
 import parseFn from './parse'
 
 describe('parse', () => {
+  beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
+  afterAll(() => {
+    console.log.mockRestore()
+  })
+
   it('should be a function', () => {
     const actual = typeof parseFn
     const expected = 'function'
 
     expect(actual).toEqual(expected)
+  })
+
+  it('should return an empty object if called with bad data', () => {
+    const redArr = [
+      null,
+      undefined,
+      'string',
+      123,
+      false,
+      true,
+      {},
+      []
+    ]
+
+    const expected = {}
+    redArr.forEach((x) => {
+      const actual = parseFn(x)
+      expect(actual).toEqual(expected)
+      expect(console.error).toHaveBeenCalledWith('regent.parse TypeError: Cannot convert undefined or null to object')
+    })
   })
 
   it('should take a json structure and return regent rules', () => {
@@ -79,13 +107,17 @@ describe('parse', () => {
     expect(deepComposition({ foo: 'bar', bar: 'bar', biz: 'biz' })).toEqual(true)
   })
 
-  it('should return null for any rules that do not match a built in predicate', () => {
+  it('should return null for any rules that do not match a built in predicate or are not object literals. Should still parse and return other valid regent rules', () => {
     const json = JSON.stringify({
-      customRule: { myCustomPredicate: ['@foo', 17] }
+      customRule: { myCustomPredicate: ['@foo', 17] },
+      invalidRule: 'foobar',
+      validRule: { equals: ['@foo', 'foo'] }
     })
 
-    const { customRule } = parseFn(json)
-    expect(customRule).toEqual('myCustomPredicate not found')
+    const { customRule, invalidRule, validRule } = parseFn(json)
+    expect(customRule).toEqual('myCustomPredicate is not a valid predicate')
+    expect(invalidRule).toEqual('foobar is not a valid predicate')
+    expect(typeof validRule).toEqual('function')
   })
 
   it('should support all native predicates', () => {

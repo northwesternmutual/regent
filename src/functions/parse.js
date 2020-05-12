@@ -15,7 +15,12 @@ import typeOf from './type-of'
 import xor from './xor'
 
 export function buildRule (jsonRule) {
-  const predicate = Object.keys(jsonRule)[0]
+  // If jsonRule is a string, return it for a more helpful error message
+  // else return the first key
+  const predicate = typeof jsonRule === 'string'
+    ? jsonRule
+    : Object.keys(jsonRule)[0]
+
   switch (predicate) {
     case 'empty':
       return empty(...jsonRule[predicate])
@@ -68,16 +73,22 @@ export function buildRule (jsonRule) {
       return xor(...jsonRule[predicate].map(x => buildRule(x)))
 
     default:
-      return `${predicate} not found`
+      return `${predicate} is not a valid predicate`
   }
 }
 
-export default (json) => {
+export default (json = {}) => {
   const result = {}
-  const rules = JSON.parse(json)
-  Object.keys(rules).forEach((key) => {
-    result[key] = buildRule(rules[key])
-  })
+
+  try {
+    const rules = JSON.parse(json)
+
+    Object.keys(rules).forEach((key) => {
+      result[key] = buildRule(rules[key])
+    })
+  } catch (e) {
+    console.error(`regent.parse ${e}`)
+  }
 
   return result
 }
