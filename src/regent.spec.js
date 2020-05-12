@@ -13,6 +13,7 @@ import {
   none,
   not,
   or,
+  parse,
   regex,
   some,
   typeOf,
@@ -35,6 +36,7 @@ describe('regent', () => {
     expect(typeof none).toEqual('function')
     expect(typeof not).toEqual('function')
     expect(typeof or).toEqual('function')
+    expect(typeof parse).toEqual('function')
     expect(typeof regex).toEqual('function')
     expect(typeof some).toEqual('function')
     expect(typeof typeOf).toEqual('function')

@@ -6,6 +6,7 @@ import filterFn from './functions/filter'
 import findFn from './functions/find'
 import greaterThanOrEqualsFn from './functions/greater-than-equals'
 import greaterThanFn from './functions/greater-than'
+import parseFn from './functions/parse'
 import lessThanOrEqualsFn from './functions/less-than-equals'
 import lessThanFn from './functions/less-than'
 import makeFn from './functions/make'
@@ -25,6 +26,7 @@ export const filter = filterFn
 export const find = findFn
 export const greaterThanOrEquals = greaterThanOrEqualsFn
 export const greaterThan = greaterThanFn
+export const parse = parseFn
 export const lessThanOrEquals = lessThanOrEqualsFn
 export const lessThan = lessThanFn
 export const make = makeFn

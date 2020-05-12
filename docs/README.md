@@ -677,7 +677,6 @@ clothingLogic.find(x => x.rule(data))
 // => { value: ['sandals', 't-shirt'], rule: isWarm }
 ```
 
-
 ### `filter`
 
 `filter(logicArray, data)`
@@ -746,6 +745,130 @@ const clothingLogic = [
 // a function before attempting to call it
 clothingLogic.filter(x => x.rule(data))
 // => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
+```
+
+## Parse
+
+`parse(JSONRulesObject)`
+
+The `parse` function parses JSON defined regent rules into functional regent rules. Defining rules as JSON makes it easier to share rule definitions across multiple applications
+
+_*Arguments*_
+
+* `JSONRulesObject (JSON Object)` a JSON object of regent rule definitions
+
+Each top level property name becomes a rule name. Each predicate can be defined with the pattern `<predicateName>: [...args]`.
+
+Composed rules can be defined with the pattern `<compositionPredicateName>: [<predicateName>: [...args], <predicateName>: [...args]]`
+
+_*Returns*_
+
+`Object`: object of functional regent rules
+
+_*Example*_
+
+```javascript
+const json = {
+  "fooAndBar": {
+    "and": [{
+      "equals": ["@foo", "foo"]
+    }, {
+      "equals": ["@bar", "bar"]
+    }]
+  },
+
+  "emptyFoo": {
+    "empty": ["@foo"]
+  },
+
+  "fooEqualsFoo": {
+    "equals": ["@foo", "foo"]
+  },
+
+  "everyRule": {
+    "every": ["@arr", {
+      "equals": ["@__", "foo"]
+    }]
+  },
+
+  "greaterThanOrEqualsRule": {
+    "greaterThanOrEquals": ["@foo", 10]
+  },
+
+  "greaterThanRule": {
+    "greaterThan": ["@foo", 10]
+  },
+
+  "lessThanOrEqualsRule": {
+    "lessThanOrEquals": ["@foo", 10]
+  },
+
+  "lessThanRule": {
+    "lessThan": ["@foo", 10]
+  },
+
+  "noneRule": {
+    "none": [{
+      "equals": ["@foo", "foo"]
+    }, {
+      "equals": ["@bar", "bar"]
+    }]
+  },
+
+  "notRule": {
+    "not": [{
+      "equals": ["@foo", "foo"]
+    }]
+  },
+
+  "orRule": {
+    "or": [{
+      "equals": ["@foo", "foo"]
+    }, {
+      "equals": ["@foo", "bar"]
+    }]
+  },
+
+  "regexRule": {
+    "regex": ["@foo", "^he[l]lo"]
+  },
+
+  "someRule": {
+    "some": ["@arr", {
+      "equals": ["@__", "foo"]
+    }]
+  },
+
+  "typeOfRule": {
+    "typeOf": ["@foo", "string"]
+  },
+
+  "xorRule": {
+    "xor": [{
+      "equals": ["@foo", "foo"]
+    }, {
+      "equals": ["@bar", "bar"]
+    }]
+  }
+}
+
+const {
+  fooAndBar,
+  emptyFoo,
+  fooEqualsFoo,
+  everyRule,
+  greaterThanOrEqualsRule,
+  greaterThanRule,
+  lessThanOrEqualsRule,
+  lessThanRule,
+  noneRule,
+  notRule,
+  orRule,
+  regexRule,
+  someRule,
+  typeOfRule,
+  xorRule
+} = parseFn(json)
 ```
 
 ## License
