@@ -52,6 +52,18 @@ describe('filter', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should work with boolean literal values', () => {
+    const logic = [
+      { result: 'me', rule: true },
+      { result: 'not me', rule: false },
+      { result: 'me!', rule: true }
+    ]
+
+    const actual = filter(logic, {}).map(x => x.result)
+    const expected = ['me', 'me!']
+    expect(actual).toEqual(expected)
+  })
+
   it('should return an an empty array if there are no matches', () => {
     const obj = {
       greeting: 'foo',
