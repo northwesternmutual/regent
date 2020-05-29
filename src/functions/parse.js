@@ -15,6 +15,12 @@ import typeOf from './type-of'
 import xor from './xor'
 
 export function buildRule (jsonRule) {
+  // if typeof jsonRule === boolean
+  // return it
+  if (typeof jsonRule === 'boolean') {
+    return jsonRule
+  }
+
   // If jsonRule is a string, return it for a more helpful error message
   // else return the first key
   const predicate = typeof jsonRule === 'string'

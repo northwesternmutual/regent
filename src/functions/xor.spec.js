@@ -66,6 +66,30 @@ describe('xor', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should handle boolean literals (passing)', () => {
+    const RULE_A = true
+    const RULE_B = false
+
+    const data = null
+
+    const actual = xor(RULE_A, RULE_B)(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should handle boolean literals (failing)', () => {
+    const RULE_A = true
+    const RULE_B = true
+
+    const data = null
+
+    const actual = xor(RULE_A, RULE_B)(data)
+    const expected = false
+
+    expect(actual).toEqual(expected)
+  })
+
   it('should throw if not exactly two arguments', () => {
     const RULE_A = equals('@foo', 'a')
 

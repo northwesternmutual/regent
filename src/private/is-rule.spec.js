@@ -15,4 +15,20 @@ describe('3.x.x - isRule', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should work with boolean literals (true)', () => {
+    const RULE = true
+    const actual = isRule(RULE)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should work with boolean literals (false)', () => {
+    const RULE = false
+    const actual = isRule(RULE)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
 })

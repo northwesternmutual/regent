@@ -37,6 +37,20 @@ describe('or', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should handle boolean literals', () => {
+    const A = true
+    const B = false
+
+    const data = {
+      foo: 'a'
+    }
+
+    const actual = or(A, B)(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
   it('should throw and error if one of the arguments is not a function', () => {
     const A = equals('@foo', 'a')
     const B = 'string'

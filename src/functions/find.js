@@ -1,12 +1,9 @@
 import isRule from '../private/is-rule'
+import evaluateRule from '../private/evaluate-rule'
 
 export default (logic, data) => logic.find((x) => {
-  if (typeof x.rule === 'boolean') {
-    return x.rule
-  }
-
   if (isRule(x.rule)) {
-    return x.rule(data)
+    return evaluateRule(x.rule, data)
   }
 
   return false

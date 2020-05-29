@@ -20,6 +20,17 @@ describe('not', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should support boolean literals', () => {
+    const RULE = true
+    const data = {
+      foo: 'a'
+    }
+    const actual = not(RULE)(data)
+    const expected = false
+
+    expect(actual).toEqual(expected)
+  })
+
   it('should invert the value of any rule', () => {
     const RULE = equals('@foo', 'a')
     const data = {

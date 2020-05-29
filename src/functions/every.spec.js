@@ -18,6 +18,38 @@ describe('3.x.x - every', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should work with boolean literals (passing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'bar' }
+      ]
+    }
+
+    const RULE = true
+    const E_RULE = every('@nodes', RULE)
+    const actual = E_RULE(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should work with boolean literals (failing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'bar' }
+      ]
+    }
+
+    const RULE = false
+    const E_RULE = every('@nodes', RULE)
+    const actual = E_RULE(data)
+    const expected = false
+
+    expect(actual).toEqual(expected)
+  })
+
   it('should work with custom context param (passing)', () => {
     const data = {
       nodes: [
@@ -48,6 +80,11 @@ describe('3.x.x - every', () => {
     const expected = false
 
     expect(actual).toEqual(expected)
+  })
+
+  it('every should throw an error if right is not a regent rule', () => {
+    const right = { something: 'not a rule' }
+    expect(() => every('@nodes', right)({})).toThrow('Regent: the right property of an every rule must be a regent rule')
   })
 
   it('every should throw an error if right is not a regent rule', () => {

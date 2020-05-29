@@ -22,8 +22,6 @@ describe('parse', () => {
       undefined,
       'string',
       123,
-      false,
-      true,
       {},
       []
     ]
@@ -117,6 +115,17 @@ describe('parse', () => {
     const { customRule, invalidRule, validRule } = parseFn(json)
     expect(customRule).toEqual('myCustomPredicate is not a valid predicate')
     expect(invalidRule).toEqual('foobar is not a valid predicate')
+    expect(typeof validRule).toEqual('function')
+  })
+
+  it('should support boolean literals', async () => {
+    const json = JSON.stringify({
+      booleanRule: true,
+      validRule: { equals: ['@foo', 'foo'] }
+    })
+
+    const { booleanRule, validRule } = parseFn(json)
+    expect(booleanRule).toEqual(true)
     expect(typeof validRule).toEqual('function')
   })
 

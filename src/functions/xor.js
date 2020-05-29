@@ -1,4 +1,5 @@
 import isRule from '../private/is-rule'
+import evaluateRule from '../private/evaluate-rule'
 
 export default (...rules) =>
   (data) => {
@@ -12,5 +13,5 @@ export default (...rules) =>
       throw Error('Regent: xor must take exactly 2 rules')
     }
 
-    return (rules[0](data) || rules[1](data)) && !(rules[0](data) && rules[1](data))
+    return (evaluateRule(rules[0], data) || evaluateRule(rules[1], data)) && !(evaluateRule(rules[0], data) && evaluateRule(rules[1], data))
   }
