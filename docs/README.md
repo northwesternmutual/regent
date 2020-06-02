@@ -420,7 +420,7 @@ IS_VALID_TEMPERATURE({ temperature: 'March' })
 
 ## Composition
 
-All regent rules can be composed using built in composition functions. Each composition function takes regent rules, and returns a regent rule.
+All regent rules can be composed using built in composition functions. Each composition function takes regent rules, or boolean literals, and returns a regent rule.
 
 ### and
 
