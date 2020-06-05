@@ -39,6 +39,20 @@ describe('and', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should support boolean literals', () => {
+    const A = equals('@foo', 'a')
+    const B = true
+
+    const data = {
+      foo: 'a'
+    }
+
+    const actual = and(A, B)(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
   it('should throw and error if one of the arguments is not a function', () => {
     const A = equals('@foo', 'a')
     const B = 'string'

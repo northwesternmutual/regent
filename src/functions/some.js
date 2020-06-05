@@ -1,4 +1,5 @@
 import isRule from '../private/is-rule'
+import evaluateRule from '../private/evaluate-rule'
 import makeWithContext from '../private/make-with-context'
 
 export const someFn = (left, right, context = '__', data) => {
@@ -10,7 +11,7 @@ export const someFn = (left, right, context = '__', data) => {
     return false
   }
 
-  return left.some(x => right(Object.assign({}, data, { [context]: x })))
+  return left.some(x => evaluateRule(right, { ...data, [context]: x }))
 }
 
 export default makeWithContext(someFn)

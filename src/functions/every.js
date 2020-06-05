@@ -1,4 +1,5 @@
 import isRule from '../private/is-rule'
+import evaluateRule from '../private/evaluate-rule'
 import makeWithContext from '../private/make-with-context'
 
 export const everyFn = (left, right, context, data) => {
@@ -10,7 +11,7 @@ export const everyFn = (left, right, context, data) => {
     return false
   }
 
-  return left.every(x => right({ ...data, [context]: x }))
+  return left.every(x => evaluateRule(right, { ...data, [context]: x }))
 }
 
 export default makeWithContext(everyFn)

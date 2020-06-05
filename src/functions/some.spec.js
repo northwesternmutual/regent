@@ -50,6 +50,38 @@ describe('3.x.x - some', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should work with boolean literals (passing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'bar' }
+      ]
+    }
+
+    const RULE = true
+    const E_RULE = some('@nodes', RULE)
+    const actual = E_RULE(data)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should work with boolean literals (failing)', () => {
+    const data = {
+      nodes: [
+        { foo: 'bar' },
+        { foo: 'bar' }
+      ]
+    }
+
+    const RULE = false
+    const E_RULE = some('@nodes', RULE)
+    const actual = E_RULE(data)
+    const expected = false
+
+    expect(actual).toEqual(expected)
+  })
 })
 
 describe('someFn', () => {

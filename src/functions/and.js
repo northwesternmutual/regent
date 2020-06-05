@@ -1,4 +1,5 @@
 import isRule from '../private/is-rule'
+import evaluateRule from '../private/evaluate-rule'
 
 export default (...rules) => {
   // throw if one or more of the rules are
@@ -7,5 +8,5 @@ export default (...rules) => {
     throw new Error('Regent: and requires all arguments to be a function')
   }
 
-  return data => rules.every(x => x(data))
+  return data => rules.every(x => evaluateRule(x, data))
 }

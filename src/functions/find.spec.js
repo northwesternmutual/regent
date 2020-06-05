@@ -68,6 +68,17 @@ describe('find', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should work with boolean literal values', () => {
+    const logic = [
+      { result: 'not me', rule: false },
+      { result: 'me!', rule: true }
+    ]
+
+    const actual = find(logic, {}).result
+    const expected = 'me!'
+    expect(actual).toEqual(expected)
+  })
+
   it('should return undefined when called with no data', () => {
     const logic = [{ foo: 'hello', rule: equals('@foo', 'foo') }]
     const actual = find(logic)
