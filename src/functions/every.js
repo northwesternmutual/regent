@@ -2,7 +2,7 @@ import isRule from '../private/is-rule'
 import evaluateRule from '../private/evaluate-rule'
 import makeWithContext from '../private/make-with-context'
 
-export const everyFn = (left, right, context, data) => {
+export const every = (left, right, context, data) => {
   if (!isRule(right)) {
     throw new Error('Regent: the right property of an every rule must be a regent rule')
   }
@@ -14,4 +14,4 @@ export const everyFn = (left, right, context, data) => {
   return left.every(x => evaluateRule(right, { ...data, [context]: x }))
 }
 
-export default makeWithContext(everyFn)
+export default makeWithContext(every)
