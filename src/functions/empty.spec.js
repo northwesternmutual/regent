@@ -1,24 +1,24 @@
-import empty, { emptyFn } from './empty'
+import emptyFn, { empty } from './empty'
 
-describe('3.x.x - empty functional style', () => {
+describe('3.x.x - emptyFn functional style', () => {
   it('should be a function', () => {
-    const actual = typeof empty
+    const actual = typeof emptyFn
     const expected = 'function'
 
     expect(actual).toEqual(expected)
   })
 
-  it('should return true for empty items', () => {
+  it('should return true for emptyFn items', () => {
     const data = {
       foo: '',
       bar: null,
       biz: 'undefined'
     }
 
-    const RULE = empty('@foo')(data)
-    const RULE2 = empty('@bar')(data)
-    const RULE3 = empty('@biz')(data)
-    const RULE4 = empty('@baz')(data)
+    const RULE = emptyFn('@foo')(data)
+    const RULE2 = emptyFn('@bar')(data)
+    const RULE3 = emptyFn('@biz')(data)
+    const RULE4 = emptyFn('@baz')(data)
 
     expect(RULE).toEqual(true)
     expect(RULE2).toEqual(true)
@@ -27,12 +27,12 @@ describe('3.x.x - empty functional style', () => {
   })
 })
 
-describe('emptyFn', () => {
-  it('emptyFn should be a function', () => {
-    expect(typeof emptyFn).toEqual('function')
+describe('empty', () => {
+  it('empty should be a function', () => {
+    expect(typeof empty).toEqual('function')
   })
 
-  it('emptyFn should return true if input is undefined, null, "undefined", or "" (emptyFn string)', () => {
+  it('empty should return true if input is undefined, null, "undefined", or "" (empty string)', () => {
     const greenArr = [
       undefined,
       null,
@@ -40,28 +40,28 @@ describe('emptyFn', () => {
       ''
     ]
     greenArr.forEach((input) => {
-      const actual = emptyFn(input)
+      const actual = empty(input)
       const expected = true
       expect(actual).toEqual(expected)
     })
   })
 
   it('validate documentation cases', () => {
-    let result = emptyFn() // true
+    let result = empty() // true
     expect(result).toEqual(true)
-    result = emptyFn('') // true
+    result = empty('') // true
     expect(result).toEqual(true)
-    result = emptyFn(null) // true
+    result = empty(null) // true
     expect(result).toEqual(true)
-    result = emptyFn(undefined) // true
+    result = empty(undefined) // true
     expect(result).toEqual(true)
-    result = emptyFn('some value') // false
+    result = empty('some value') // false
     expect(result).toEqual(false)
-    result = emptyFn({}) // false
+    result = empty({}) // false
     expect(result).toEqual(false)
-    result = emptyFn([]) // false
+    result = empty([]) // false
     expect(result).toEqual(false)
-    result = emptyFn(['']) // false
+    result = empty(['']) // false
     expect(result).toEqual(false)
   })
 })

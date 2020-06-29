@@ -1,5 +1,5 @@
 import make from './make'
 
-export const equalsFn = (left, right) => left === right
+export const equals = (left, right) => left === right
 
-export default make(equalsFn)
+export default make(equals)

@@ -1,5 +1,5 @@
 import make from './make'
 
-export const greaterThanOrEqualsFn = (left, right) => left >= right
+export const greaterThanOrEquals = (left, right) => left >= right
 
-export default make(greaterThanOrEqualsFn)
+export default make(greaterThanOrEquals)
