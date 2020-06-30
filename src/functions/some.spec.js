@@ -172,4 +172,17 @@ describe('some', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('when it\'s toJson method is called it should return a json representation of the rule', () => {
+    const RULE = equals('@__.foo', 'bar')
+    const E_RULE = someFn('@nodes', RULE)
+    const actual = E_RULE.toJson()
+    const expected = JSON.stringify({
+      some: ['@nodes',
+        { equals: ['@__.foo', 'bar'] }
+      ]
+    })
+
+    expect(actual).toEqual(expected)
+  })
 })

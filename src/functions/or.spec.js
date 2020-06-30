@@ -61,4 +61,21 @@ describe('or', () => {
 
     expect(() => or(A, B)(data)).toThrow('Regent: or requires all arguments to be a function')
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const A = equals('@foo', 'a')
+    const B = equals('@bar', 'b')
+
+    const MY_RULE = or(A, B)
+
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({
+      or: [
+        { equals: ['@foo', 'a'] },
+        { equals: ['@bar', 'b'] }
+      ]
+    })
+
+    expect(actual).toEqual(expected)
+  })
 })

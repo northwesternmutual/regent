@@ -71,4 +71,12 @@ describe('lessThanOrEquals', () => {
     expect(lessThanOrEquals('4', '4')).toEqual(true)
     expect(lessThanOrEquals(4, '4')).toEqual(true)
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const MY_RULE = lessThanOrEqualsFn('@foo', 5)
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({ lessThanOrEquals: ['@foo', 5] })
+
+    expect(actual).toEqual(expected)
+  })
 })

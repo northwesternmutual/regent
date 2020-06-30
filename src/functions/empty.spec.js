@@ -64,4 +64,12 @@ describe('empty', () => {
     result = empty(['']) // false
     expect(result).toEqual(false)
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const MY_RULE = emptyFn('@foo')
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({ empty: ['@foo'] })
+
+    expect(actual).toEqual(expected)
+  })
 })

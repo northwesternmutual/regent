@@ -116,5 +116,13 @@ describe('greaterThanOrEqualsFn', () => {
 
       expect(actual).toEqual(expected)
     })
+
+    it('when the toJson method is called it should return a json representation of the rule.', () => {
+      const MY_RULE = greaterThanOrEqualsFn('@foo', 5)
+      const actual = MY_RULE.toJson()
+      const expected = JSON.stringify({ greaterThanOrEquals: ['@foo', 5] })
+
+      expect(actual).toEqual(expected)
+    })
   })
 })

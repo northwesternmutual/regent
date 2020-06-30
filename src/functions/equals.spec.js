@@ -80,4 +80,12 @@ describe('equalsFn', () => {
       expect(actual).toEqual(expected)
     })
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const MY_RULE = equalsFn('@foo', 'a')
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({ equals: ['@foo', 'a'] })
+
+    expect(actual).toEqual(expected)
+  })
 })

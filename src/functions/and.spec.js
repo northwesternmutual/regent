@@ -63,4 +63,21 @@ describe('and', () => {
 
     expect(() => and(A, B)(data)).toThrow('Regent: and requires all arguments to be a function')
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const A = equals('@foo', 'a')
+    const B = equals('@bar', 'b')
+
+    const MY_RULE = and(A, B)
+
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({
+      and: [
+        { equals: ['@foo', 'a'] },
+        { equals: ['@bar', 'b'] }
+      ]
+    })
+
+    expect(actual).toEqual(expected)
+  })
 })

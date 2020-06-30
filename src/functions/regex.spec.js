@@ -58,4 +58,13 @@ describe('regex', () => {
     expect(regex('baz123', /[a-z]+[0-9]+/)).toEqual(true)
     expect(regex('123baz', /[a-z]+[0-9]+/)).toEqual(false)
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const MY_RULE = regexFn('@foo', 'a')
+
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({ regex: ['@foo', 'a'] })
+
+    expect(actual).toEqual(expected)
+  })
 })
