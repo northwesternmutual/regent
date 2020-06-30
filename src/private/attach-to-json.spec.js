@@ -36,6 +36,35 @@ describe('attachToJson', () => {
     expect(expected).toEqual(actual)
   })
 
+  it('should should handle booleans in composition functions.', async () => {
+    const A = equals('@foo', 'a')
+    const B = true
+
+    const data = {
+      foo: 'a'
+    }
+
+    function novelAndFn (a, b) {
+      return attachToJson(function novelAnd (data) {
+        return a(data) && b
+      }, [a, b])
+    }
+
+    const MY_RULE = novelAndFn(A, B)
+
+    expect(MY_RULE(data)).toEqual(true)
+
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({
+      novelAnd: [
+        { equals: ['@foo', 'a'] },
+        true
+      ]
+    })
+
+    expect(expected).toEqual(actual)
+  })
+
   it('should should return a json string with nested compositions.', async () => {
     const A = equals('@foo', 'a')
     const B = equals('@bar', 'b')

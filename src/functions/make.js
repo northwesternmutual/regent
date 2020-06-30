@@ -5,7 +5,7 @@ export default (fn) => {
     throw new Error('make must be passed a function as argument 1')
   }
 
-  if (typeof fn.name === 'undefined') {
+  if (!fn.name) {
     throw new Error('the function passed to "make" must be a named function. It cannot be anonymous.')
   }
 
