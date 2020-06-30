@@ -1,67 +1,67 @@
-import greaterThanOrEquals, { greaterThanOrEqualsFn } from './greater-than-equals'
+import greaterThanOrEqualsFn, { greaterThanOrEquals } from './greater-than-equals'
 
-describe('greaterThanOrEquals', () => {
-  it('greaterThanOrEquals should be a function', () => {
-    expect(typeof greaterThanOrEqualsFn).toEqual('function')
+describe('greaterThanOrEqualsFn', () => {
+  it('greaterThanOrEqualsFn should be a function', () => {
+    expect(typeof greaterThanOrEquals).toEqual('function')
   })
 
   it('greaterThan should return true if the value given is greater than the param', () => {
-    let actual = greaterThanOrEqualsFn(1, 0)
+    let actual = greaterThanOrEquals(1, 0)
     let expected = true
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(4, 3)
+    actual = greaterThanOrEquals(4, 3)
     expected = true
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(4.2, 4.1)
+    actual = greaterThanOrEquals(4.2, 4.1)
     expected = true
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(4, 4)
+    actual = greaterThanOrEquals(4, 4)
     expected = true
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(4.2, 4.2)
+    actual = greaterThanOrEquals(4.2, 4.2)
     expected = true
     expect(actual).toEqual(expected)
   })
 
   it('greaterThan should return true if the value given is equal to the param', () => {
-    let actual = greaterThanOrEqualsFn(1, 1)
+    let actual = greaterThanOrEquals(1, 1)
     let expected = true
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(4, 4)
+    actual = greaterThanOrEquals(4, 4)
     expected = true
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(4.2, 4.2)
+    actual = greaterThanOrEquals(4.2, 4.2)
     expected = true
     expect(actual).toEqual(expected)
   })
 
-  it('greaterThanOrEqualsFn should return false if the value given is less than the param', () => {
-    let actual = greaterThanOrEqualsFn(1, 2)
+  it('greaterThanOrEquals should return false if the value given is less than the param', () => {
+    let actual = greaterThanOrEquals(1, 2)
     let expected = false
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(0, 10)
+    actual = greaterThanOrEquals(0, 10)
     expected = false
     expect(actual).toEqual(expected)
 
-    actual = greaterThanOrEqualsFn(null, 4)
+    actual = greaterThanOrEquals(null, 4)
     expected = false
     expect(actual).toEqual(expected)
   })
 
-  it('greaterThanOrEqualsFn should return false if the key is undefined', () => {
-    const actual = greaterThanOrEqualsFn(undefined, 0)
+  it('greaterThanOrEquals should return false if the key is undefined', () => {
+    const actual = greaterThanOrEquals(undefined, 0)
     const expected = false
     expect(actual).toEqual(expected)
   })
 
-  it('greaterThanOrEqualsFn should return false if the key is a string that parses to NaN', () => {
+  it('greaterThanOrEquals should return false if the key is a string that parses to NaN', () => {
     const redProps = [
       'cool',
       'some string',
@@ -71,27 +71,27 @@ describe('greaterThanOrEquals', () => {
       'true'
     ]
     redProps.forEach((val) => {
-      const actual = greaterThanOrEqualsFn(val, 0)
+      const actual = greaterThanOrEquals(val, 0)
       const expected = false
       expect(actual).toEqual(expected)
     })
   })
 
-  it('greaterThanOrEqualsFn should compare strings based on standard lexicographical ordering, using Unicode values', () => {
-    expect(greaterThanOrEqualsFn('a', 'b')).toEqual(false)
-    expect(greaterThanOrEqualsFn('aaaa', 'abaa')).toEqual(false)
-    expect(greaterThanOrEqualsFn('bb', 'a')).toEqual(true)
-    expect(greaterThanOrEqualsFn('baa', 'abb')).toEqual(true)
-    expect(greaterThanOrEqualsFn('1', 2)).toEqual(false)
-    expect(greaterThanOrEqualsFn('2', 1)).toEqual(true)
-    expect(greaterThanOrEqualsFn('2', '4')).toEqual(false)
-    expect(greaterThanOrEqualsFn('2', '2')).toEqual(true)
-    expect(greaterThanOrEqualsFn(4, 4)).toEqual(true)
+  it('greaterThanOrEquals should compare strings based on standard lexicographical ordering, using Unicode values', () => {
+    expect(greaterThanOrEquals('a', 'b')).toEqual(false)
+    expect(greaterThanOrEquals('aaaa', 'abaa')).toEqual(false)
+    expect(greaterThanOrEquals('bb', 'a')).toEqual(true)
+    expect(greaterThanOrEquals('baa', 'abb')).toEqual(true)
+    expect(greaterThanOrEquals('1', 2)).toEqual(false)
+    expect(greaterThanOrEquals('2', 1)).toEqual(true)
+    expect(greaterThanOrEquals('2', '4')).toEqual(false)
+    expect(greaterThanOrEquals('2', '2')).toEqual(true)
+    expect(greaterThanOrEquals(4, 4)).toEqual(true)
   })
 
-  describe('greaterThanOrEquals', () => {
+  describe('greaterThanOrEqualsFn', () => {
     it('should be a function', () => {
-      const actual = typeof greaterThanOrEquals
+      const actual = typeof greaterThanOrEqualsFn
       const expected = 'function'
 
       expect(actual).toEqual(expected)
@@ -101,7 +101,7 @@ describe('greaterThanOrEquals', () => {
       const data = {
         foo: 5
       }
-      const actual = greaterThanOrEquals('@foo', 3)(data)
+      const actual = greaterThanOrEqualsFn('@foo', 3)(data)
       const expected = true
 
       expect(actual).toEqual(expected)
@@ -111,8 +111,16 @@ describe('greaterThanOrEquals', () => {
       const data = {
         foo: 2
       }
-      const actual = greaterThanOrEquals('@foo', 3)(data)
+      const actual = greaterThanOrEqualsFn('@foo', 3)(data)
       const expected = false
+
+      expect(actual).toEqual(expected)
+    })
+
+    it('when the toJson method is called it should return a json representation of the rule.', () => {
+      const MY_RULE = greaterThanOrEqualsFn('@foo', 5)
+      const actual = MY_RULE.toJson()
+      const expected = JSON.stringify({ greaterThanOrEquals: ['@foo', 5] })
 
       expect(actual).toEqual(expected)
     })

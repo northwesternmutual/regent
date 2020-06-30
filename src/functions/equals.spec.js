@@ -1,30 +1,30 @@
-import equals, { equalsFn } from './equals'
+import equalsFn, { equals } from './equals'
 
-describe('equalsFn', () => {
-  it('equalsFn should be a function', () => {
-    expect(typeof equalsFn).toEqual('function')
+describe('equals', () => {
+  it('equals should be a function', () => {
+    expect(typeof equals).toEqual('function')
   })
 
-  it('equalsFn should return true if the left is in all of the arguments', () => {
+  it('equals should return true if the left is in all of the arguments', () => {
     const left = 'hello'
     const right = 'hello'
-    const acutal = equalsFn(left, right)
+    const acutal = equals(left, right)
     const expected = true
     expect(acutal).toEqual(expected)
   })
 
-  it('equalsFn should return false if left does not match all of the arguments', () => {
+  it('equals should return false if left does not match all of the arguments', () => {
     const left = 'hello'
     const right = 'world'
-    const acutal = equalsFn(left, right)
+    const acutal = equals(left, right)
     const expected = false
     expect(acutal).toEqual(expected)
   })
 })
 
-describe('equals', () => {
+describe('equalsFn', () => {
   it('should be a function', () => {
-    const actual = typeof equals
+    const actual = typeof equalsFn
     const expected = 'function'
 
     expect(actual).toEqual(expected)
@@ -34,7 +34,7 @@ describe('equals', () => {
     const data = {
       foo: 'bar'
     }
-    const actual = equals('@foo', 'bar')(data)
+    const actual = equalsFn('@foo', 'bar')(data)
     const expected = true
 
     expect(actual).toEqual(expected)
@@ -44,7 +44,7 @@ describe('equals', () => {
     const data = {
       foo: 'baz'
     }
-    const actual = equals('@foo', 'bar')(data)
+    const actual = equalsFn('@foo', 'bar')(data)
     const expected = false
 
     expect(actual).toEqual(expected)
@@ -56,7 +56,7 @@ describe('equals', () => {
         { bar: 'bar' }
       ]
     }
-    const actual = equals('@foo[0].bar', 'bar')(data)
+    const actual = equalsFn('@foo[0].bar', 'bar')(data)
     const expected = true
 
     expect(actual).toEqual(expected)
@@ -76,8 +76,16 @@ describe('equals', () => {
 
     const expected = false
     redArr.forEach((x) => {
-      actual = equals('@foo[0].bar', 'bar')(x)
+      actual = equalsFn('@foo[0].bar', 'bar')(x)
       expect(actual).toEqual(expected)
     })
+  })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const MY_RULE = equalsFn('@foo', 'a')
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({ equals: ['@foo', 'a'] })
+
+    expect(actual).toEqual(expected)
   })
 })

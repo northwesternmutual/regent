@@ -52,4 +52,50 @@ describe('regent', () => {
     const expected = true
     expect(actual).toEqual(expected)
   })
+
+  it('should be able to export a large complicated composition to json.', () => {
+    const isRaining = equals('@isRaining', true)
+    const isCalm = lessThan('@windSpeedInMph', 25)
+    const isRainingAndCalm = and(isRaining, isCalm)
+    const isWindy = greaterThanOrEquals('@windSpeedInMph', 25)
+    const isWindyOrCalmAndRaining = or(isWindy, isRainingAndCalm)
+    const sunny = regex('@__description', /sunny/)
+    const weekHasSunshine = some('@days', sunny)
+    const imHappy = or(not(isRaining), isRainingAndCalm, and(isWindyOrCalmAndRaining, weekHasSunshine))
+
+    const actual = imHappy.toJson()
+    const expected = JSON.stringify({
+      or: [
+        { not: [{ equals: ['@isRaining', true] }] },
+        {
+          and: [
+            { equals: ['@isRaining', true] },
+            { lessThan: ['@windSpeedInMph', 25] }
+          ]
+        },
+        {
+          and: [
+            {
+              or: [
+                { greaterThanOrEquals: ['@windSpeedInMph', 25] },
+                {
+                  and: [
+                    { equals: ['@isRaining', true] },
+                    { lessThan: ['@windSpeedInMph', 25] }
+                  ]
+                }
+              ]
+            },
+            {
+              some: ['@days',
+                { regex: ['@__description', {}] }
+              ]
+            }
+          ]
+        }
+      ]
+    })
+
+    expect(actual).toEqual(expected)
+  })
 })

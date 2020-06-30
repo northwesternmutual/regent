@@ -45,4 +45,19 @@ describe('not', () => {
   it('should throw if not passed a rule', () => {
     expect(() => not('string')).toThrow('Regent: not requires the first argument to be a function')
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const A = equals('@foo', 'a')
+
+    const MY_RULE = not(A)
+
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({
+      not: [
+        { equals: ['@foo', 'a'] }
+      ]
+    })
+
+    expect(actual).toEqual(expected)
+  })
 })

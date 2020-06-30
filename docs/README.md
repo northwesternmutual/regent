@@ -871,6 +871,41 @@ const {
 } = parseFn(json)
 ```
 
+## Utilities
+
+### toJson
+
+`Rule.toJson()`
+
+The `toJson` utility can be used to export rule definitions to JSON. This utility is handy if your rules are all defined as functions and you want to transport the rules into another system, application, or store in a database.
+
+_*Arguments*_
+
+_none_
+
+_*Returns*_
+
+* `JSONRulesObject (JSON Object)` a JSON object of regent rule definitions
+
+_*Example*_
+
+```javascript
+const isRaining = equals('@isRaining', true);
+const isCalm = lessThan('@windSpeedInMph', 25);
+const isRainingAndCalm = and(isRaining, isCalm);
+
+const isRainingJson = isRaining.toJson()
+// { "equals": ["isRaining", true] }
+
+const isRainingAndCalmJson = isRainingAndCalm.toJson()
+// {
+//   "and": [
+//     { "equals": ["@isRaining", true] },
+//     { "lessThan": ["@windSpeedInMph", 25] }
+//   ]
+// }
+```
+
 ## License
 
 MIT

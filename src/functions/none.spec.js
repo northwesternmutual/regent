@@ -49,4 +49,21 @@ describe('none', () => {
 
     expect(() => none(RULE_A, NOT_RULE)(data)).toThrow('Regent: none requires all arguments to be a function')
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const A = equals('@foo', 'a')
+    const B = equals('@bar', 'b')
+
+    const MY_RULE = none(A, B)
+
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({
+      none: [
+        { equals: ['@foo', 'a'] },
+        { equals: ['@bar', 'b'] }
+      ]
+    })
+
+    expect(actual).toEqual(expected)
+  })
 })
