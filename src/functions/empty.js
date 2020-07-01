@@ -7,4 +7,4 @@ export const empty = input => (
   input === ''
 )
 
-export default make(empty)
+export default make(empty, 'empty')
