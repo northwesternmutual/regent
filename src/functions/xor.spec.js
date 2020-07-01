@@ -112,10 +112,18 @@ describe('xor', () => {
   })
 
   it('when the toJson method is called it should return a json representation of the rule.', () => {
-    const MY_RULE = xor('@foo', 'a')
+    const A = equals('@foo', 'a')
+    const B = equals('@bar', 'b')
+
+    const MY_RULE = xor(A, B)
 
     const actual = MY_RULE.toJson()
-    const expected = JSON.stringify({ xor: ['@foo', 'a'] })
+    const expected = JSON.stringify({
+      xor: [
+        { equals: ['@foo', 'a'] },
+        { equals: ['@bar', 'b'] }
+      ]
+    })
 
     expect(actual).toEqual(expected)
   })
