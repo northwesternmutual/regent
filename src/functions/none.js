@@ -9,5 +9,5 @@ export default (...rules) => {
 
   return attachToJson(function none (data) {
     return !or(...rules)(data)
-  }, rules)
+  }, rules, 'none')
 }

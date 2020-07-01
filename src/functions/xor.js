@@ -14,5 +14,5 @@ export default (...rules) => {
   }
   return attachToJson(function xor (data) {
     return (evaluateRule(rules[0], data) || evaluateRule(rules[1], data)) && !(evaluateRule(rules[0], data) && evaluateRule(rules[1], data))
-  }, rules)
+  }, rules, 'xor')
 }

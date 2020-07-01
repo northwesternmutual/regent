@@ -56,7 +56,7 @@ describe('makeWithContext', () => {
 
   it('should correctly render booleans to JSON', () => {
     const FN = (arg1, arg2) => `${arg1}: ${arg2}`
-    const returnFn = makeWithContext(FN)('@foo.bar', true)
+    const returnFn = makeWithContext(FN, 'FN')('@foo.bar', true)
     const actual = returnFn.toJson()
     const expected = '{"FN":["@foo.bar",true]}'
 

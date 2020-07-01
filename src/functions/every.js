@@ -14,4 +14,4 @@ export const every = (left, right, context, data) => {
   return left.every(x => evaluateRule(right, { ...data, [context]: x }))
 }
 
-export default makeWithContext(every)
+export default makeWithContext(every, 'every')

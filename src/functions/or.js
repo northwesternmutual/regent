@@ -11,5 +11,5 @@ export default (...rules) => {
 
   return attachToJson(function or (data) {
     return rules.some(x => evaluateRule(x, data))
-  }, rules)
+  }, rules, 'or')
 }
