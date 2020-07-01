@@ -18,7 +18,7 @@ import {
   some,
   typeOf,
   xor
-} from './regent'
+} from '../dist/regent'
 
 describe('regent', () => {
   it('should export the public API', () => {

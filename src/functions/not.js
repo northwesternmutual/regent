@@ -9,5 +9,5 @@ export default (rule) => {
 
   return attachToJson(function not (data) {
     return !evaluateRule(rule, data)
-  }, [rule])
+  }, [rule], 'not')
 }

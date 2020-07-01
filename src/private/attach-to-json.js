@@ -1,11 +1,11 @@
-export default function attachToJson (fn, rules) {
-  const ruleJson = { [fn.name]: [] }
+export default function attachToJson (fn, rules, name) {
+  const ruleJson = { [name]: [] }
 
   rules.forEach((rule) => {
     if (typeof rule === 'boolean') {
-      ruleJson[fn.name].push(rule)
+      ruleJson[name].push(rule)
     } else {
-      ruleJson[fn.name].push(JSON.parse(rule.toJson()))
+      ruleJson[name].push(JSON.parse(rule.toJson()))
     }
   })
 

@@ -11,5 +11,5 @@ export default (...rules) => {
 
   return attachToJson(function and (data) {
     return rules.every(x => evaluateRule(x, data))
-  }, rules)
+  }, rules, 'and')
 }

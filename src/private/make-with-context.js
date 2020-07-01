@@ -5,7 +5,7 @@ export default (fn) => {
     throw new Error('makeWithContext must be passed a function as argument 1')
   }
 
-  return (left, right, context = '__') => {
+  return (left, right, context = '__', name) => {
     const ruleFn = data =>
       fn(...makeArgs(data, left, right), context, data)
 
@@ -13,9 +13,9 @@ export default (fn) => {
       let ruleJson
 
       if (typeof right === 'boolean') {
-        ruleJson = { [fn.name]: [left, right] }
+        ruleJson = { [name]: [left, right] }
       } else {
-        ruleJson = { [fn.name]: [left, JSON.parse(right.toJson())] }
+        ruleJson = { [name]: [left, JSON.parse(right.toJson())] }
       }
 
       return JSON.stringify(ruleJson)
