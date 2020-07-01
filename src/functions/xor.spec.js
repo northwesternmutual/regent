@@ -110,4 +110,13 @@ describe('xor', () => {
 
     expect(() => xor(RULE_A, NOT_RULE)(data)).toThrow('Regent: xor requires all arguments to be a function')
   })
+
+  it('when the toJson method is called it should return a json representation of the rule.', () => {
+    const MY_RULE = xor('@foo', 'a')
+
+    const actual = MY_RULE.toJson()
+    const expected = JSON.stringify({ xor: ['@foo', 'a'] })
+
+    expect(actual).toEqual(expected)
+  })
 })
