@@ -584,6 +584,7 @@ Regent exports a `make` function that allows you to turn any function that takes
 _*Arguments*_
 
 * `fn (Function)` any function that returns a `boolean`
+* `name (String)` a string that will provide the key for the predicate in toJson() output. Defaults to `unknown`
 
 _*Returns*_
 
@@ -595,7 +596,7 @@ _*Example*_
 import _includes from 'lodash.includes` // https://lodash.com/docs/3.10.1#includes
 import { make } from 'regent'
 
-const includes = make(includes)
+const includes = make(includes, 'includes')
 
 const IS_RAINING = includes('@precipitationTypes', 'rain')
 
