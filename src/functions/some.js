@@ -14,4 +14,4 @@ export const some = (left, right, context = '__', data) => {
   return left.some(x => evaluateRule(right, { ...data, [context]: x }))
 }
 
-export default makeWithContext(some)
+export default makeWithContext(some, 'some')

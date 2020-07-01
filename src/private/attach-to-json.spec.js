@@ -18,7 +18,7 @@ describe('attachToJson', () => {
     function novelAndFn (a, b) {
       return attachToJson(function novelAnd (data) {
         return a(data) && b(data)
-      }, [a, b])
+      }, [a, b], 'novelAnd')
     }
 
     const MY_RULE = novelAndFn(A, B)
@@ -47,7 +47,7 @@ describe('attachToJson', () => {
     function novelAndFn (a, b) {
       return attachToJson(function novelAnd (data) {
         return a(data) && b
-      }, [a, b])
+      }, [a, b], 'novelAnd')
     }
 
     const MY_RULE = novelAndFn(A, B)
@@ -72,7 +72,7 @@ describe('attachToJson', () => {
     function novelAndFn (a, b) {
       return attachToJson(function novelAnd (data) {
         return a(data) && b(data)
-      }, [a, b])
+      }, [a, b], 'novelAnd')
     }
 
     const RULE_ONE = novelAndFn(A, B)
