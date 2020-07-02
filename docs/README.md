@@ -596,7 +596,7 @@ _*Example*_
 import _includes from 'lodash.includes` // https://lodash.com/docs/3.10.1#includes
 import { make } from 'regent'
 
-const includes = make(includes, 'includes')
+const includes = make(_includes, 'includes')
 
 const IS_RAINING = includes('@precipitationTypes', 'rain')
 
