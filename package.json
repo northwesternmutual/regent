@@ -16,7 +16,7 @@
     "build": "microbundle --external none",
     "dev": "microbundle watch",
     "stryker": "npx stryker run",
-    "publish": "npm run test && npm run build && npm publish"
+    "publish": "npm run build && npm publish"
   },
   "pre-push": [
     "test",
