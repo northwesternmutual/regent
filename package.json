@@ -15,7 +15,8 @@
     "test-watch": "jest --watch",
     "build": "microbundle --external none",
     "dev": "microbundle watch",
-    "stryker": "npx stryker run"
+    "stryker": "npx stryker run",
+    "publish": "npm run test && npm run build && npm publish"
   },
   "pre-push": [
     "test",
