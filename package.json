@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/northwesternmutual/regent/blob/master/README.md",
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
+    "@babel/cli": "^7.12.10",
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "@stryker-mutator/core": "^2.5.0",
