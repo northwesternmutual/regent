@@ -872,6 +872,37 @@ const {
 } = parseFn(json)
 ```
 
+## lookups
+
+`lookups(RegentRule)`
+
+The `lookups` function accepts a RegentRule and returns an array of the lookups referenced by that rule. The RegentRule provided can be arbitrarily complex.
+
+_*Arguments*_
+
+* `RegentRule (Plain Object)`
+
+_*Returns*_
+
+`Array`: an array containing all the lookups present in the provided rule.
+
+_*Example*_
+
+```javascript
+import { equals, lessThan, lookups } from 'regent';
+
+const isRaining = equals('@weather.precipitation', true);
+const isCalm = lessThan('@weather.wind.speed', 25);
+const isRainingAndCalm = and(isRaining, isCalm);
+
+const paths = lookups(isRainingAndCalm);
+
+// [
+//   '@weather.precipitation',
+//   '@weather.wind.speed',
+// ]
+```
+
 ## Utilities
 
 ### toJson
