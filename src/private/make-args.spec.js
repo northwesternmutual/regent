@@ -108,4 +108,23 @@ describe('makeArgs', () => {
     const expected = ['bar', 'a', 'b']
     expect(actual).toEqual(expected)
   })
+
+  it('should not die when passed null', () => {
+    const data = {
+      foo: [
+        { bar: 'bar' }
+      ],
+      biz: 'a',
+      baz: 'b'
+    }
+
+    const args = [
+      '@foo[0].bar',
+      null
+    ]
+
+    const actual = makeArgs(data, ...args)
+    const expected = ['bar', null]
+    expect(actual).toEqual(expected)
+  })
 })

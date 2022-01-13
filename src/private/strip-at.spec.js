@@ -34,4 +34,11 @@ describe('stripAt', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should handle null', () => {
+    const actual = stripAt(null)
+    const expected = null
+
+    expect(actual).toEqual(expected)
+  })
 })
