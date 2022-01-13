@@ -41,4 +41,25 @@ describe('stripAt', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should handle undefined', () => {
+    const actual = stripAt(undefined)
+    const expected = undefined
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should handle empty array', () => {
+    const actual = stripAt([])
+    const expected = []
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should handle empty Object', () => {
+    const actual = stripAt({})
+    const expected = {}
+
+    expect(actual).toEqual(expected)
+  })
 })
