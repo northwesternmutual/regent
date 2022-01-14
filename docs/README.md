@@ -389,6 +389,42 @@ MONTH_ENDS_WITH_ARY({ month: 'March })
 // => false
 ```
 
+### some
+
+`some(path, rule, [context = '__'])`
+
+`path` must resolve to, or be an `array`. `some` iterates over this array and evaluates the rule against each item until one of them evaluates to true. The rule prop will have access to the current array item's data through the optional context argument.
+
+_*Arguments*_
+
+* `path (Array|String):` The path of the property to lookup, or an array literal
+* `rule (Regent Rule):` A regent rule to evaluate each item of the array against
+* `[context='__'] (String):` An optional path to place the iteration context on. Defaults to `__`
+
+_*Returns*_
+
+`function`: a [regent rule](#regent-rule)
+
+_*Example*_
+
+```javascript
+import { some, equals } from regent
+
+// In this rule the `__` refers to the current iteration of the `thisWeek` array
+const IS_CLOUDY = equals('@__.weatherType', 'cloudy')
+const WEEK_HAS_CLOUDY_DAY = some('@thisWeek', IS_CLOUDY, '__')
+
+WEEK_HAS_CLOUDY_DAY({
+    thisWeek: [
+      { weatherType: 'sunny' },
+      { weatherType: 'cloudy' },
+      { weatherType: 'sunny' }
+    ]
+  }
+)
+// => true
+```
+
 ### typeOf
 
 `typeOf(path, type)`
