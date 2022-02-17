@@ -6,6 +6,9 @@
     "type": "git",
     "url": "https://github.com/northwesternmutual/regent"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "source": "src/regent.js",
   "main": "dist/regent.js",
   "module": "dist/regent.modern.module.js",
