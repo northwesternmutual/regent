@@ -46,7 +46,7 @@ isRainingAndCalm(data); // true
 Regent also provides a simple way to find or filter array items based on a regent rule.
 
 ```javascript
-{ equals, lessThan, find, filter } from 'regent';
+import { equals, lessThan, find, filter } from 'regent';
 
 const isRaining = equals('@isRaining', true);
 const isSunny = lessThan('@cloudCover', 10);
