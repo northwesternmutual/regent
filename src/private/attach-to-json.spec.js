@@ -98,6 +98,6 @@ describe('attachToJson', () => {
       ]
     })
 
-    expect(expected).toEqual(actual)
+    expect(actual).toEqual(expected)
   })
 })

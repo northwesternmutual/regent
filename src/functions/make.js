@@ -11,13 +11,11 @@ export default (fn, name) => {
   }
 
   return (...args) => {
-    const ruleJson = { [name]: [] }
-
     const ruleFn = data => fn(...makeArgs(data, ...args), data)
 
     ruleFn.toJson = (data) => {
+      const ruleJson = { [name]: [] }
       let _args
-      let _type
 
       if (data) {
         _args = makeArgs(data, ...args)
@@ -25,7 +23,6 @@ export default (fn, name) => {
 
       args.forEach((arg, i) => {
         if (data && isLookup(arg)) {
-          _type = typeof 
           ruleJson[name].push(`${arg} -> ${JSON.stringify(_args[i])}`)
         } else {
           ruleJson[name].push(arg)
