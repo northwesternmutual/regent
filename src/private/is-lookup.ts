@@ -2,7 +2,7 @@ import isEscaped from './is-escaped'
 
 const isLookupRegex = /^@/
 
-export default function isLookup (arg) {
+export default function isLookup (arg: string): Boolean {
   // If it's an escaped string then it's not a lookup?
   if (isEscaped(arg)) {
     return false

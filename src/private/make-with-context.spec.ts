@@ -22,10 +22,6 @@ describe('makeWithContext', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('it should throw an error if what is passed in is not a function', () => {
-    expect(() => makeWithContext('hello')).toThrow('makeWithContext must be passed a function as argument 1')
-  })
-
   it('should pass through context', () => {
     const FN = (arg1, arg2, context) => `${arg1}: ${arg2} (${context})`
     const data = {

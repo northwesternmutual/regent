@@ -1,6 +1,6 @@
 import makeArgs from '../private/make-args'
 
-export default (fn, name) => {
+export default (fn: Function, name?: string): Function => {
   if (typeof fn !== 'function') {
     throw new Error('make must be passed a function as argument 1')
   }
@@ -9,7 +9,7 @@ export default (fn, name) => {
     name = 'unknown'
   }
 
-  return (...args) => {
+  return (...args: any[]) => {
     const ruleJson = { [name]: [] }
 
     args.forEach((arg) => {

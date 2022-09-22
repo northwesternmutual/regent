@@ -1,10 +1,6 @@
 import makeArgs from './make-args'
 
-export default (fn, name) => {
-  if (typeof fn !== 'function') {
-    throw new Error('makeWithContext must be passed a function as argument 1')
-  }
-
+export default (fn: Function, name?: string) => {
   return (left, right, context = '__') => {
     const ruleFn = data =>
       fn(...makeArgs(data, left, right), context, data)

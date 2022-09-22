@@ -7,7 +7,7 @@ describe('makeArgs', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('makeArgs Function: Should exist.', () => {
+  it('makeArgs Function: Should correctly parse args.', () => {
     const data = {
       foo: 'foo',
       bar: 'bar',
@@ -18,9 +18,9 @@ describe('makeArgs', () => {
     }
 
     let left = '@foo'
-    let right = 'foo'
+    let right: any = 'foo'
     let actual = makeArgs(data, left, right)
-    let expected = ['foo', 'foo']
+    let expected: any[] = ['foo', 'foo']
     expect(actual).toEqual(expected)
 
     left = '@foo'

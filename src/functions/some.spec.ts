@@ -82,6 +82,17 @@ describe('3.x.x - someFn', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should not die if lookup evaluates to undefined', () => {
+    const data = {}
+
+    const RULE = false
+    const E_RULE = someFn('@nodes', RULE)
+    const actual = E_RULE(data)
+    const expected = false
+
+    expect(actual).toEqual(expected)
+  })
 })
 
 describe('some', () => {
@@ -115,35 +126,6 @@ describe('some', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('some should throw an error if right is not a regent rule', () => {
-    const left = [
-      { value: true },
-      { value: true },
-      { value: true }
-    ]
-    const right = { this_is_not: 'a rule' }
-    expect(() => some(left, right)).toThrow('Regent: the right property of an every rule must be a regent rule')
-  })
-
-  it('some should return false if left is not an array', () => {
-    let left = {
-      not: 'an array'
-    }
-    let right = equals('@__.value', true)
-    let actual = some(left, right)
-    expect(actual).toEqual(false)
-
-    left = 42
-    right = equals('@__.value', true)
-    actual = some(left, right)
-    expect(actual).toEqual(false)
-
-    left = 'I am clearly a string'
-    right = equals('@__.value', true)
-    actual = some(left, right)
-    expect(actual).toEqual(false)
-  })
-
   it('some should return false if left is undefined', () => {
     const right = equals('@__.value', true)
     const actual = some(undefined, right)
@@ -163,14 +145,6 @@ describe('some', () => {
     )
     const actual = some(left, right)
     expect(actual).toEqual(true)
-  })
-
-  it('should return false if the first argument is not an array', () => {
-    const RULE = equals('string', 'bar')
-    const actual = some('@nodes', RULE)
-    const expected = false
-
-    expect(actual).toEqual(expected)
   })
 
   it('when it\'s toJson method is called it should return a json representation of the rule', () => {

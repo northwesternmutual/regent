@@ -1,4 +1,4 @@
-const get = (object, keys) => {
+const get = (object: Object, keys: String | string[] | number): any => {
   if (!object) { object = {} }
 
   keys = Array.isArray(keys) ? keys : `${keys}`

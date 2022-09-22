@@ -23,11 +23,4 @@ describe('evaluateRule', () => {
 
     expect(actual).toEqual(true)
   })
-
-  it('should throw if not given a valid rule', async () => {
-    const A = 'some string'
-    const data = null
-
-    expect(() => evaluateRule(A, data)).toThrow('Regent: "some string" is not a valid rule')
-  })
 })

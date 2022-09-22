@@ -13,32 +13,32 @@ describe('isLookup', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('isLookup Function: Should return false if the argument is not a string.', () => {
-    let str = {}
-    let actual = isLookup(str)
-    const expected = false
-    expect(actual).toEqual(expected)
+  // it('isLookup Function: Should return false if the argument is not a string.', () => {
+  //   let str = {}
+  //   let actual = isLookup(str)
+  //   const expected = false
+  //   expect(actual).toEqual(expected)
 
-    str = []
-    actual = isLookup(str)
-    expect(actual).toEqual(expected)
+  //   str = []
+  //   actual = isLookup(str)
+  //   expect(actual).toEqual(expected)
 
-    str = 5
-    actual = isLookup(str)
-    expect(actual).toEqual(expected)
+  //   str = 5
+  //   actual = isLookup(str)
+  //   expect(actual).toEqual(expected)
 
-    str = true
-    actual = isLookup(str)
-    expect(actual).toEqual(expected)
+  //   str = true
+  //   actual = isLookup(str)
+  //   expect(actual).toEqual(expected)
 
-    str = undefined
-    actual = isLookup(str)
-    expect(actual).toEqual(expected)
+  //   str = undefined
+  //   actual = isLookup(str)
+  //   expect(actual).toEqual(expected)
 
-    str = () => {}
-    actual = isLookup(str)
-    expect(actual).toEqual(expected)
-  })
+  //   str = () => {}
+  //   actual = isLookup(str)
+  //   expect(actual).toEqual(expected)
+  // })
 
   it('isLookup Function: Should return false if the argument is an escaped string', () => {
     let str = '@@hello'
