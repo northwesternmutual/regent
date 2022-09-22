@@ -1,4 +1,3 @@
-import isRule from '../private/is-rule'
 import evaluateRule from '../private/evaluate-rule'
 import attachToJson from '../private/attach-to-json'
 import { Rule, RuleFunction } from '../interfaces'

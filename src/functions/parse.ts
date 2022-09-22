@@ -83,7 +83,7 @@ export function buildRule (jsonRule: any): any {
   }
 }
 
-export default (json: any) => {
+export default (json: any): any => {
   const result: any = {}
 
   try {

@@ -4,9 +4,9 @@
  * on it that takes no parameters and returns a rule
  * expressed in the portable JSON format
  */
-export type RuleFunction = {
-  (data: any): boolean;
-  toJson: () => string;
+export interface RuleFunction {
+  (data: any): boolean
+  toJson: () => string
 }
 
 export type Rule = RuleFunction | boolean
@@ -14,6 +14,5 @@ export type Rule = RuleFunction | boolean
 export type PredicateArgs = string | number | boolean
 
 export interface LogicRow {
-  rule: Rule;
-  [x: string | number | symbol]: unknown;
+  rule: Rule
 }
