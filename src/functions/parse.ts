@@ -14,7 +14,7 @@ import some from './some'
 import typeOf from './type-of'
 import xor from './xor'
 
-export function buildRule (jsonRule) {
+export function buildRule (jsonRule: any): any {
   // if typeof jsonRule === boolean
   // return it
   if (typeof jsonRule === 'boolean') {
@@ -56,35 +56,35 @@ export function buildRule (jsonRule) {
 
     // composed rules
     case 'and':
-      return and(...jsonRule[predicate].map(x => buildRule(x)))
+      return and(...jsonRule[predicate].map((x: any) => buildRule(x)))
 
     case 'every':
       // first argument is the key, the second is a rule to be built
       return every(jsonRule[predicate][0], buildRule(jsonRule[predicate][1]))
 
     case 'none':
-      return none(...jsonRule[predicate].map(x => buildRule(x)))
+      return none(...jsonRule[predicate].map((x: any) => buildRule(x)))
 
     case 'not':
-      return not(...jsonRule[predicate].map(x => buildRule(x)))
+      return not(jsonRule[predicate].map((x: any) => buildRule(x))[0])
 
     case 'or':
-      return or(...jsonRule[predicate].map(x => buildRule(x)))
+      return or(...jsonRule[predicate].map((x: any) => buildRule(x)))
 
     case 'some':
       // first argument is the key, the second is a rule to be built
       return some(jsonRule[predicate][0], buildRule(jsonRule[predicate][1]))
 
     case 'xor':
-      return xor(...jsonRule[predicate].map(x => buildRule(x)))
+      return xor(...jsonRule[predicate].map((x: any) => buildRule(x)))
 
     default:
       return `${predicate} is not a valid predicate`
   }
 }
 
-export default (json = {}) => {
-  const result = {}
+export default (json: any) => {
+  const result: any = {}
 
   try {
     const rules = JSON.parse(json)

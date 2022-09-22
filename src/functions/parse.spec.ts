@@ -5,10 +5,6 @@ describe('parse', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {})
   })
 
-  afterAll(() => {
-    console.log.mockRestore()
-  })
-
   it('should be a function', () => {
     const actual = typeof parseFn
     const expected = 'function'

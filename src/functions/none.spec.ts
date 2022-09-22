@@ -39,17 +39,6 @@ describe('none', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should throw provided a non rule', () => {
-    const RULE_A = equals('@foo', 'a')
-    const NOT_RULE = 'not a rule'
-
-    const data = {
-      foo: 'a'
-    }
-
-    expect(() => none(RULE_A, NOT_RULE)(data)).toThrow('Regent: none requires all arguments to be a function')
-  })
-
   it('when the toJson method is called it should return a json representation of the rule.', () => {
     const A = equals('@foo', 'a')
     const B = equals('@bar', 'b')

@@ -58,4 +58,13 @@ describe('makeWithContext', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should correctly render numbers to JSON', () => {
+    const FN = (arg1, arg2) => `${arg1}: ${arg2}`
+    const returnFn = makeWithContext(FN, 'FN')('@foo.bar', 131)
+    const actual = returnFn.toJson()
+    const expected = '{"FN":["@foo.bar",131]}'
+
+    expect(actual).toEqual(expected)
+  })
 })

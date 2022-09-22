@@ -51,17 +51,6 @@ describe('or', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should throw and error if one of the arguments is not a function', () => {
-    const A = equals('@foo', 'a')
-    const B = 'string'
-
-    const data = {
-      foo: 'c'
-    }
-
-    expect(() => or(A, B)(data)).toThrow('Regent: or requires all arguments to be a function')
-  })
-
   it('when the toJson method is called it should return a json representation of the rule.', () => {
     const A = equals('@foo', 'a')
     const B = equals('@bar', 'b')

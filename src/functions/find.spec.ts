@@ -31,25 +31,6 @@ describe('find', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('find should not die on or return a row with no rules', () => {
-    const obj = {
-      greeting: 'hello',
-      place: 'world'
-    }
-
-    const greetingIsHello = equals('@greeting', 'hello')
-    const placeIsWorld = equals('@place', 'world')
-
-    const logic = [
-      { result: 'This is somewhere else!' },
-      { result: 'This is the world!', rule: and(greetingIsHello, placeIsWorld) }
-    ]
-
-    const actual = find(logic, obj).result
-    const expected = 'This is the world!'
-    expect(actual).toEqual(expected)
-  })
-
   it('find should return the first array item with all true rules and not return a following rule even if it is true', () => {
     const obj = {
       greeting: 'hello',
@@ -76,14 +57,6 @@ describe('find', () => {
 
     const actual = find(logic, {}).result
     const expected = 'me!'
-    expect(actual).toEqual(expected)
-  })
-
-  it('should return undefined when called with no data', () => {
-    const logic = [{ foo: 'hello', rule: equals('@foo', 'foo') }]
-    const actual = find(logic)
-    const expected = undefined
-
     expect(actual).toEqual(expected)
   })
 
