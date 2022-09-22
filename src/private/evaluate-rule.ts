@@ -1,5 +1,6 @@
 import isRule from './is-rule'
+import { Rule } from '../interfaces'
 
-export default (rule: (Function|Boolean), data: object): boolean => {
+export default (rule: Rule, data: object): boolean => {
   return typeof rule === 'function' ? rule(data) : rule
 }

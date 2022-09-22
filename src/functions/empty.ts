@@ -1,6 +1,6 @@
 import make from './make'
 
-export const empty = input => (
+export const empty = (input?: any) => (
   input === undefined ||
   input === null ||
   input === 'undefined' ||

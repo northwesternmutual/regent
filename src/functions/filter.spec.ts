@@ -83,21 +83,4 @@ describe('filter', () => {
     const expected = []
     expect(actual).toEqual(expected)
   })
-
-  it('should return false if the value of `rule` is not a rule', () => {
-    const obj = {
-      greeting: 'foo',
-      place: 'bar'
-    }
-
-    const logic = [
-      { result: 'This is somewhere else!', rule: 'not a rule' },
-      { result: 'This is the world!', rule: 'also not a rule' }
-    ]
-
-    const actual = filter(logic, obj)
-      .map(x => x.result)
-    const expected = []
-    expect(actual).toEqual(expected)
-  })
 })

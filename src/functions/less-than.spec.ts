@@ -62,7 +62,7 @@ describe('lessThan', () => {
     redProps.forEach((val) => {
       const actual = lessThan(val, 0)
       const expected = false
-      expect(actual).toEqual(expected, `should return false when passed ${val}`)
+      expect(actual).toEqual(expected)
     })
   })
 

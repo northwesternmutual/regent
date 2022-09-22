@@ -1,8 +1,9 @@
 import isRule from '../private/is-rule'
 import evaluateRule from '../private/evaluate-rule'
 import makeWithContext from '../private/make-with-context'
+import { Rule } from '../interfaces'
 
-export const some = (left: any[], right: (Function|Boolean), context?: string, data?: object) => {
+export const some = (left: any[], right: Rule, context?: string, data?: object) => {
   // TODO: Please explain me in a comment for future me
   // explanation will have something to do with our lookup values sometimes resolving to null or undefined or whatnot
   if (!Array.isArray(left)) {

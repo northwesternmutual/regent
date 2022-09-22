@@ -1,12 +1,9 @@
 import isRule from '../private/is-rule'
 import evaluateRule from '../private/evaluate-rule'
 import makeWithContext from '../private/make-with-context'
+import { RuleFunction } from '../interfaces'
 
-export const every = (left, right, context, data) => {
-  if (!isRule(right)) {
-    throw new Error('Regent: the right property of an every rule must be a regent rule')
-  }
-
+export const every = (left: any[], right: RuleFunction, context, data) => {
   if (!Array.isArray(left)) {
     return false
   }

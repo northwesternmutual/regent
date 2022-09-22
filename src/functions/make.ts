@@ -1,4 +1,5 @@
 import makeArgs from '../private/make-args'
+import { Rule, RuleFunction } from '../interfaces'
 
 export default (fn: Function, name?: string): Function => {
   if (typeof fn !== 'function') {
@@ -9,7 +10,7 @@ export default (fn: Function, name?: string): Function => {
     name = 'unknown'
   }
 
-  return (...args: any[]) => {
+  return (...args: any[]): RuleFunction => {
     const ruleJson = { [name]: [] }
 
     args.forEach((arg) => {

@@ -82,16 +82,6 @@ describe('3.x.x - every', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('everyFn should throw an error if right is not a regent rule', () => {
-    const right = { something: 'not a rule' }
-    expect(() => everyFn('@nodes', right)({})).toThrow('Regent: the right property of an every rule must be a regent rule')
-  })
-
-  it('everyFn should throw an error if right is not a regent rule', () => {
-    const right = { something: 'not a rule' }
-    expect(() => everyFn('@nodes', right)({})).toThrow('Regent: the right property of an every rule must be a regent rule')
-  })
-
   it('should return false if the first argument is not an array', () => {
     const data = {
       nodes: 'string'

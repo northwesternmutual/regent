@@ -8,17 +8,49 @@ describe('equals', () => {
   it('equals should return true if the left is in all of the arguments', () => {
     const left = 'hello'
     const right = 'hello'
-    const acutal = equals(left, right)
+    const actual = equals(left, right)
     const expected = true
-    expect(acutal).toEqual(expected)
+    expect(actual).toEqual(expected)
   })
 
   it('equals should return false if left does not match all of the arguments', () => {
     const left = 'hello'
     const right = 'world'
-    const acutal = equals(left, right)
+    const actual = equals(left, right)
     const expected = false
-    expect(acutal).toEqual(expected)
+    expect(actual).toEqual(expected)
+  })
+
+  it('equals should return true if given numbers', () => {
+    const left = 131
+    const right = 131
+    const actual = equals(left, right)
+    const expected = true
+    expect(actual).toEqual(expected)
+  })
+
+  it('equals should use strict equals', () => {
+    const left = 131
+    const right = '131'
+    const actual = equals(left, right)
+    const expected = false
+    expect(actual).toEqual(expected)
+  })
+
+  it('equals should return true if given booleans', () => {
+    const left = false
+    const right = false
+    const actual = equals(left, right)
+    const expected = true
+    expect(actual).toEqual(expected)
+  })
+
+  it('equals should return true if given booleans', () => {
+    const left = true
+    const right = true
+    const actual = equals(left, right)
+    const expected = true
+    expect(actual).toEqual(expected)
   })
 })
 
