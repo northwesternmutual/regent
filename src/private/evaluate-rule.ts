@@ -1,4 +1,3 @@
-import isRule from './is-rule'
 import { Rule } from '../interfaces'
 
 export default (rule: Rule, data: object): boolean => {

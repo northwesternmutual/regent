@@ -1,4 +1,3 @@
-import isRule from '../private/is-rule'
 import evaluateRule from '../private/evaluate-rule'
 import makeWithContext from '../private/make-with-context'
 import { RuleFunction } from '../interfaces'

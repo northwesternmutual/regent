@@ -14,13 +14,14 @@
     "project": "./tsconfig.json"
   },
   "scripts": {
-    "test": "standard && jest",
+    "test": "jest",
     "test-watch": "jest --watch",
     "build": "microbundle --external none",
     "dev": "microbundle watch",
     "stryker": "npx stryker run",
     "publish": "npm run build && npm publish",
-    "lint": "eslint src/regent.ts"
+    "lint": "eslint src/**/*.ts",
+    "sanity": "npx tsc example/sanity-test.ts && node example/sanity-test.js"
   },
   "pre-push": [
     "test",
@@ -48,6 +49,7 @@
     "@stryker-mutator/html-reporter": "^3.0.0",
     "@stryker-mutator/javascript-mutator": "^3.0.0",
     "@stryker-mutator/jest-runner": "^3.0.0",
+    "@stryker-mutator/typescript": "^4.0.0",
     "@stryker-mutator/typescript-checker": "^6.2.2",
     "@types/jest": "^29.0.3",
     "@typescript-eslint/eslint-plugin": "^5.38.0",

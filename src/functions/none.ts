@@ -1,5 +1,4 @@
 import or from './or'
-import isRule from '../private/is-rule'
 import attachToJson from '../private/attach-to-json'
 import { Rule, RuleFunction } from '../interfaces'
 

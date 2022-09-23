@@ -1,10 +1,12 @@
-const get = (object: any, keys: String | string[] | number): any => {
+const get = (object: any, keys: string | string[] | number): any => {
   if (!object) { object = {} }
 
-  keys = Array.isArray(keys) ? keys : `${keys}`
-    .replace(/\[['"]?([\w\d-]+)['"]?\]/g, '.$1')
-    .split('.')
-    .filter(x => x)
+  keys = Array.isArray(keys)
+    ? keys
+    : `${keys}`
+      .replace(/\[['"]?([\w\d-]+)['"]?\]/g, '.$1')
+      .split('.')
+      .filter(x => x)
 
   object = object[keys[0]]
 

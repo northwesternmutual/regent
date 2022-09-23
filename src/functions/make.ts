@@ -16,7 +16,7 @@ export default (fn: Function, name?: string): Function => {
       ruleJson[name].push(arg)
     })
 
-    const ruleFn = (data: object) => fn(...makeArgs(data, ...args), data)
+    const ruleFn = (data: object): boolean => fn(...makeArgs(data, ...args), data)
 
     ruleFn.toJson = () => JSON.stringify(ruleJson)
 

@@ -9,7 +9,7 @@ describe('make', () => {
   })
 
   it('should return a factory function with makeArgs bound so regent syntax lookups work', () => {
-    const FN = lookup => lookup
+    const FN = (lookup: any): any => lookup
     const data = {
       foo: {
         bar: 'works'
@@ -93,20 +93,20 @@ describe('make', () => {
     expect(actual2).toEqual(expected2)
   })
 
-//   it('toJson method should return an "unknown" key when second argument is not a string', () => {
-//     const threeEqual = make(function threeEqual (a, b, c) {
-//       return a === b && b === c
-//     }, {})
+  //   it('toJson method should return an "unknown" key when second argument is not a string', () => {
+  //     const threeEqual = make(function threeEqual (a, b, c) {
+  //       return a === b && b === c
+  //     }, {})
 
-//     const data = {
-//       foo: 'same',
-//       bar: 'same',
-//       baz: 'same'
-//     }
+  //     const data = {
+  //       foo: 'same',
+  //       bar: 'same',
+  //       baz: 'same'
+  //     }
 
-//     const MY_RULE = threeEqual('@foo', '@bar', '@baz')
+  //     const MY_RULE = threeEqual('@foo', '@bar', '@baz')
 
-//     expect(MY_RULE(data)).toEqual(true)
+  //     expect(MY_RULE(data)).toEqual(true)
 
 //     const actual = MY_RULE.toJson()
 //     const expected = JSON.stringify({ unknown: ['@foo', '@bar', '@baz'] })

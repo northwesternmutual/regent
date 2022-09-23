@@ -3,11 +3,14 @@
 module.exports = function (config) {
   config.set({
     mutate: ['src/**/*.ts', '!src/**/*@(.test|.spec|Spec).ts', '!src/interfaces/*.ts'],
-    mutator: 'javascript',
+    mutator: 'typescript',
     testRunner: 'jest',
     reporters: ['progress', 'clear-text', 'html'],
-    coverageAnalysis: 'off',
+    coverageAnalysis: 'perTest',
     checkers: ['typescript'],
-    tsconfigFile: 'tsconfig.json'
+    tsconfigFile: 'tsconfig.json',
+    transpilers: [
+      'typescript' // Specify that your typescript code needs to be transpiled before tests can be run. Not needed if you're using ts-node Just-in-time compilation.
+    ]
   })
 }

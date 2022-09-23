@@ -15,7 +15,7 @@ describe('attachToJson', () => {
       bar: 'a'
     }
 
-    function novelAndFn (a, b) {
+    function novelAndFn (a, b): any {
       return attachToJson(function novelAnd (data) {
         return a(data) && b(data)
       }, [a, b], 'novelAnd')
@@ -44,7 +44,7 @@ describe('attachToJson', () => {
       foo: 'a'
     }
 
-    function novelAndFn (a, b) {
+    function novelAndFn (a, b): any {
       return attachToJson(function novelAnd (data) {
         return a(data) && b
       }, [a, b], 'novelAnd')
@@ -69,7 +69,7 @@ describe('attachToJson', () => {
     const A = equals('@foo', 'a')
     const B = equals('@bar', 'b')
 
-    function novelAndFn (a, b) {
+    function novelAndFn (a, b): any {
       return attachToJson(function novelAnd (data) {
         return a(data) && b(data)
       }, [a, b], 'novelAnd')

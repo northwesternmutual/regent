@@ -93,7 +93,7 @@ export default (json: any): any => {
       result[key] = buildRule(rules[key])
     })
   } catch (e) {
-    console.error(`regent.parse ${e}`)
+    console.error(`regent.parse ${e}`) // eslint-disable-line
   }
 
   return result
