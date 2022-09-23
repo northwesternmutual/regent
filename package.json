@@ -18,7 +18,6 @@
     "test-watch": "jest --watch",
     "build": "microbundle --external none",
     "dev": "microbundle watch",
-    "stryker": "npx stryker run",
     "publish": "npm run build && npm publish",
     "lint": "eslint src/**/*.ts",
     "sanity": "npx ts-node example/sanity-test.ts"
@@ -45,12 +44,6 @@
     "@babel/core": "^7.8.6",
     "@babel/preset-env": "^7.8.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@stryker-mutator/core": "^3.0.0",
-    "@stryker-mutator/html-reporter": "^3.0.0",
-    "@stryker-mutator/javascript-mutator": "^3.0.0",
-    "@stryker-mutator/jest-runner": "^3.0.0",
-    "@stryker-mutator/typescript": "^4.0.0",
-    "@stryker-mutator/typescript-checker": "^6.2.2",
     "@types/jest": "^29.0.3",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "5.38.0",
@@ -67,7 +60,6 @@
     "ts-standard": "^11.0.0",
     "typescript": "^4.8.3"
   },
-  "dependencies": {},
   "jest": {
     "coverageThreshold": {
       "global": {
