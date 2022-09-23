@@ -1,4 +1,4 @@
-const get = (object: any, keys: string | string[] | number): any => {
+function get (object: any, keys: string | string[] | number): any {
   if (!object) { object = {} }
 
   keys = Array.isArray(keys)

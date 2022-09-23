@@ -1,6 +1,6 @@
 import { Rule } from '../interfaces'
 
-export default function attachToJson (fn: any, rules: Rule[], name): any {
+function attachToJson (fn: any, rules: Rule[], name): any {
   const ruleJson = { [name]: [] }
 
   rules.forEach((rule: Rule) => {
@@ -15,3 +15,5 @@ export default function attachToJson (fn: any, rules: Rule[], name): any {
 
   return fn
 }
+
+export default attachToJson
