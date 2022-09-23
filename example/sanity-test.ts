@@ -33,8 +33,6 @@ const LOGIC = [
   { rule: not(FOO_IS_BAR), text: 'nope' }
 ]
 
-console.log(FOO_IS_BAR.toJson())
-
 // ========== THUMBS UP TIME ============= //
 
 console.log('FILTER:',

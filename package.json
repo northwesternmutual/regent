@@ -21,7 +21,7 @@
     "stryker": "npx stryker run",
     "publish": "npm run build && npm publish",
     "lint": "eslint src/**/*.ts",
-    "sanity": "npx tsc example/sanity-test.ts && node example/sanity-test.js"
+    "sanity": "npx ts-node example/sanity-test.ts"
   },
   "pre-push": [
     "test",
