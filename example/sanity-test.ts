@@ -33,6 +33,10 @@ const LOGIC = [
   { rule: not(FOO_IS_BAR), text: 'nope' }
 ]
 
+const STRING_AS_DATA = equals('@[1]', 'b') // access the first element of an array; strings can be accessed like arrays
+
+const REVERSED_PARAMS = greaterThan(42, '@number')
+
 // ========== THUMBS UP TIME ============= //
 
 console.log('FILTER:',
@@ -48,4 +52,6 @@ console.log('OR:', EITHER_OR_RULE(data) ? '👍' : '👎')
 console.log('XOR:', EITHER_XOR_RULE(data) ? '👎' : '👍')
 console.log('EVERY:', NEXT_THREE_DAYS_ARE_SUNNY(weatherData) ? '👍' : '👎')
 console.log('SOME && CUSTOM CONTEXT:', CHANCE_OF_RAIN(weatherData) ? '👍' : '👎')
+console.log('STRING AS DATA:', STRING_AS_DATA('abcd') ? '👍' : '👎')
+console.log('REVERSED PARAMS:', REVERSED_PARAMS({ number: 40 }) ? '👍' : '👎')
 console.log('TO_JSON', FOO_IS_BAR.toJson() === '{"equals":["@foo","bar"]}' ? '👍' : '👎')
