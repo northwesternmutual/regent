@@ -83,4 +83,19 @@ describe('filter', () => {
     const expected = []
     expect(actual).toEqual(expected)
   })
+
+  it('should handle misconfigured rules', () => {
+    const obj = {
+      greeting: 'hello'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+
+    const logic = [
+      { result: 'This is somewhere else!', rule: greetingIsHello },
+      { result: 'This is the world!', rule: { not: greetingIsHello } }
+    ]
+
+    expect(() => filter(logic, obj)).toThrow()
+  })
 })

@@ -67,4 +67,19 @@ describe('find', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should handle misconfigured rules', () => {
+    const obj = {
+      greeting: 'hello'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+
+    const logic = [
+      { result: 'This is the world!', rule: { not: greetingIsHello } },
+      { result: 'This is somewhere else!', rule: greetingIsHello }
+    ]
+
+    expect(() => find(logic, obj)).toThrow()
+  })
 })

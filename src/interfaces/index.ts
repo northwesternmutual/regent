@@ -9,10 +9,11 @@ export interface RuleFunction {
   toJson: () => string
 }
 
-export type Rule = RuleFunction | boolean
+export type Rule = (RuleFunction | boolean)
 
 export type PredicateArgs = string | number | boolean
 
 export interface LogicRow {
   rule: Rule
+  [x: string | number | symbol]: unknown
 }

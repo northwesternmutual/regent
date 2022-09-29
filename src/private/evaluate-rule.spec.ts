@@ -23,4 +23,13 @@ describe('evaluateRule', () => {
 
     expect(actual).toEqual(true)
   })
+
+  it('should return false for a misconfigured rule', () => {
+    const A = equals('@foo', 'a')
+    const B = { not: A }
+    const data = null
+
+    // @ts-expect-error
+    expect(() => evaluateRule(B, data)).toThrow()
+  })
 })
