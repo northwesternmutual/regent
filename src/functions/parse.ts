@@ -14,7 +14,7 @@ import some from './some'
 import typeOf from './type-of'
 import xor from './xor'
 
-export function buildRule (jsonRule: any): any {
+export function buildRule (jsonRule: boolean | string | object): any {
   // if typeof jsonRule === boolean
   // return it
   if (typeof jsonRule === 'boolean') {
@@ -26,6 +26,8 @@ export function buildRule (jsonRule: any): any {
   const predicate = typeof jsonRule === 'string'
     ? jsonRule
     : Object.keys(jsonRule)[0]
+
+  console.log('ivanxxx', predicate)
 
   switch (predicate) {
     case 'empty':

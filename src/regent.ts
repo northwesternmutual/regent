@@ -18,9 +18,70 @@ import someFn from './functions/some'
 import typeOfFn from './functions/type-of'
 import xorFn from './functions/xor'
 
+/**
+ * A predicate that returns true if the left argument strictly equals the right argument
+ *
+ * @param  {PredicateArgs} left
+ * @param  {PredicateArgs} right
+ * @returns boolean
+ * @example
+ * import { equals } from regent
+ *
+ * const IS_SUNNY = equals('@weatherType', 'sunny')
+ * const IS_RAINING = equals('raining', '@weatherType')
+ * const SAME_WEATHER_TOMORROW = equals('@today.weatherType', '@tomorrow.weatherType')
+ *
+ * IS_SUNNY({ weatherType: 'sunny' })
+ * // => true
+ *
+ * IS_RAINING({ weatherType: 'raining' })
+ * // => true
+ *
+ * SAME_WEATHER_TOMORROW({
+ *   today: {
+ *     weatherType: 'sunny'
+ *   },
+ *   tomorrow: {
+ *     weatherType: 'sunny'
+ *   }
+ * })
+ * // => true
+ */
 export const and = andFn
+
 export const empty = emptyFn
+
+/**
+ * A predicate that returns true if the left argument strictly equals the right argument
+ *
+ * @param  {PredicateArgs} left
+ * @param  {PredicateArgs} right
+ * @returns boolean
+ * @example
+ * import { equals } from regent
+ *
+ * const IS_SUNNY = equals('@weatherType', 'sunny')
+ * const IS_RAINING = equals('raining', '@weatherType')
+ * const SAME_WEATHER_TOMORROW = equals('@today.weatherType', '@tomorrow.weatherType')
+ *
+ * IS_SUNNY({ weatherType: 'sunny' })
+ * // => true
+ *
+ * IS_RAINING({ weatherType: 'raining' })
+ * // => true
+ *
+ * SAME_WEATHER_TOMORROW({
+ *   today: {
+ *     weatherType: 'sunny'
+ *   },
+ *   tomorrow: {
+ *     weatherType: 'sunny'
+ *   }
+ * })
+ * // => true
+ */
 export const equals = equalsFn
+
 export const every = everyFn
 export const filter = filterFn
 export const find = findFn

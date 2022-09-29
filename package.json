@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "3.3.9-beta.0",
+  "version": "3.3.8-beta.1",
   "description": "Javascript rules engine",
   "repository": {
     "type": "git",
