@@ -84,7 +84,7 @@ describe('filter', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should handle misconfigured rules', () => {
+  it('should handle misconfigured rules by returning false for that row', () => {
     const obj = {
       greeting: 'hello'
     }
@@ -96,6 +96,9 @@ describe('filter', () => {
       { result: 'This is the world!', rule: { not: greetingIsHello } }
     ]
 
-    expect(() => filter(logic, obj)).toThrow()
+    const actual = filter(logic, obj)
+      .map(x => x.result)
+    const expected = ['This is somewhere else!']
+    expect(actual).toEqual(expected)
   })
 })

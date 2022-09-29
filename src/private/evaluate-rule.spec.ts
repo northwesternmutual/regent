@@ -30,6 +30,6 @@ describe('evaluateRule', () => {
     const data = null
 
     // @ts-expect-error
-    expect(() => evaluateRule(B, data)).toThrow()
+    expect(evaluateRule(B, data)).toEqual(false)
   })
 })

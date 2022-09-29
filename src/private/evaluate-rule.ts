@@ -9,5 +9,5 @@ export default (rule: Rule, data: object): boolean => {
     return rule
   }
 
-  throw new Error('Regent: One of [and, every, filter, find, not, or, some, xor] was called with an invalid rule')
+  return false
 }
