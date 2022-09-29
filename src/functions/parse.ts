@@ -27,8 +27,6 @@ export function buildRule (jsonRule: boolean | string | object): any {
     ? jsonRule
     : Object.keys(jsonRule)[0]
 
-  console.log('ivanxxx', predicate)
-
   switch (predicate) {
     case 'empty':
       return empty(...jsonRule[predicate])
