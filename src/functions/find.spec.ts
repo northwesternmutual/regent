@@ -67,4 +67,12 @@ describe('find', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should correctly evaluate rules composed with boolean values', () => {
+    const logic = [{ foo: 'hello', rule: not(false) }]
+    const actual = find(logic, null).foo
+    const expected = 'hello'
+
+    expect(actual).toEqual(expected)
+  })
 })

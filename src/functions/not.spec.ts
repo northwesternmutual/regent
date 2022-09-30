@@ -56,4 +56,12 @@ describe('not', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should allow a boolean value', () => {
+    const A = not(false)
+    const B = not(true)
+    // @ts-expect-error
+    expect(A()).toEqual(true)
+    expect(B({})).toEqual(false)
+  })
 })
