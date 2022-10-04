@@ -6,7 +6,8 @@ export default (fn: Function, name?: string): Function => {
     throw new Error('make must be passed a function as argument 1')
   }
 
-  if (!name) {
+  // we want to handle other types even though we define a type
+  if (!name || typeof name !== 'string') {
     name = 'unknown'
   }
 
