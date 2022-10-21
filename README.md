@@ -1,6 +1,6 @@
 # Regent: Business Rules in JavaScript
 
-![regent logo (the letter R wearing a crown)](https://northwesternmutual.github.io/regent/regent4x.png)
+![regent logo (the letter R wearing a crown)](https://northwesternmutual.github.io/regent/regent-small.png)
 
 Regent lets you query a data structure by asking true or false questions. Regent logic is written as single responsibility rules that are self-documenting, composable, and human readable. Let's look at an example.
 
