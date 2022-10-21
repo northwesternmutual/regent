@@ -63,6 +63,7 @@ settings.json
 
 lib
 dist
+example/sanity-test.js
 
 # stryker
 reports/
