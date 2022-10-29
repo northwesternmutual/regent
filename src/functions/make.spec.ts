@@ -8,6 +8,11 @@ describe('make', () => {
     expect(actual).toEqual(expected)
   })
 
+  it('should throw if the first argument is not a function', () => {
+    // @ts-expect-error
+    expect(() => make('not a function', 'fail')).toThrow()
+  })
+
   it('should return a factory function with makeArgs bound so regent syntax lookups work', () => {
     const FN = (lookup: any): any => lookup
     const data = {
