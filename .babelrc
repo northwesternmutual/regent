@@ -4,6 +4,7 @@
       "targets": {
         "node": true
       }
-    }]
+    }],
+    "@babel/preset-typescript"
   ]
 }
