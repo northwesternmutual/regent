@@ -6,7 +6,7 @@
  */
 export interface RuleFunction {
   (data: any): boolean
-  toJson: () => string
+  toJson: (data?: any) => string
 }
 
 export type Rule = (RuleFunction | boolean)

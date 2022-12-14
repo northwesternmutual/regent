@@ -918,7 +918,7 @@ The `toJson` utility can be used to export rule definitions to JSON. This utilit
 
 _*Arguments*_
 
-_none_
+* `data? (Object)`: When provided, the resulting JSON will include the lookup and the value that the lookup will resolve to. 
 
 _*Returns*_
 
@@ -927,9 +927,9 @@ _*Returns*_
 _*Example*_
 
 ```javascript
-const isRaining = equals('@isRaining', true);
-const isCalm = lessThan('@windSpeedInMph', 25);
-const isRainingAndCalm = and(isRaining, isCalm);
+const isRaining = equals('@isRaining', true)
+const isCalm = lessThan('@windSpeedInMph', 25)
+const isRainingAndCalm = and(isRaining, isCalm)
 
 const isRainingJson = isRaining.toJson()
 // { "equals": ["isRaining", true] }
@@ -939,6 +939,25 @@ const isRainingAndCalmJson = isRainingAndCalm.toJson()
 //   "and": [
 //     { "equals": ["@isRaining", true] },
 //     { "lessThan": ["@windSpeedInMph", 25] }
+//   ]
+// }
+```
+
+```javascript
+const isRaining = equals('@isRaining', true)
+const isCalm = lessThan('@windSpeedInMph', 25)
+const isRainingAndCalm = and(isRaining, isCalm)
+
+const data = { isRaining: false, windSpeedInMph: 21 }
+
+const isRainingJson = isRaining.toJson(data)
+// { "equals": ["isRaining -> false", true] }
+
+const isRainingAndCalmJson = isRainingAndCalm.toJson(data)
+// {
+//   "and": [
+//     { "equals": ["@isRaining -> false", true] },
+//     { "lessThan": ["@windSpeedInMph -> 21", 25] }
 //   ]
 // }
 ```

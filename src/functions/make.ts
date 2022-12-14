@@ -1,4 +1,5 @@
 import makeArgs from '../private/make-args'
+import isLookup from '../private/is-lookup'
 import { RuleFunction } from '../interfaces'
 
 export default (fn: Function, name?: string): Function => {
@@ -12,15 +13,27 @@ export default (fn: Function, name?: string): Function => {
   }
 
   return (...args: any[]): RuleFunction => {
-    const ruleJson: any = { [name]: [] }
-    args.forEach((arg) => {
-      ruleJson[name].push(arg)
-    })
-
     const ruleFn = (data: object): boolean => fn(...makeArgs(data, ...args), data)
 
-    ruleFn.toJson = () => JSON.stringify(ruleJson)
+    ruleFn.toJson = (data: any) => {
+      const ruleJson: any = { [name]: [] }
+      let _args
 
-    return ruleFn
+      if (data) {
+        _args = makeArgs(data, ...args)
+      }
+
+      args.forEach((arg, i) => {
+        if (data && isLookup(arg)) {
+          ruleJson[name].push(`${arg} -> ${JSON.stringify(_args[i])}`)
+        } else {
+          ruleJson[name].push(arg)
+        }
+      })
+
+      return JSON.stringify(ruleJson)
+    }
+
+    return ruleFn;
   }
 }

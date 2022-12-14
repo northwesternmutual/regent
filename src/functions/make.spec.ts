@@ -118,4 +118,25 @@ describe('make', () => {
     const expected = JSON.stringify({ unknown: ['@foo', '@bar', '@baz'] })
     expect(actual).toEqual(expected)
   })
+
+  it('the toJson method should include the lookup and the resolved lookup if data is provided as an argument.', () => {
+    const threeEqual = make(function threeEqual (a, b, c) {
+      return a === b && b === c
+    }, 'threeEqual')
+
+    const data = {
+      foo: 'foo',
+      bar: 5,
+      baz: ['foo']
+    }
+
+    const MY_RULE = threeEqual('@foo', '@bar', '@baz')
+
+    expect(MY_RULE(data)).toEqual(false)
+
+    const actual = MY_RULE.toJson(data)
+    const expected = JSON.stringify({ threeEqual: ['@foo -> "foo"', '@bar -> 5', '@baz -> ["foo"]'] })
+
+    expect(actual).toEqual(expected)
+  })
 })
