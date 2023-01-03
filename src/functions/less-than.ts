@@ -1,5 +1,5 @@
 import make from './make'
-import { PredicateArgs } from '../interfaces'
+import { FactoryArgs } from '../interfaces'
 
-export const lessThan = (left: PredicateArgs, right: PredicateArgs): boolean => left < right
+export const lessThan = (left: FactoryArgs, right: FactoryArgs): boolean => left < right
 export default make(lessThan, 'lessThan')

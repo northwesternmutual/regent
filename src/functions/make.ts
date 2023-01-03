@@ -1,6 +1,6 @@
 import makeArgs from '../private/make-args'
 import isLookup from '../private/is-lookup'
-import { RuleFunction } from '../interfaces'
+import { FactoryArgs, Rule, Optic } from '../interfaces'
 
 export default (fn: Function, name?: string): Function => {
   if (typeof fn !== 'function') {
@@ -12,12 +12,12 @@ export default (fn: Function, name?: string): Function => {
     name = 'unknown'
   }
 
-  return (...args: any[]): RuleFunction => {
-    const ruleFn = (data: object): boolean => fn(...makeArgs(data, ...args), data)
+  return (...args: FactoryArgs[]): Rule | Optic => {
+    const result = (data: object): boolean => fn(...makeArgs(data, ...args), data)
 
-    ruleFn.toJson = (data: any) => {
-      const ruleJson: any = { [name]: [] }
-      let _args
+    result.toJson = (data: any) => {
+      const json: any = { [name]: [] }
+      let _args: FactoryArgs
 
       if (data) {
         _args = makeArgs(data, ...args)
@@ -25,15 +25,15 @@ export default (fn: Function, name?: string): Function => {
 
       args.forEach((arg, i) => {
         if (data && isLookup(arg)) {
-          ruleJson[name].push(`${arg} -> ${JSON.stringify(_args[i])}`)
+          json[name].push(`${arg as string} -> ${JSON.stringify(_args[i])}`)
         } else {
-          ruleJson[name].push(arg)
+          json[name].push(arg)
         }
       })
 
-      return JSON.stringify(ruleJson)
+      return JSON.stringify(json)
     }
 
-    return ruleFn;
+    return result
   }
 }

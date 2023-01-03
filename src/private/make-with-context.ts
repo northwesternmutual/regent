@@ -1,9 +1,9 @@
-import { PredicateArgs, RuleFunction } from '../interfaces'
+import { FactoryArgs, Rule } from '../interfaces'
 import makeArgs from './make-args'
 
 export default (fn: Function, name?: string) => {
-  return (left: PredicateArgs, right: (PredicateArgs | RuleFunction), context = '__') => {
-    const ruleFn = (data: object): RuleFunction =>
+  return (left: FactoryArgs, right: (FactoryArgs | Rule), context = '__') => {
+    const ruleFn = (data: object): Rule =>
       fn(...makeArgs(data, left, right), context, data)
 
     ruleFn.toJson = () => {
