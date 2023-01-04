@@ -1,13 +1,12 @@
-import evaluateRule from '../private/evaluate-rule'
-import attachToJson from '../private/attach-to-json'
-import { Rule, RuleFunction } from '../interfaces'
+import { RegentFn } from '../interfaces'
+import custom from './custom'
 
-export default (...rules: Rule[]): RuleFunction => {
-  if (rules.length !== 2) {
+function xor (left: boolean, right: boolean): boolean {
+  if (arguments.length !== 3) {
     throw Error('Regent: xor must take exactly 2 rules')
   }
 
-  return attachToJson(function xor (data: Object) {
-    return (evaluateRule(rules[0], data) || evaluateRule(rules[1], data)) && !(evaluateRule(rules[0], data) && evaluateRule(rules[1], data))
-  }, rules, 'xor')
+  return (left || right) && !(left && right)
 }
+
+export default custom(xor, RegentFn.Rule, 'xor')

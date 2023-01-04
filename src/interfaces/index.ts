@@ -3,6 +3,11 @@
  */
 export type Lense = `@${string}`
 
+export enum RegentFn {
+  Rule = 'Rule',
+  Optic = 'Optic'
+}
+
 /**
  * This type is a function that has to be called with data
  * that returns a boolean and also has a toJson method
@@ -11,6 +16,7 @@ export type Lense = `@${string}`
  */
 export interface Rule {
   (data: any): boolean
+  type: RegentFn
   toJson: (data?: any) => string
 }
 
@@ -22,6 +28,7 @@ export interface Rule {
  */
 export interface Optic {
   (data: any): any
+  type: RegentFn
   toJson: (data?: any) => string
 }
 
@@ -42,7 +49,7 @@ export type Predicate = (...args: FactoryArgs[]) => Rule
 /**
  * Optics are factory functions that return an Optic.
  */
-export type Optics = (...args: FactoryArgs[]) => Optics
+export type Optics = (...args: FactoryArgs[]) => Optic
 
 /**
  * LogicRow is the type argument expected by Regent queries.

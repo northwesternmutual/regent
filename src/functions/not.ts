@@ -1,9 +1,10 @@
-import evaluateRule from '../private/evaluate-rule'
-import attachToJson from '../private/attach-to-json'
-import { Rule, RuleFunction } from '../interfaces'
+// import evaluateRule from '../private/evaluate-rule'
+// import attachToJson from '../private/attach-to-json'
+import { RegentFn } from '../interfaces'
+import custom from './custom'
 
-export default (rule: Rule): RuleFunction => {
-  return attachToJson(function not (data: object): boolean {
-    return !evaluateRule(rule, data)
-  }, [rule], 'not')
+function not (bool: boolean): boolean {
+  return !bool
 }
+
+export default custom(not, RegentFn.Rule, 'not')

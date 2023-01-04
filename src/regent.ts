@@ -17,6 +17,7 @@ import regexFn from './functions/regex'
 import someFn from './functions/some'
 import typeOfFn from './functions/type-of'
 import xorFn from './functions/xor'
+import _custom from './functions/custom'
 
 /**
  * A predicate that returns true if the left argument strictly equals the right argument
@@ -98,3 +99,4 @@ export const regex = regexFn
 export const some = someFn
 export const typeOf = typeOfFn
 export const xor = xorFn
+export const custom = _custom

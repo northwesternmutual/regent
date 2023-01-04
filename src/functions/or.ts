@@ -1,9 +1,9 @@
-import evaluateRule from '../private/evaluate-rule'
-import attachToJson from '../private/attach-to-json'
-import { Rule, RuleFunction } from '../interfaces'
+import { RegentFn } from '../interfaces'
+import custom from './custom'
 
-export default (...rules: Rule[]): RuleFunction => {
-  return attachToJson(function or (data: object): boolean {
-    return rules.some(x => evaluateRule(x, data))
-  }, rules, 'or')
+function or (...bools: boolean[]): boolean {
+  // The last argument is data. Don't use that.
+  return bools.some((bool, i) => i < bools.length - 1 ? bool : false)
 }
+
+export default custom(or, RegentFn.Rule, 'or')

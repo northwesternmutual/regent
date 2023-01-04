@@ -1,9 +1,9 @@
 import evaluateRule from '../private/evaluate-rule'
 import makeWithContext from '../private/make-with-context'
-import { RuleFunction } from '../interfaces'
+import { Rule } from '../interfaces'
 /**
  * @param   {any[]} left
- * @param   {RuleFunction} right
+ * @param   {Rule} right
  * @param   {string} context
  * @param   {object} data
  * @returns {boolean}
@@ -24,7 +24,7 @@ import { RuleFunction } from '../interfaces'
  * )
  * // => true
  */
-export const every = (left: any[], right: RuleFunction, context: string, data: object): boolean => {
+export const every = (left: any[], right: Rule, context: string, data: object): boolean => {
   if (!Array.isArray(left)) {
     return false
   }
