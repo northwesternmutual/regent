@@ -1,5 +1,4 @@
-import { RegentFn } from '../interfaces'
-import custom from './custom'
+import predicate from './predicate'
 
 function xor (left: boolean, right: boolean): boolean {
   if (arguments.length !== 3) {
@@ -9,4 +8,4 @@ function xor (left: boolean, right: boolean): boolean {
   return (left || right) && !(left && right)
 }
 
-export default custom(xor, RegentFn.Rule, 'xor')
+export default predicate(xor, 'xor')

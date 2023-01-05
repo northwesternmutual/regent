@@ -1,5 +1,4 @@
-import { RegentFn } from '../interfaces'
-import custom from './custom'
+import optic from './optic'
 
 export function multiply (left: any, right: any): any {
   return left * right // eslint-disable-line
@@ -22,4 +21,4 @@ export function multiply (left: any, right: any): any {
  * FREEZING({ temperature: 1 }) // false
  *
  */
-export default custom(multiply, RegentFn.Optic, 'multiply')
+export default optic(multiply, 'multiply')

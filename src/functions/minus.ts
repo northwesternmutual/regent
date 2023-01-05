@@ -1,8 +1,7 @@
-import { RegentFn } from '../interfaces'
-import custom from './custom'
+import optic from './optic'
 
 export function minus (left: any, right: any): any {
-  return left - right // eslint-disable-line
+  return left - right
 }
 
 /**
@@ -21,4 +20,4 @@ export function minus (left: any, right: any): any {
  * // => true
  *
  */
-export default custom(minus, RegentFn.Optic, 'minus')
+export default optic(minus, 'minus')

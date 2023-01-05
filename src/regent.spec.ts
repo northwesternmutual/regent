@@ -18,10 +18,8 @@ import {
   some,
   typeOf,
   xor,
-  custom
+  optic
 } from './regent'
-
-import { RegentFn } from './interfaces'
 
 describe('regent', () => {
   it('should export the public API', () => {
@@ -107,7 +105,7 @@ describe('regent', () => {
       return array.every(fn)
     }
 
-    const every = custom(_every, RegentFn.Rule, 'every')
+    const every = optic(_every, 'every')
 
     const IS_SUNNY = equals('@weatherType', 'sunny')
     const NEXT_THREE_DAYS_ARE_SUNNY = every('@thisWeek', IS_SUNNY)

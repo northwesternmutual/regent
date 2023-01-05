@@ -9,6 +9,8 @@ import greaterThanFn from './functions/greater-than'
 import parseFn from './functions/parse'
 import lessThanOrEqualsFn from './functions/less-than-equals'
 import lessThanFn from './functions/less-than'
+import predicateFn from './functions/predicate'
+import opticFn from './functions/optic'
 import makeFn from './functions/make'
 import noneFn from './functions/none'
 import notFn from './functions/not'
@@ -17,7 +19,6 @@ import regexFn from './functions/regex'
 import someFn from './functions/some'
 import typeOfFn from './functions/type-of'
 import xorFn from './functions/xor'
-import _custom from './functions/custom'
 
 /**
  * A predicate that returns true if the left argument strictly equals the right argument
@@ -91,6 +92,8 @@ export const greaterThan = greaterThanFn
 export const parse = parseFn
 export const lessThanOrEquals = lessThanOrEqualsFn
 export const lessThan = lessThanFn
+export const predicate = predicateFn
+export const optic = opticFn
 export const make = makeFn
 export const none = noneFn
 export const not = notFn
@@ -99,4 +102,3 @@ export const regex = regexFn
 export const some = someFn
 export const typeOf = typeOfFn
 export const xor = xorFn
-export const custom = _custom

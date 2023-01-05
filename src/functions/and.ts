@@ -1,5 +1,4 @@
-import { RegentFn } from '../interfaces'
-import custom from './custom'
+import predicate from './predicate'
 
 function and (...bools: boolean[]): boolean {
   // The last argument is data. Don't use that.
@@ -22,4 +21,4 @@ function and (...bools: boolean[]): boolean {
  *  IS_RAINING_AND_WARM({ isRaining: true, temperature: 70 })
  * // => true
  */
-export default custom(and, RegentFn.Rule, 'and')
+export default predicate(and, 'and')

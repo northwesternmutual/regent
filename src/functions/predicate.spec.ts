@@ -1,24 +1,19 @@
 import { RegentFn } from '../interfaces'
-import custom from './custom'
+import predicate from './predicate'
 
-describe('custom', () => {
+describe('predicate', () => {
   it('should be a function', () => {
-    expect(typeof custom).toEqual('function')
+    expect(typeof predicate).toEqual('function')
   })
 
   it('should return a predicate, which when called should return a rule when type "Rule" is specified.', () => {
-    const actual = custom(() => 1, RegentFn.Rule, 'test')().type
+    const actual = predicate(() => 1, 'test')().type
     expect(actual).toBe(RegentFn.Rule)
-  })
-
-  it('should return an optics, which when called should return and optic when type "Optic" is specified.', () => {
-    const actual = custom(() => 1, RegentFn.Optic, 'test')().type
-    expect(actual).toBe(RegentFn.Optic)
   })
 
   it('should throw if the first argument is not a function', () => {
     // @ts-expect-error
-    expect(() => custom('not a function', RegentFn.Rule, 'fail')).toThrow()
+    expect(() => predicate('not a function', 'fail')).toThrow()
   })
 
   it('should return a factory function with makeArgs bound so regent syntax lookups work', () => {
@@ -28,16 +23,16 @@ describe('custom', () => {
         bar: 'works'
       }
     }
-    const actual = custom(FN, RegentFn.Rule)('@foo.bar')(data)
+    const actual = predicate(FN, RegentFn.Rule)('@foo.bar')(data)
     const expected = 'works'
 
     expect(actual).toEqual(expected)
   })
 
   it('should attach a toJson method that can be used to get the JSON version of the rule definition.', () => {
-    const threeEqual = custom(function threeEqual (a, b, c) {
+    const threeEqual = predicate(function threeEqual (a, b, c) {
       return a === b && b === c
-    }, RegentFn.Rule, 'threeEqual')
+    }, 'threeEqual')
 
     const data = {
       foo: 'same',
@@ -56,9 +51,9 @@ describe('custom', () => {
   })
 
   it('toJson method should return an "unknown" key when no name argument is passed', () => {
-    const threeEqual = custom(function threeEqual (a, b, c) {
+    const threeEqual = predicate(function threeEqual (a, b, c) {
       return a === b && b === c
-    }, RegentFn.Rule)
+    })
 
     const data = {
       foo: 'same',
@@ -77,9 +72,9 @@ describe('custom', () => {
   })
 
   it('toJson method should return an "unknown" key when name argument is falsy', () => {
-    const threeEqual = custom(function threeEqual (a, b, c) {
+    const threeEqual = predicate(function threeEqual (a, b, c) {
       return a === b && b === c
-    }, RegentFn.Rule, '')
+    }, '')
 
     const data = {
       foo: 'same',
@@ -95,9 +90,9 @@ describe('custom', () => {
     const expected = JSON.stringify({ unknown: ['@foo', '@bar', '@baz'] })
     expect(actual).toEqual(expected)
 
-    const threeEqual2 = custom(function threeEqual (a, b, c) {
+    const threeEqual2 = predicate(function threeEqual (a, b, c) {
       return a === b && b === c
-    }, RegentFn.Rule, null)
+    }, null)
 
     const MY_RULE2 = threeEqual2('@foo', '@bar', '@baz')
 
@@ -107,10 +102,10 @@ describe('custom', () => {
   })
 
   it('toJson method should return an "unknown" key when name argument is not a string', () => {
-    const threeEqual = custom(function threeEqual (a, b, c) {
+    const threeEqual = predicate(function threeEqual (a, b, c) {
       return a === b && b === c
     // @ts-expect-error
-    }, RegentFn.Rule, {})
+    }, {})
 
     const data = {
       foo: 'same',
@@ -128,9 +123,9 @@ describe('custom', () => {
   })
 
   it('the toJson method should include the lookup and the resolved lookup if data is provided as an argument.', () => {
-    const threeEqual = custom(function threeEqual (a, b, c) {
+    const threeEqual = predicate(function threeEqual (a, b, c) {
       return a === b && b === c
-    }, RegentFn.Rule, 'threeEqual')
+    }, 'threeEqual')
 
     const data = {
       foo: 'foo',

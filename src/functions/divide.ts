@@ -1,5 +1,4 @@
-import { RegentFn } from '../interfaces'
-import custom from './custom'
+import optic from './optic'
 
 export function divide (left: any, right: any): any {
   return left / right // eslint-disable-line
@@ -23,4 +22,4 @@ export function divide (left: any, right: any): any {
  * // => true
  *
  */
-export default custom(divide, RegentFn.Optic, 'divide')
+export default optic(divide, 'divide')

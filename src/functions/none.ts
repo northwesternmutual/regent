@@ -1,6 +1,5 @@
 import or from './or'
-import { RegentFn } from '../interfaces'
-import custom from './custom'
+import predicate from './predicate'
 
 function none (...bools: boolean[]): boolean {
   return !or(
@@ -9,4 +8,4 @@ function none (...bools: boolean[]): boolean {
   )(bools[bools.length - 1])
 }
 
-export default custom(none, RegentFn.Rule, 'none')
+export default predicate(none, 'none')
