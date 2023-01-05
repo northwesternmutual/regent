@@ -13,7 +13,7 @@ export default function optic (fn: Function, name?: string): Optics {
   }
 
   return (...args: FactoryArgs[]): Optic => {
-    function _optic (data: object): boolean {
+    function _optic (data: object): any {
       return fn(...makeArgs(data, ...args), data)
     }
 
