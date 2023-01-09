@@ -1,9 +1,7 @@
-import evaluateRule from '../private/evaluate-rule'
-import attachToJson from '../private/attach-to-json'
-import { Rule, RuleFunction } from '../interfaces'
+import predicate from './predicate'
 
-export default (rule: Rule): RuleFunction => {
-  return attachToJson(function not (data: object): boolean {
-    return !evaluateRule(rule, data)
-  }, [rule], 'not')
+function not (bool: boolean): boolean {
+  return !bool
 }
+
+export default predicate(not, 'not')

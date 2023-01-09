@@ -9,6 +9,8 @@ import greaterThanFn from './functions/greater-than'
 import parseFn from './functions/parse'
 import lessThanOrEqualsFn from './functions/less-than-equals'
 import lessThanFn from './functions/less-than'
+import predicateFn from './functions/predicate'
+import opticFn from './functions/optic'
 import makeFn from './functions/make'
 import noneFn from './functions/none'
 import notFn from './functions/not'
@@ -21,8 +23,8 @@ import xorFn from './functions/xor'
 /**
  * A predicate that returns true if the left argument strictly equals the right argument
  *
- * @param  {PredicateArgs} left
- * @param  {PredicateArgs} right
+ * @param  {FactoryArgs} left
+ * @param  {FactoryArgs} right
  * @returns boolean
  * @example
  * import { equals } from regent
@@ -54,8 +56,8 @@ export const empty = emptyFn
 /**
  * A predicate that returns true if the left argument strictly equals the right argument
  *
- * @param  {PredicateArgs} left
- * @param  {PredicateArgs} right
+ * @param  {FactoryArgs} left
+ * @param  {FactoryArgs} right
  * @returns boolean
  * @example
  * import { equals } from regent
@@ -90,6 +92,8 @@ export const greaterThan = greaterThanFn
 export const parse = parseFn
 export const lessThanOrEquals = lessThanOrEqualsFn
 export const lessThan = lessThanFn
+export const predicate = predicateFn
+export const optic = opticFn
 export const make = makeFn
 export const none = noneFn
 export const not = notFn

@@ -17,7 +17,8 @@ import {
   regex,
   some,
   typeOf,
-  xor
+  xor,
+  optic
 } from './regent'
 
 describe('regent', () => {
@@ -44,7 +45,7 @@ describe('regent', () => {
   })
 
   it('should support custom predicates', () => {
-    const fn = (left, right) => left * 2 === right
+    const fn = (left: any, right: any): boolean => left * 2 === right
     const pred = make(fn)
 
     const IS_DOUBLE = pred('@low', 4)
@@ -53,7 +54,7 @@ describe('regent', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should be able to export a large complicated composition to json.', () => {
+  it.only('should be able to export a large complicated composition to json.', () => {
     const isRaining = equals('@isRaining', true)
     const isCalm = lessThan('@windSpeedInMph', 25)
     const isRainingAndCalm = and(isRaining, isCalm)
@@ -95,6 +96,29 @@ describe('regent', () => {
         }
       ]
     })
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('optics should work', () => {
+    function _every (array: any[], fn: (value: any, index: number, array: any[]) => typeof value): boolean {
+      return array.every(fn)
+    }
+
+    const every = optic(_every, 'every')
+
+    const IS_SUNNY = equals('@weatherType', 'sunny')
+    const NEXT_THREE_DAYS_ARE_SUNNY = every('@thisWeek', IS_SUNNY)
+
+    const actual = NEXT_THREE_DAYS_ARE_SUNNY({
+      thisWeek: [
+        { weatherType: 'sunny' },
+        { weatherType: 'sunny' },
+        { weatherType: 'sunny' }
+      ]
+    })
+
+    const expected = true
 
     expect(actual).toEqual(expected)
   })

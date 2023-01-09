@@ -454,6 +454,156 @@ IS_VALID_TEMPERATURE({ temperature: 'March' })
 // => false
 ```
 
+## Optics
+
+All optics are factory functions that take arguments and return a function that takes an object to query. Calling that function with an object will do some operation on that object and return the result.
+
+An Optic is used to perform operations on the input object to prepare the data in a way that is suitable for a particular rule. The simplest example are basic mathematical operations. Regent ships with these four built-in optics.
+
+```javascript
+optics(...args)(data)
+// => boolean
+```
+
+### Regent Optic
+
+`function(object)`
+
+Each regent optic takes an object to operate on.
+
+_*Arguments*_
+
+* `object (Object)`: The object to operate on.
+
+_*Returns*_
+
+`any`
+
+_*Example*_
+
+```javascript
+import { plus } from 'regent`
+
+// returns a function that takes an object to operate on
+const OPTIC = plus('@a', '@b)
+
+// invoke the function with an object to operate on
+OPTIC({ a: 10, b: 5 })
+// => 15
+```
+
+### plus
+
+`plus(path1, path2)`
+
+Sums the resolved value to `path1` with the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Any):` The path of the property to lookup, or a primitive value
+* `path2 (Any):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent optic](#regent-optic)
+
+_*Example*_
+
+```javascript
+import { plus, greaterThanOrEquals } from regent
+
+const TEMP = plus('@temperature', '@temperatureIncrease')
+const UNSAFE = greaterThanOrEquals(TEMP, 90)
+
+UNSAFE({ temperature: 70, temperatureIncrease: 30 })
+// => true
+```
+
+### minus
+
+`minus(path1, path2)`
+
+Subtracts the resolved value to `path1` with the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Any):` The path of the property to lookup, or a primitive value
+* `path2 (Any):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent optic](#regent-optic)
+
+_*Example*_
+
+```javascript
+import { minus, lessThanOrEqual } from regent
+
+const TEMP = minus('@temperature', '@temperatureDrop')
+const FREEZING = lessThanOrEqual(TEMP, 32)
+
+FREEZING({ temperature: 40, temperatureDrop: 8 })
+// => true
+```
+
+### multiply
+
+`multiply(path1, path2)`
+
+Multiplies the resolved value to `path1` with the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Any):` The path of the property to lookup, or a primitive value
+* `path2 (Any):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent optic](#regent-optic)
+
+_*Example*_
+
+```javascript
+import { multiply, plus, lessThanOrEquals } from regent
+
+const C_RATIO = 5/9
+const F_CONST = 32
+const C_TO_F = plus(multiply('@temperature', C_RATIO), F_CONST)
+const FREEZING = lessThanOrEquals(C_TO_F, 32)
+
+FREEZING({ temperature: 0 }) // true
+FREEZING({ temperature: 1 }) // false  
+```
+
+### divide
+
+`divide(path1, path2)`
+
+Divides the resolved value to `path1` with the resolved value of `path2`
+
+_*Arguments*_
+
+* `path1 (Any):` The path of the property to lookup, or a primitive value
+* `path2 (Any):` The path of the property to lookup, or a primitive value
+
+_*Returns*_
+
+`function`: a [regent optic](#regent-optic)
+
+_*Example*_
+
+```javascript
+import { divide, lessThan, greaterThan, none } from regent
+ 
+const HUMIDITY = divide('@waterVapor', '@waterContent')
+const LOW = lessThan(HUMIDITY, 0.3)
+const HIGH = greaterThan(HUMIDITY, 0.5)
+const COMFORTABLE = none(LOW, HIGH))
+
+COMFORTABLE({ waterVapor: 1000, waterContent: 2600 })
+// => true
+```
+
 ## Composition
 
 All regent rules can be composed using built in composition functions. Each composition function takes regent rules, or boolean literals, and returns a regent rule.
@@ -609,18 +759,91 @@ ADEQUATELY_PREPARED_FOR_RAIN({ umbrella: true, inside: true })
 // => false
 ```
 
-## Custom Predicates
+## Custom Predicates and Optics
 
-Regent exports a `make` function that allows you to turn any function that takes arguments and returns a `boolean` into a regent predicate. `make` will allow your function to use the regent get syntax (`@foo.bar`) like any other predicate. You can also compose rules made with these custom predicates using built in composition functions.
+Regent exports two functions for creating your own predicates and optics. These functions will allow your function to be used like any other predicate or optic.
 
-### make
+### predicate
 
-`make(fn)`
+`predicate(fn, name)`
+
+The `predicate` function takes any function that returns a boolean and returns a regent Predicate function with the name given as the second argument. 
 
 _*Arguments*_
 
 * `fn (Function)` any function that returns a `boolean`
-* `name (String)` a string that will provide the key for the predicate in toJson() output. Defaults to `unknown`
+* `name (String)` a string that will provide a name for the `Predicate`. It's used in the toJson() output. Defaults to `unknown`
+
+_*Returns*_
+
+`function`: a [regent predicate](#predicates)
+
+_*Example*_
+
+```javascript
+import _includes from 'lodash.includes` // https://lodash.com/docs/3.10.1#includes
+import { predicate } from 'regent'
+
+const includes = predicate(_includes, 'includes')
+
+const IS_RAINING = includes('@precipitationTypes', 'rain')
+
+IS_RAINING({
+  precipitationTypes: [
+    'rain',
+    'snow'
+  ]
+})
+// => true
+```
+
+### optic
+
+`optic(fn, name)`
+
+The `optic` function takes any function that returns any value and returns a regent `Optics` function with the name given as the second argument. 
+
+_*Arguments*_
+
+* `fn (Function)` any function that returns a `any`
+* `name (String)` a string that will provide a name for the `Optics`. It's used in the toJson() output. Defaults to `unknown`
+
+_*Returns*_
+
+`function`: a [regent optics](#optics)
+
+_*Example*_
+
+```javascript
+import _every from 'lodash.every` // https://lodash.com/docs/3.10.1#every
+import { optic } from 'regent'
+
+const every = optic(_every, 'every')
+
+const IS_SUNNY = equals('@weatherType', 'sunny')
+const NEXT_THREE_DAYS_ARE_SUNNY = every('@thisWeek', IS_SUNNY)
+
+NEXT_THREE_DAYS_ARE_SUNNY({
+    thisWeek: [
+      { weatherType: 'sunny' },
+      { weatherType: 'sunny' },
+      { weatherType: 'sunny' }
+    ]
+  }
+)
+// => true
+```
+
+### make
+
+`make(fn, name)`
+
+The `make` function is an alias to the `predicate` function. Exists for backward compatibility with earlier version of Regent.
+
+_*Arguments*_
+
+* `fn (Function)` any function that returns a `boolean`
+* `name (String)` a string that will provide a name for the `Predicate`. It's used in the toJson() output. Defaults to `unknown`
 
 _*Returns*_
 

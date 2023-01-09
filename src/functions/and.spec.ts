@@ -9,7 +9,7 @@ describe('and', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should return true if at least one rule is true', () => {
+  it('should return true if all rules are true', () => {
     const A = equals('@foo', 'a')
     const B = equals('@bar', 'b')
 
@@ -24,13 +24,45 @@ describe('and', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should return false if no rules true', () => {
+  it('should return false if any rule is false', () => {
+    const A = equals('@foo', 'a')
+    const B = equals('@bar', 'b')
+    const C = equals(false, true)
+
+    const data = {
+      foo: 'not_a',
+      bar: 'b'
+    }
+
+    let actual = and(A, B)(data)
+    let expected = false
+
+    expect(actual).toEqual(expected)
+
+    data.foo = 'a'
+    data.bar = 'not_b'
+
+    actual = and(A, B)(data)
+    expected = false
+
+    expect(actual).toEqual(expected)
+
+    data.foo = 'a'
+    data.bar = 'b'
+
+    actual = and(A, B, C)(data)
+    expected = false
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return false if no rules are true', () => {
     const A = equals('@foo', 'a')
     const B = equals('@bar', 'b')
 
     const data = {
-      foo: 'a',
-      bar: 'c'
+      foo: 'not_a',
+      bar: 'not_b'
     }
 
     const actual = and(A, B)(data)
