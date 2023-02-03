@@ -1,6 +1,6 @@
 import evaluateRule from '../private/evaluate-rule'
-import { LogicRow } from '../interfaces'
+import { LogicRowObj } from '../interfaces'
 
-export default (logic: LogicRow[], data: object): LogicRow => logic.find((x) => {
+export default (logic: LogicRowObj[], data: object): LogicRowObj => logic.find((x) => {
   return evaluateRule(x.rule, data)
 })
