@@ -17,10 +17,8 @@ export default function find (logic: LogicRow[], data: object): LogicRowObj {
       result = find(cur, data)
     }
 
-    if (cur !== undefined) {
-      if (evaluateRule((cur as LogicRowObj).rule, data)) {
-        result = cur as LogicRowObj
-      }
+    if (evaluateRule((cur as LogicRowObj).rule, data)) {
+      result = cur as LogicRowObj
     }
 
     i += 1
