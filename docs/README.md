@@ -1036,7 +1036,7 @@ const logicArray = [
 
 `LogicRowFn` are executed with `data` and then deeply searched.
 
-In the case of `find` the fist `LogicRowObj` with a `rule` that evaluates to true will be returned.
+In the case of `find` the first `LogicRowObj` with a `rule` that evaluates to true will be returned.
 
 In the case of `filter` an array containing all `LogicRowObj`s with a `rule` that evaluates to true will be returned.
 
