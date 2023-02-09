@@ -62,7 +62,7 @@ export interface LogicRowObj {
 /**
  * Child of Logic Tables, used in regent find/filter
  */
-export type LogicRow = LogicRowObj | LogicRowFn
+export type LogicRow = LogicRowObj | LogicRowFn | LogicRow[]
 
 /**
  * LogicRowFn a function that accepts data and returns LogicRowObj or LogicRow[]

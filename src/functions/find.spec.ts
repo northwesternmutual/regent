@@ -75,4 +75,159 @@ describe('find', () => {
 
     expect(actual).toEqual(expected)
   })
+
+  it('should return the first LogicRowObj with a true rule (when one of the rows is a LogicRowFn)', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+
+    const logic = [
+      () => ({ result: 'This is the world!', rule: placeIsWorld }),
+      { result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return undefined if there are no LogicRows that resolve with a true rule (when one of the rows is a LogicRowFn)', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+    const placeIsNotWorld = not(equals('@place', 'world'))
+
+    const logic = [
+      () => ({ result: 'This is somewhere else!', rule: placeIsNotWorld }),
+      { result: 'This is the world!', rule: and(greetingIsHello, placeIsWorld) }
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return the first LogicRowObj with a true rule (when one of the rows is a LogicRow[])', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+
+    const logic = [
+      [{ result: 'This is the world!', rule: placeIsWorld }],
+      { result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return undefined if there are no LogicRows that resolve with a true rule (when one of the rows is a LogicRow[])', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+    const placeIsNotWorld = not(equals('@place', 'world'))
+
+    const logic = [
+      [{ result: 'This is somewhere else!', rule: placeIsNotWorld }],
+      { result: 'This is the world!', rule: and(greetingIsHello, placeIsWorld) }
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return the first LogicRowObj with a true rule (when one of the rows is a LogicRowFn that returns a LogicRow[])', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+
+    const logic = [
+      () => [{ result: 'This is the world!', rule: placeIsWorld }],
+      { result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return undefined if there are no LogicRows that resolve with a true rule (when one of the rows is a LogicRowFn that returns a LogicRow[])', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+    const placeIsNotWorld = not(equals('@place', 'world'))
+
+    const logic = [
+      () => [{ result: 'This is somewhere else!', rule: placeIsNotWorld }],
+      { result: 'This is the world!', rule: and(greetingIsHello, placeIsWorld) }
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
+
+  it('should pass data in to any LogicRowFns that are encountered', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+
+    const logic = [
+      (data: any) => [{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }],
+      { result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
+
+  it('should find recursively with any combination of LogicRowFn, LogicRowObj, and LogicRow[]', () => {
+    const obj = {
+      greeting: 'hello',
+      place: 'world'
+    }
+
+    const greetingIsHello = equals('@greeting', 'hello')
+    const placeIsWorld = equals('@place', 'world')
+
+    const logic = [
+      (data: any) => [[[[{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }]]]],
+      [() => [{ result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }]]
+    ]
+
+    const actual = find(logic, obj)?.result
+    const expected = 'This is the world!'
+    expect(actual).toEqual(expected)
+  })
 })
