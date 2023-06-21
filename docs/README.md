@@ -1007,6 +1007,79 @@ clothingLogic.filter(x => x.rule(data))
 // => [{ value: ['sandals', 't-shirt'], rule: isWarm }, { value: ['umbrella'], rule: isRaining }]
 ```
 
+### Query Advanced Usage (find/filter)
+
+The "Logic Array" passed to the find/filter queries can be comprised of more complex rows. In the simple usage example above, each row in the array is an object with a `rule` property (`LogicRowObj`), but there are two more types that are allowed. The first is another "Logic Array" (`LogicRow[]`). Logic arrays can be nested to any arbitrary complexity. The second is a function that returns a Logic Row, or Logic Array (`LogicRowFn`).
+
+To summarize, the following is an example of a logic array containing all the allowed types:
+
+```javascript
+const data = { foo: 'foo' }
+const RULE = equals('@foo', 'foo')
+
+const logicArray = [
+  // LogicRowObj
+  { rule: RULE, any: 'Hello World' },
+
+  // LogicRow[]
+  [{ rule: RULE, any: 'Hello World' }, { rule: RULE, 'Goodbye World' }],
+
+  // LogicRowFn
+  (data) => { rule: RULE, any: 'Hello World' }
+
+  // LogicRowFn
+  (data) => [{ rule: RULE, any: 'Hello World' }]
+]
+```
+
+`LogicRow[]`s are deeply searched.
+
+`LogicRowFn` are executed with `data` and then deeply searched.
+
+In the case of `find` the first `LogicRowObj` with a `rule` that evaluates to true will be returned.
+
+In the case of `filter` an array containing all `LogicRowObj`s with a `rule` that evaluates to true will be returned.
+
+The advanced functionality is meant to be used for dynamically creating Logic Arrays. Here are some example use cases:
+
+#### Data driven result
+
+```javascript
+const data = { place: 'Mars' }
+const isMars = equals('@place', 'Mars')
+const isEarth = equals('@place', 'Earth')
+
+const logicArray = [
+  (data) => { result: `Hello ${data.place}`, rule: isMars },
+  
+  { result: 'Hello World', rule: isEarth }
+]
+
+find(logicArray, data) // { result: 'Hello Mars' }
+```
+
+#### Dynamically created rows
+
+```javascript
+const data = { days: [{ temp: 90 }, { temp: 79 }, { temp: 81 }] }
+
+const logicArray = [
+  // Create a logic row for each planet in data
+  (data) => data.days.map((day, i) => ({
+    result: `Day ${i + 1} was hot! A stunning ${day.temp} degrees!`,
+    rule: greaterThan(`@data.days[${i}].temp`, 80)
+  }))
+]
+
+filter(logicArray, data)
+
+// [
+//   { result: 'Day 1 was hot! A stunning 90 degrees!' },
+//   { result: 'Day 3 was hot! A stunning 81 degrees!' },
+// ]
+```
+
+
 ## Parse
 
 `parse(JSONRulesObject)`
