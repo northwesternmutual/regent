@@ -60,10 +60,11 @@ describe('regex', () => {
   })
 
   it('when the toJson method is called it should return a json representation of the rule.', () => {
-    const MY_RULE = regexFn('@foo', 'a')
+    const MY_REGEX = /[a-z]+[0-9]+/g
+    const MY_RULE = regexFn('@foo', MY_REGEX)
 
     const actual = MY_RULE.toJson()
-    const expected = JSON.stringify({ regex: ['@foo', 'a'] })
+    const expected = JSON.stringify({ regex: ['@foo', '/[a-z]+[0-9]+/g'] })
 
     expect(actual).toEqual(expected)
   })

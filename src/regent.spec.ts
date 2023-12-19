@@ -89,7 +89,7 @@ describe('regent', () => {
             },
             {
               some: ['@days',
-                { regex: ['@__description', {}] }
+                { regex: ['@__description', '/sunny/'] }
               ]
             }
           ]
