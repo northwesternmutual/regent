@@ -24,6 +24,7 @@
     "sanity": "npx ts-node example/sanity-test.ts"
   },
   "pre-push": [
+    "lint",
     "test-coverage",
     "build"
   ],

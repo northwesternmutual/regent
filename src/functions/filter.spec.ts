@@ -93,7 +93,7 @@ describe('filter', () => {
 
     const logic = [
       { result: 'This is somewhere else!', rule: greetingIsHello },
-      { result: 'This is the world!', rule: { not: greetingIsHello } }
+      { result: 'This is the world!', rule: not(greetingIsHello) }
     ]
 
     const actual = filter(logic, obj)
