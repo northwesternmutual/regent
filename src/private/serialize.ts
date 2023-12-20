@@ -18,6 +18,8 @@ export default function serialize (data: any, args: any[], name: string): string
       json[name].push(JSON.parse(arg.toJson(data)))
     } else if (isOpticOrRule(arg)) {
       json[name].push(JSON.parse(arg.toJson()))
+    } else if (name === 'regex' && i === 1) {
+      json[name].push(arg.toString())
     } else {
       json[name].push(arg)
     }
