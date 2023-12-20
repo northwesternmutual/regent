@@ -1,6 +1,6 @@
 import { Rule } from '../interfaces'
 
-export default (rule: Rule, data: object): boolean => {
+export default (rule: Rule | boolean, data: object): boolean => {
   if (typeof rule === 'function') {
     return rule(data)
   }

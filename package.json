@@ -1,6 +1,6 @@
 {
   "name": "regent",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "Javascript rules engine",
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "sanity": "npx ts-node example/sanity-test.ts"
   },
   "pre-push": [
+    "lint",
     "test-coverage",
     "build"
   ],

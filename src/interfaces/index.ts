@@ -55,7 +55,7 @@ export type Optics = (...args: FactoryArgs[]) => Optic
  * LogicRow is the type argument expected by Regent queries.
  */
 export interface LogicRowObj {
-  rule: Rule
+  rule: boolean | Rule
   [x: string | number | symbol]: unknown
 }
 
