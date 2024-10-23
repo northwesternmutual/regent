@@ -1,15 +1,16 @@
+import { FactoryArg } from '../interfaces'
 import optic from './optic'
 
-export function divide (left: any, right: any): any {
-  return left / right // eslint-disable-line
+export function divide (left: FactoryArg, right: FactoryArg): unknown {
+  return (left as number) / (right as number)
 }
 
 /**
  * An optic that returns the result of the division operator.
  *
- * @param  {any} left
- * @param  {any} right
- * @returns any
+ * @param  {unknown} left
+ * @param  {unknown} right
+ * @returns unknown
  * @example
  * import { divide, lessThan, greaterThan, or, not } from regent
  *

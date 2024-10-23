@@ -55,6 +55,7 @@ describe('find', () => {
       { result: 'me!', rule: true }
     ]
 
+    // @ts-expect-error type check
     const actual = find(logic, {}).result
     const expected = 'me!'
     expect(actual).toEqual(expected)
@@ -203,7 +204,7 @@ describe('find', () => {
     const placeIsWorld = equals('@place', 'world')
 
     const logic = [
-      (data: any) => [{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }],
+      (data) => [{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }],
       { result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }
     ]
 
@@ -222,7 +223,7 @@ describe('find', () => {
     const placeIsWorld = equals('@place', 'world')
 
     const logic = [
-      (data: any) => [[[[{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }]]]],
+      (data) => [[[[{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }]]]],
       [() => [{ result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }]]
     ]
 

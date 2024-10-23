@@ -1,8 +1,8 @@
 import makeArgs from '../private/make-args'
 import serialize from '../private/serialize'
-import { FactoryArgs, Optics, Optic, RegentFn } from '../interfaces'
+import { FactoryArg, Optics, Optic } from '../interfaces'
 
-export default function optic (fn: Function, name?: string): Optics {
+export default function optic (fn: (...factoryArgs: FactoryArg[]) => unknown, name?: string): Optics {
   if (typeof fn !== 'function') {
     throw new Error('optic must be passed a function as argument 1')
   }
@@ -12,13 +12,13 @@ export default function optic (fn: Function, name?: string): Optics {
     name = 'unknown'
   }
 
-  return (...args: FactoryArgs[]): Optic => {
-    function _optic (data: object): any {
-      return fn(...makeArgs(data, ...args), data)
+  return (...args: FactoryArg[]): Optic => {
+    function _optic (data: unknown): unknown {
+      return fn(...makeArgs(data, ...args) as FactoryArg[], data as FactoryArg)
     }
 
-    _optic.type = RegentFn.Optic
-    _optic.toJson = (data: any) => serialize(data, args, name)
+    _optic.type = 'Optic' as const
+    _optic.toJson = (data?: unknown): string => serialize(data, args, name)
 
     return _optic
   }

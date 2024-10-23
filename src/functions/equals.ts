@@ -1,13 +1,13 @@
 import make from './make'
-import { FactoryArgs } from '../interfaces'
+import { FactoryArg } from '../interfaces'
 
-export const equals = (left: FactoryArgs, right: FactoryArgs): boolean => left === right
+export const equals = (left: FactoryArg, right: FactoryArg): boolean => left === right
 
 /**
  * A predicate that returns true if the left argument strictly equals the right argument
  *
- * @param  {FactoryArgs} left
- * @param  {FactoryArgs} right
+ * @param  {FactoryArg} left
+ * @param  {FactoryArg} right
  * @returns boolean
  * @example
  * import { equals } from regent

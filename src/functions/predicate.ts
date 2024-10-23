@@ -1,8 +1,8 @@
 import makeArgs from '../private/make-args'
 import serialize from '../private/serialize'
-import { FactoryArgs, Predicate, Rule, RegentFn } from '../interfaces'
+import { FactoryArg, Predicate, Rule } from '../interfaces'
 
-export default function predicate (fn: Function, name?: string): Predicate {
+export default function predicate (fn: (...factoryArgs: FactoryArg[]) => boolean, name?: string): Predicate {
   if (typeof fn !== 'function') {
     throw new Error('predicate must be passed a function as argument 1')
   }
@@ -12,14 +12,14 @@ export default function predicate (fn: Function, name?: string): Predicate {
     name = 'unknown'
   }
 
-  return (...args: FactoryArgs[]): Rule => {
-    function rule (data: object): boolean {
-      return fn(...makeArgs(data, ...args), data)
+  return (...args: FactoryArg[]): Rule => {
+    function rule (data: unknown): boolean {
+      return fn(...makeArgs(data, ...args) as FactoryArg[], data as FactoryArg)
     }
 
-    rule.type = RegentFn.Rule
-    rule.toJson = (data: any) => serialize(data, args, name)
+    rule.type = 'Rule' as const
+    rule.toJson = (data: unknown) => serialize(data, args, name)
 
-    return rule
+    return rule as Rule
   }
 }

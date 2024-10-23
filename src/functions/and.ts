@@ -2,7 +2,7 @@ import predicate from './predicate'
 
 function and (...bools: boolean[]): boolean {
   // The last argument is data. Don't use that.
-  return bools.every((bool, i) => i < bools.length - 1 ? bool : true)
+  return bools.every((bool) => bool)
 }
 
 /**

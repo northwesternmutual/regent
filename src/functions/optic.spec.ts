@@ -1,4 +1,3 @@
-import { RegentFn } from '../interfaces'
 import optic from './optic'
 
 describe('optic', () => {
@@ -8,16 +7,16 @@ describe('optic', () => {
 
   it('should return an optic, which when called should return and optic when type "Optic" is specified.', () => {
     const actual = optic(() => 1, 'test')().type
-    expect(actual).toBe(RegentFn.Optic)
+    expect(actual).toBe('Optic')
   })
 
   it('should throw if the first argument is not a function', () => {
-    // @ts-expect-error
+    // @ts-expect-error exception check
     expect(() => optic('not a function', 'fail')).toThrow()
   })
 
   it('should return a factory function with makeArgs bound so regent syntax lookups work', () => {
-    const FN = (lookup: any): any => lookup
+    const FN = (lookup: unknown): unknown => lookup
     const data = {
       foo: {
         bar: 'works'
@@ -79,7 +78,7 @@ describe('optic', () => {
       return `${a}` + `${b}`
     }
 
-    // @ts-expect-error
+    // @ts-expect-error type check
     const concat = optic(_concat, 5)
 
     const FULL_NAME = concat('@person.firstName', '@person.lastName')

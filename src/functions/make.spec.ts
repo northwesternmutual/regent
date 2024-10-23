@@ -9,7 +9,7 @@ describe('make', () => {
   })
 
   it('should return a factory function with makeArgs bound so regent syntax lookups work', () => {
-    const FN = (lookup: any): any => lookup
+    const FN = (lookup) => lookup
     const data = {
       foo: {
         bar: 'works'

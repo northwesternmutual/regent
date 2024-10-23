@@ -1,15 +1,16 @@
+import { type FactoryArg } from '../interfaces'
 import optic from './optic'
 
-export function multiply (left: any, right: any): any {
-  return left * right // eslint-disable-line
+export function multiply (left: FactoryArg, right: FactoryArg): FactoryArg {
+  return (left as number) * (right as number)
 }
 
 /**
  * An optic that returns the result of the multiplication operator.
  *
- * @param  {any} left
- * @param  {any} right
- * @returns any
+ * @param  {unknown} left
+ * @param  {unknown} right
+ * @returns unknown
  * @example
  * import { multiply, plus, lessThanOrEquals } from regent
  *

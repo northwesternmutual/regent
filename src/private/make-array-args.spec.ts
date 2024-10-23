@@ -1,13 +1,13 @@
-import makeArgs from './make-args'
+import makeArrayArgs from './make-array-args'
 
-describe('makeArgs', () => {
-  it('makeArgs Function: Should exist.', () => {
-    const actual = typeof makeArgs
+describe('makeArrayArgs', () => {
+  it('makeArrayArgs Function: Should exist.', () => {
+    const actual = typeof makeArrayArgs
     const expected = 'function'
     expect(actual).toEqual(expected)
   })
 
-  it('makeArgs Function: Should correctly parse args.', () => {
+  it('makeArrayArgs Function: Should correctly parse args.', () => {
     const data = {
       foo: 'foo',
       bar: 'bar',
@@ -18,38 +18,39 @@ describe('makeArgs', () => {
     }
 
     let left = '@foo'
-    let right: any = 'foo'
-    let actual = makeArgs(data, left, right)
-    let expected: any[] = ['foo', 'foo']
+    let right = 'foo'
+    let actual = makeArrayArgs(data, left, right)
+    let expected: unknown[] = ['foo', 'foo']
     expect(actual).toEqual(expected)
 
     left = '@foo'
     right = '@bar'
-    actual = makeArgs(data, left, right)
+    actual = makeArrayArgs(data, left, right)
     expected = ['foo', 'bar']
     expect(actual).toEqual(expected)
 
     left = 'foo'
     right = '@foo'
-    actual = makeArgs(data, left, right)
+    actual = makeArrayArgs(data, left, right)
     expected = ['foo', 'foo']
     expect(actual).toEqual(expected)
 
     left = '@nest.foo'
+    // @ts-expect-error type check
     right = 1
-    actual = makeArgs(data, left, right)
+    actual = makeArrayArgs(data, left, right)
     expected = [1, 1]
     expect(actual).toEqual(expected)
 
     left = '@nest.bar'
     right = '@nest.foo'
-    actual = makeArgs(data, left, right)
+    actual = makeArrayArgs(data, left, right)
     expected = [2, 1]
     expect(actual).toEqual(expected)
 
     left = '@@nest.bar' // Escaped
     right = '@nest.foo'
-    actual = makeArgs(data, left, right)
+    actual = makeArrayArgs(data, left, right)
     expected = ['@nest.bar', 1]
     expect(actual).toEqual(expected)
   })
@@ -66,7 +67,7 @@ describe('makeArgs', () => {
       'bar'
     ]
 
-    const actual = makeArgs(data, ...args)
+    const actual = makeArrayArgs(data, ...args)
     const expected = ['bar', 'bar']
     expect(actual).toEqual(expected)
   })
@@ -84,7 +85,7 @@ describe('makeArgs', () => {
       `@foo.${arg}`
     ]
 
-    const actual = makeArgs(data, ...args)
+    const actual = makeArrayArgs(data, ...args)
     const expected = ['bar']
     expect(actual).toEqual(expected)
   })
@@ -104,7 +105,7 @@ describe('makeArgs', () => {
       '@baz'
     ]
 
-    const actual = makeArgs(data, ...args)
+    const actual = makeArrayArgs(data, ...args)
     const expected = ['bar', 'a', 'b']
     expect(actual).toEqual(expected)
   })
@@ -123,7 +124,7 @@ describe('makeArgs', () => {
       null
     ]
 
-    const actual = makeArgs(data, ...args)
+    const actual = makeArrayArgs(data, ...args)
     const expected = ['bar', null]
     expect(actual).toEqual(expected)
   })

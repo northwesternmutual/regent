@@ -29,6 +29,7 @@ describe('stripAt', () => {
   })
 
   it('should return the arg if it is not a string', () => {
+    // @ts-expect-error type check
     const actual = stripAt(12)
     const expected = 12
 
@@ -50,6 +51,7 @@ describe('stripAt', () => {
   })
 
   it('should handle empty array', () => {
+    // @ts-expect-error type check
     const actual = stripAt([])
     const expected = []
 
@@ -57,6 +59,7 @@ describe('stripAt', () => {
   })
 
   it('should handle empty Object', () => {
+    // @ts-expect-error type check
     const actual = stripAt({})
     const expected = {}
 

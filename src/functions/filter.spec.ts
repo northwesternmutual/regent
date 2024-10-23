@@ -59,6 +59,7 @@ describe('filter', () => {
       { result: 'me!', rule: true }
     ]
 
+    // @ts-expect-error type check
     const actual = filter(logic, {}).map(x => x.result)
     const expected = ['me', 'me!']
     expect(actual).toEqual(expected)
@@ -96,6 +97,7 @@ describe('filter', () => {
       { result: 'This is the world!', rule: { not: greetingIsHello } }
     ]
 
+    // @ts-expect-error type check
     const actual = filter(logic, obj)
       .map(x => x.result)
     const expected = ['This is somewhere else!']
@@ -235,7 +237,7 @@ describe('filter', () => {
     const placeIsWorld = equals('@place', 'world')
 
     const logic = [
-      (data: any) => [{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }],
+      (data) => [{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }],
       { result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }
     ]
 
@@ -255,7 +257,7 @@ describe('filter', () => {
     const placeIsWorld = equals('@place', 'world')
 
     const logic = [
-      (data: any) => [[[[{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }]]]],
+      (data) => [[[[{ result: `This is the ${(data.place as string)}!`, rule: placeIsWorld }]]]],
       [() => [{ result: 'This is also the world!', rule: and(greetingIsHello, placeIsWorld) }]]
     ]
 

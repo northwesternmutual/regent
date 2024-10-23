@@ -13,8 +13,9 @@ import regex from './regex'
 import some from './some'
 import typeOf from './type-of'
 import xor from './xor'
+import { type Rule } from '../interfaces'
 
-export function buildRule (jsonRule: boolean | string | object): any {
+export function buildRule (jsonRule: boolean | string | object): Rule | boolean | string {
   // if typeof jsonRule === boolean
   // return it
   if (typeof jsonRule === 'boolean') {
@@ -56,35 +57,35 @@ export function buildRule (jsonRule: boolean | string | object): any {
 
     // composed rules
     case 'and':
-      return and(...jsonRule[predicate].map((x: any) => buildRule(x)))
+      return and(...jsonRule[predicate].map((x) => buildRule(x)))
 
     case 'every':
       // first argument is the key, the second is a rule to be built
       return every(jsonRule[predicate][0], buildRule(jsonRule[predicate][1]))
 
     case 'none':
-      return none(...jsonRule[predicate].map((x: any) => buildRule(x)))
+      return none(...jsonRule[predicate].map((x) => buildRule(x)))
 
     case 'not':
-      return not(jsonRule[predicate].map((x: any) => buildRule(x))[0])
+      return not(jsonRule[predicate].map((x) => buildRule(x))[0])
 
     case 'or':
-      return or(...jsonRule[predicate].map((x: any) => buildRule(x)))
+      return or(...jsonRule[predicate].map((x) => buildRule(x)))
 
     case 'some':
       // first argument is the key, the second is a rule to be built
       return some(jsonRule[predicate][0], buildRule(jsonRule[predicate][1]))
 
     case 'xor':
-      return xor(...jsonRule[predicate].map((x: any) => buildRule(x)))
+      return xor(...jsonRule[predicate].map((x) => buildRule(x)))
 
     default:
       return `${predicate} is not a valid predicate`
   }
 }
 
-export default (json: any): any => {
-  const result: any = {}
+export default (json: string): Record<string, Rule | boolean | string> => {
+  const result = {}
 
   try {
     const rules = JSON.parse(json)
@@ -93,7 +94,7 @@ export default (json: any): any => {
       result[key] = buildRule(rules[key])
     })
   } catch (e) {
-    console.error(`regent.parse ${e}`) // eslint-disable-line
+    console.error(`regent.parse ${e}`)
   }
 
   return result

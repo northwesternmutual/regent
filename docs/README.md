@@ -149,8 +149,8 @@ Checks whether the resolved value to `path1` is strictly equal (`===`) to the re
 
 _*Arguments*_
 
-* `path1 (Any):` The path of the property to lookup, or a primitive value
-* `path2 (Any):` The path of the property to lookup, or a primitive value
+* `path1 (unknown):` The path of the property to lookup, or a primitive value
+* `path2 (unknown):` The path of the property to lookup, or a primitive value
 
 _*Returns*_
 
@@ -477,7 +477,7 @@ _*Arguments*_
 
 _*Returns*_
 
-`any`
+`unknown`
 
 _*Example*_
 
@@ -500,8 +500,8 @@ Sums the resolved value to `path1` with the resolved value of `path2`
 
 _*Arguments*_
 
-* `path1 (Any):` The path of the property to lookup, or a primitive value
-* `path2 (Any):` The path of the property to lookup, or a primitive value
+* `path1 (unknown):` The path of the property to lookup, or a primitive value
+* `path2 (unknown):` The path of the property to lookup, or a primitive value
 
 _*Returns*_
 
@@ -527,8 +527,8 @@ Subtracts the resolved value to `path1` with the resolved value of `path2`
 
 _*Arguments*_
 
-* `path1 (Any):` The path of the property to lookup, or a primitive value
-* `path2 (Any):` The path of the property to lookup, or a primitive value
+* `path1 (unknown):` The path of the property to lookup, or a primitive value
+* `path2 (unknown):` The path of the property to lookup, or a primitive value
 
 _*Returns*_
 
@@ -537,10 +537,10 @@ _*Returns*_
 _*Example*_
 
 ```javascript
-import { minus, lessThanOrEqual } from regent
+import { minus, lessThanOrEquals } from regent
 
 const TEMP = minus('@temperature', '@temperatureDrop')
-const FREEZING = lessThanOrEqual(TEMP, 32)
+const FREEZING = lessThanOrEquals(TEMP, 32)
 
 FREEZING({ temperature: 40, temperatureDrop: 8 })
 // => true
@@ -554,8 +554,8 @@ Multiplies the resolved value to `path1` with the resolved value of `path2`
 
 _*Arguments*_
 
-* `path1 (Any):` The path of the property to lookup, or a primitive value
-* `path2 (Any):` The path of the property to lookup, or a primitive value
+* `path1 (unknown):` The path of the property to lookup, or a primitive value
+* `path2 (unknown):` The path of the property to lookup, or a primitive value
 
 _*Returns*_
 
@@ -572,7 +572,7 @@ const C_TO_F = plus(multiply('@temperature', C_RATIO), F_CONST)
 const FREEZING = lessThanOrEquals(C_TO_F, 32)
 
 FREEZING({ temperature: 0 }) // true
-FREEZING({ temperature: 1 }) // false  
+FREEZING({ temperature: 1 }) // false
 ```
 
 ### divide
@@ -583,8 +583,8 @@ Divides the resolved value to `path1` with the resolved value of `path2`
 
 _*Arguments*_
 
-* `path1 (Any):` The path of the property to lookup, or a primitive value
-* `path2 (Any):` The path of the property to lookup, or a primitive value
+* `path1 (unknown):` The path of the property to lookup, or a primitive value
+* `path2 (unknown):` The path of the property to lookup, or a primitive value
 
 _*Returns*_
 
@@ -594,7 +594,7 @@ _*Example*_
 
 ```javascript
 import { divide, lessThan, greaterThan, none } from regent
- 
+
 const HUMIDITY = divide('@waterVapor', '@waterContent')
 const LOW = lessThan(HUMIDITY, 0.3)
 const HIGH = greaterThan(HUMIDITY, 0.5)
@@ -767,7 +767,7 @@ Regent exports two functions for creating your own predicates and optics. These 
 
 `predicate(fn, name)`
 
-The `predicate` function takes any function that returns a boolean and returns a regent Predicate function with the name given as the second argument. 
+The `predicate` function takes any function that returns a boolean and returns a regent Predicate function with the name given as the second argument.
 
 _*Arguments*_
 
@@ -801,7 +801,7 @@ IS_RAINING({
 
 `optic(fn, name)`
 
-The `optic` function takes any function that returns any value and returns a regent `Optics` function with the name given as the second argument. 
+The `optic` function takes any function that returns any value and returns a regent `Optics` function with the name given as the second argument.
 
 _*Arguments*_
 
@@ -815,22 +815,17 @@ _*Returns*_
 _*Example*_
 
 ```javascript
-import _every from 'lodash.every` // https://lodash.com/docs/3.10.1#every
-import { optic } from 'regent'
+import { optic, lessThanOrEquals } from 'regent'
+function _minus (left, right) {
+  return (left as number) - (right as number)
+}
 
-const every = optic(_every, 'every')
+const minus = optic(_minus, 'minus')
 
-const IS_SUNNY = equals('@weatherType', 'sunny')
-const NEXT_THREE_DAYS_ARE_SUNNY = every('@thisWeek', IS_SUNNY)
+const TEMP = minus('@temperature', '@temperatureDrop')
+const FREEZING = lessThanOrEquals(TEMP, 32)
 
-NEXT_THREE_DAYS_ARE_SUNNY({
-    thisWeek: [
-      { weatherType: 'sunny' },
-      { weatherType: 'sunny' },
-      { weatherType: 'sunny' }
-    ]
-  }
-)
+FREEZING({ temperature: 40, temperatureDrop: 8 })
 // => true
 ```
 
@@ -1051,7 +1046,7 @@ const isEarth = equals('@place', 'Earth')
 
 const logicArray = [
   (data) => { result: `Hello ${data.place}`, rule: isMars },
-  
+
   { result: 'Hello World', rule: isEarth }
 ]
 
@@ -1214,7 +1209,7 @@ The `toJson` utility can be used to export rule definitions to JSON. This utilit
 
 _*Arguments*_
 
-* `data? (Object)`: When provided, the resulting JSON will include the lookup and the value that the lookup will resolve to. 
+* `data? (Object)`: When provided, the resulting JSON will include the lookup and the value that the lookup will resolve to.
 
 _*Returns*_
 

@@ -51,9 +51,9 @@ describe('typeOf', () => {
   })
 
   it('when the toJson method is called it should return a json representation of the rule.', () => {
-    const MY_RULE = typeOfFn('@foo', 5)
+    const MY_RULE = typeOfFn('@foo', 'string')
     const actual = MY_RULE.toJson()
-    const expected = JSON.stringify({ typeOf: ['@foo', 5] })
+    const expected = JSON.stringify({ typeOf: ['@foo', 'string'] })
 
     expect(actual).toEqual(expected)
   })

@@ -57,10 +57,13 @@ describe('empty', () => {
     expect(result).toEqual(true)
     result = empty('some value') // false
     expect(result).toEqual(false)
+    // @ts-expect-error type check
     result = empty({}) // false
     expect(result).toEqual(false)
+    // @ts-expect-error type check
     result = empty([]) // false
     expect(result).toEqual(false)
+    // @ts-expect-error type check
     result = empty(['']) // false
     expect(result).toEqual(false)
   })

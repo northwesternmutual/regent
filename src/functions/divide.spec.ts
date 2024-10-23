@@ -6,7 +6,31 @@ describe('divide', () => {
     expect(typeof divide).toEqual('function')
   })
 
-  it('should return the product of left and right when each are values.', () => {
+  it('should return NaN when dividend or divisor is NaN', () => {
+    const left = NaN
+    const right = 2
+    const expected = NaN
+    expect(divide(left, right)({})).toEqual(expected)
+    expect(divide(right, left)({})).toEqual(expected)
+  })
+
+  it('should return infinity when dividing by 0', () => {
+    const left = 1
+    const right = 0
+    const actual = divide(left, right)({})
+    const expected = Infinity
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return the quotient of left and right when each are strigified values.', () => {
+    const left = '1'
+    const right = '2'
+    const actual = divide(left, right)({})
+    const expected = 0.5
+    expect(actual).toEqual(expected)
+  })
+
+  it('should return the quotient of left and right when each are values.', () => {
     const left = 1
     const right = 2
     const actual = divide(left, right)({})
@@ -14,7 +38,7 @@ describe('divide', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should return the product of left and right when each are lenses.', () => {
+  it('should return the quotient of left and right when each are lenses.', () => {
     const left = '@a'
     const right = '@b'
     const actual = divide(left, right)({ a: 1, b: 2 })

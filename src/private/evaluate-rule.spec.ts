@@ -19,6 +19,7 @@ describe('evaluateRule', () => {
   it('should work with a boolean literal', async () => {
     const A = true
     const data = null
+    // @ts-expect-error type check
     const actual = evaluateRule(A, data)
 
     expect(actual).toEqual(true)
@@ -29,7 +30,7 @@ describe('evaluateRule', () => {
     const B = { not: A }
     const data = null
 
-    // @ts-expect-error
+    // @ts-expect-error type check
     expect(evaluateRule(B, data)).toEqual(false)
   })
 })

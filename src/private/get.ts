@@ -1,4 +1,4 @@
-function get (object: any, keys: string | string[] | number): any {
+function get (object: unknown, keys: string | string[] | number): unknown {
   if (!object) { object = {} }
 
   keys = Array.isArray(keys)
