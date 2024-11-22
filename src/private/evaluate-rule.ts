@@ -1,6 +1,6 @@
 import { Rule } from '../interfaces'
 
-export default (rule: Rule, data: object): boolean => {
+const evaluateRule = (rule: Rule, data: object): boolean => {
   if (typeof rule === 'function') {
     return rule(data)
   }
@@ -11,3 +11,5 @@ export default (rule: Rule, data: object): boolean => {
 
   return false
 }
+
+export default evaluateRule
