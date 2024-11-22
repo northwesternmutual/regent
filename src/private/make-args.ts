@@ -6,7 +6,7 @@ import stripAt from './strip-at'
 
 // makeArgs will sort out if the leftArg and rightArg are lenses or
 // static and return the the data that your predicates needs.
-export default (data: Object, ...args: any[]): any[] => args.map(x => {
+const makeArgs = (data: Object, ...args: any[]): any[] => args.map(x => {
   if (isLookup(x)) {
     return get(data, stripAt(x))
   } else if (isOpticOrRule(x)) {
@@ -15,3 +15,5 @@ export default (data: Object, ...args: any[]): any[] => args.map(x => {
 
   return stripAt(x)
 })
+
+export default makeArgs

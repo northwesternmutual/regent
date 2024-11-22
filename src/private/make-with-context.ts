@@ -1,7 +1,7 @@
 import { FactoryArgs, Rule, RegentFn } from '../interfaces'
 import makeArrayArgs from './make-array-args'
 
-export default (fn: Function, name?: string) => {
+const makeWithContext = (fn: Function, name?: string) => {
   return (left: FactoryArgs, right: FactoryArgs, context = '__'): Rule => {
     const ruleFn = (data: object): boolean =>
       fn(...makeArrayArgs(data, left, right), context, data)
@@ -23,3 +23,5 @@ export default (fn: Function, name?: string) => {
     return ruleFn
   }
 }
+
+export default makeWithContext

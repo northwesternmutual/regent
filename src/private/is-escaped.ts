@@ -1,2 +1,4 @@
 const isEscapedRegex = /^@@/
-export default (arg: any): Boolean => isEscapedRegex.test(arg)
+const isEscaped = (arg: any): Boolean => isEscapedRegex.test(arg)
+
+export default isEscaped
