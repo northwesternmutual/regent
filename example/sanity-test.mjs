@@ -1,4 +1,4 @@
-import { equals, greaterThan, and, or, xor, filter, every, some, not } from '../dist/regent.modern.modern.mjs'
+import { equals, greaterThan, and, or, xor, filter, every, some, not } from '../dist/regent.modern.mjs'
 
 const FOO_IS_BAR = equals('@foo', 'bar')
 const BIZ_GT_13 = greaterThan('@biz', 13)
