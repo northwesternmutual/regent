@@ -1,15 +1,16 @@
+import { type FactoryArg } from '../interfaces'
 import optic from './optic'
 
-export function minus (left: any, right: any): any {
-  return left - right
+export function minus (left: FactoryArg, right: FactoryArg): FactoryArg {
+  return (left as number) - (right as number)
 }
 
 /**
  * An optic that returns the result of the subtraction operator.
  *
- * @param  {any} left
- * @param  {any} right
- * @returns any
+ * @param  {unknown} left
+ * @param  {unknown} right
+ * @returns unknown
  * @example
  * import { minus, lessThan } from regent
  *

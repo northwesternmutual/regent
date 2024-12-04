@@ -2,7 +2,7 @@ import make from './make'
 /**
  * A predicate that returns true if the provided input is `undefined`, `null`, `'undefined'`, or `''`
  *
- * @param   {any} input? Any value
+ * @param   {unknown} input? Any value
  * @returns {boolean} True if input is `undefined`, `null`, `'undefined'`, or `''`
  * @example
  *
@@ -25,7 +25,7 @@ import make from './make'
  * NO_PRECIPITATION({ precipitationTypes: ['rain] })
  * // => false
  */
-export const empty = (input?: any): boolean => (
+export const empty = (input?: string): boolean => (
   input === undefined ||
   input === null ||
   input === 'undefined' ||

@@ -23,8 +23,8 @@ import xorFn from './functions/xor'
 /**
  * A predicate that returns true if the left argument strictly equals the right argument
  *
- * @param  {FactoryArgs} left
- * @param  {FactoryArgs} right
+ * @param  {FactoryArg} left
+ * @param  {FactoryArg} right
  * @returns boolean
  * @example
  * import { equals } from regent
@@ -56,8 +56,8 @@ export const empty = emptyFn
 /**
  * A predicate that returns true if the left argument strictly equals the right argument
  *
- * @param  {FactoryArgs} left
- * @param  {FactoryArgs} right
+ * @param  {FactoryArg} left
+ * @param  {FactoryArg} right
  * @returns boolean
  * @example
  * import { equals } from regent

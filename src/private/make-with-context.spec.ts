@@ -9,13 +9,14 @@ describe('makeWithContext', () => {
   })
 
   it('should return a factory function with makeArgs bound so regent syntax lookups work', () => {
-    const FN = (arg1: string, arg2: string): string => `${arg1}: ${arg2}`
+    const FN = (arg1, arg2) => `${arg1}: ${arg2}`
     const data = {
       foo: {
         bar: 'works'
       },
       biz: 'hello world'
     }
+    // @ts-expect-error value check
     const actual = makeWithContext(FN)('@foo.bar', '@biz')(data)
     const expected = 'works: hello world'
 
@@ -23,13 +24,14 @@ describe('makeWithContext', () => {
   })
 
   it('should pass through context', () => {
-    const FN = (arg1: string, arg2: string, context: string): string => `${arg1}: ${arg2} (${context})`
+    const FN = (arg1, arg2, context) => `${arg1}: ${arg2} (${context})`
     const data = {
       foo: {
         bar: 'works'
       },
       biz: 'hello world'
     }
+    // @ts-expect-error value check
     const actual = makeWithContext(FN)('@foo.bar', '@biz', 'huzzah')(data)
     const expected = 'works: hello world (huzzah)'
 
@@ -37,13 +39,14 @@ describe('makeWithContext', () => {
   })
 
   it('context should default to "__"', () => {
-    const FN = (arg1: string, arg2: string, context: string): string => `${arg1}: ${arg2} (${context})`
+    const FN = (arg1, arg2, context) => `${arg1}: ${arg2} (${context})`
     const data = {
       foo: {
         bar: 'works'
       },
       biz: 'hello world'
     }
+    // @ts-expect-error value check
     const actual = makeWithContext(FN)('@foo.bar', '@biz')(data)
     const expected = 'works: hello world (__)'
 
@@ -51,7 +54,7 @@ describe('makeWithContext', () => {
   })
 
   it('should correctly render booleans to JSON', () => {
-    const FN = (arg1: string, arg2: string): string => `${arg1}: ${arg2}`
+    const FN = (arg1, arg2) => arg1 && arg2
     const returnFn = makeWithContext(FN, 'FN')('@foo.bar', true)
     const actual = returnFn.toJson()
     const expected = '{"FN":["@foo.bar",true]}'
@@ -60,7 +63,7 @@ describe('makeWithContext', () => {
   })
 
   it('should correctly render numbers to JSON', () => {
-    const FN = (arg1: string, arg2: string): string => `${arg1}: ${arg2}`
+    const FN = (arg1, arg2) => arg1 && arg2
     const returnFn = makeWithContext(FN, 'FN')('@foo.bar', 131)
     const actual = returnFn.toJson()
     const expected = '{"FN":["@foo.bar",131]}'

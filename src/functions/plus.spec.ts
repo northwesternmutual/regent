@@ -8,7 +8,7 @@ describe('plus', () => {
   it('should return the sum of left and right when each are values.', () => {
     const left = 5
     const right = 6
-    const actual = plus(left, right)()
+    const actual = plus(left, right)({})
     const expected = 11
     expect(actual).toEqual(expected)
   })

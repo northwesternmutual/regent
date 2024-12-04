@@ -1,15 +1,16 @@
+import { type FactoryArg } from '../interfaces'
 import optic from './optic'
 
-export function plus (left: any, right: any): any {
-  return left + right // eslint-disable-line
+export function plus (left: FactoryArg, right: FactoryArg): FactoryArg {
+  return (left as number) + (right as number)
 }
 
 /**
  * An optic that returns the result of the addition operator.
  *
- * @param  {any} left
- * @param  {any} right
- * @returns any
+ * @param  {unknown} left
+ * @param  {unknown} right
+ * @returns unknown
  * @example
  * import { plus, greaterThanOrEquals } from regent
  *

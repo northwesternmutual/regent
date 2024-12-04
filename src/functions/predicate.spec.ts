@@ -1,4 +1,3 @@
-import { RegentFn } from '../interfaces'
 import predicate from './predicate'
 
 describe('predicate', () => {
@@ -7,23 +6,23 @@ describe('predicate', () => {
   })
 
   it('should return a predicate, which when called should return a rule when type "Rule" is specified.', () => {
-    const actual = predicate(() => 1, 'test')().type
-    expect(actual).toBe(RegentFn.Rule)
+    const actual = predicate(() => true, 'test')().type
+    expect(actual).toBe('Rule')
   })
 
   it('should throw if the first argument is not a function', () => {
-    // @ts-expect-error
+    // @ts-expect-error Testing type safety
     expect(() => predicate('not a function', 'fail')).toThrow()
   })
 
   it('should return a factory function with makeArgs bound so regent syntax lookups work', () => {
-    const FN = (lookup: any): any => lookup
+    const FN = (lookup) => lookup
     const data = {
       foo: {
         bar: 'works'
       }
     }
-    const actual = predicate(FN, RegentFn.Rule)('@foo.bar')(data)
+    const actual = predicate(FN, 'Rule')('@foo.bar')(data)
     const expected = 'works'
 
     expect(actual).toEqual(expected)
@@ -104,7 +103,7 @@ describe('predicate', () => {
   it('toJson method should return an "unknown" key when name argument is not a string', () => {
     const threeEqual = predicate(function threeEqual (a, b, c) {
       return a === b && b === c
-    // @ts-expect-error
+    // @ts-expect-error type check
     }, {})
 
     const data = {

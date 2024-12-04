@@ -1,6 +1,6 @@
 import make from './make'
-import { FactoryArgs } from '../interfaces'
+import { FactoryArg } from '../interfaces'
 
-export const greaterThanOrEquals = (left: FactoryArgs, right: FactoryArgs): boolean => left >= right
+export const greaterThanOrEquals = (left: FactoryArg, right: FactoryArg): boolean => left >= right
 
 export default make(greaterThanOrEquals, 'greaterThanOrEquals')

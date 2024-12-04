@@ -1,20 +1,22 @@
-import { FactoryArgs, Rule, RegentFn } from '../interfaces'
+import { FactoryArg, type Rule } from '../interfaces'
+import isOptic from './is-optic'
+import isRule from './is-rule'
 import makeArrayArgs from './make-array-args'
 
-export default (fn: Function, name?: string) => {
-  return (left: FactoryArgs, right: FactoryArgs, context = '__'): Rule => {
-    const ruleFn = (data: object): boolean =>
+export default (fn: (...factoryArgs: unknown[]) => boolean, name?: string) => {
+  return (left: FactoryArg, right: FactoryArg, context = '__'): Rule => {
+    const ruleFn = (data: unknown): boolean =>
       fn(...makeArrayArgs(data, left, right), context, data)
 
-    ruleFn.type = RegentFn.Rule
+    ruleFn.type = 'Rule' as const
 
     ruleFn.toJson = () => {
-      let ruleJson: any
+      let ruleJson
 
-      if (typeof right === 'boolean' || typeof right === 'number' || typeof right === 'string') {
-        ruleJson = { [name]: [left, right] }
+      if (isRule(right) || isOptic(right)) {
+        ruleJson = { [name]: [left, JSON.parse((right).toJson())] }
       } else {
-        ruleJson = { [name]: [left, JSON.parse(right.toJson())] }
+        ruleJson = { [name]: [left, right] }
       }
 
       return JSON.stringify(ruleJson)

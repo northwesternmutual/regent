@@ -18,9 +18,9 @@ describe('makeArgs', () => {
     }
 
     let left = '@foo'
-    let right: any = 'foo'
+    let right = 'foo'
     let actual = makeArgs(data, left, right)
-    let expected: any[] = ['foo', 'foo']
+    let expected: unknown[] = ['foo', 'foo']
     expect(actual).toEqual(expected)
 
     left = '@foo'
@@ -36,6 +36,7 @@ describe('makeArgs', () => {
     expect(actual).toEqual(expected)
 
     left = '@nest.foo'
+    // @ts-expect-error type check
     right = 1
     actual = makeArgs(data, left, right)
     expected = [1, 1]

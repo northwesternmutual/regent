@@ -60,7 +60,7 @@ describe('not', () => {
   it('should allow a boolean value', () => {
     const A = not(false)
     const B = not(true)
-    // @ts-expect-error
+    // @ts-expect-error type check
     expect(A()).toEqual(true)
     expect(B({})).toEqual(false)
   })

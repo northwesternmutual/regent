@@ -24,7 +24,7 @@ import { Rule } from '../interfaces'
  * )
  * // => true
  */
-export const every = (left: any[], right: Rule, context: string, data: object): boolean => {
+export const every = (left: unknown[], right: Rule, context: string, data: object): boolean => {
   if (!Array.isArray(left)) {
     return false
   }
